@@ -1,8 +1,12 @@
-#include "Board.hpp"
+#include <TicTacToe/game.hpp>
+#include <iostream>
+
+using namespace TicTacToe;
+using namespace std;
 
 int main() {
-  Board b;
-  b.set(1, 1, X);
-  b.draw();
+  cout << "Start Game" << endl;
+  Game game;
+  game.run();
   return 0;
 }
