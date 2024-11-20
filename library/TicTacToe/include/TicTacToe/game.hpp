@@ -1,17 +1,18 @@
-#include "../../src/Board.hpp"
-#include "Player.hpp"
-
 #ifndef GAME_HPP
 #define GAME_HPP
+
+#include "../../src/Board.hpp"
+#include "../../src/PlayerAdapter.hpp"
 
 namespace TicTacToe {
 class Game {
 public:
-  Game();
+  Game(Player *playerX_, Player *playerO_);
   void run();
-  // player::Player PLAYERX;
-  // player::Player PLAYERO;
-  //
+  PlayerAdapter playerO;
+  PlayerAdapter playerX;
+  ~Game() = default;
+
 private:
   Board board;
 };

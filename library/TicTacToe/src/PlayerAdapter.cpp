@@ -1,0 +1,24 @@
+#include "PlayerAdapter.hpp"
+
+PlayerAdapter::PlayerAdapter(TicTacToe::cell mode) { player = 0; }
+
+void PlayerAdapter::updateScore(int score) {
+  if (score > 0) {
+    this->player->score += score;
+  }
+}
+
+int PlayerAdapter::getMove() { return player->getMove(); }
+
+int PlayerAdapter::getScore() { return player->getScore(); }
+
+void PlayerAdapter::SetPlayer(Player *player_, TicTacToe::cell mode) {
+  this->player = player_;
+  this->player->playerMode = mode;
+}
+
+Player *PlayerAdapter::GetPlayer() { return player; }
+
+TicTacToe::cell PlayerAdapter::getPlayerMode() {
+  return player->getPlayerMode();
+}

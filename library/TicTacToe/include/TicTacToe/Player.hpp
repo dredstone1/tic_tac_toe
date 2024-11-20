@@ -1,9 +1,22 @@
-#include "../../src/BoardGrid.hpp"
+#ifndef PLAYER_HPP
+#define PLAYER_HPP
 
-namespace player {
-class Player {
+#include "../../src/IPlayer.hpp"
+
+class Player : public IPlayer {
+private:
+  int score;
+  TicTacToe::cell playerMode;
+
 public:
-  virtual void getMove(TicTacToe::BoardGrid grid);
-  virtual ~Player() {}
+  Player() {
+    score = 0;
+    playerMode = TicTacToe::cell::EMPTY;
+  }
+  virtual ~Player() = default;
+  int getScore() override { return score; }
+  friend class PlayerAdapter;
+  TicTacToe::cell getPlayerMode() override { return playerMode; }
 };
-} // namespace player
+
+#endif // IPLAYER_HPP

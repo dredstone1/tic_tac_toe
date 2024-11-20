@@ -1,0 +1,22 @@
+#ifndef playeradapter_hpp
+#define playeradapter_hpp
+
+#include "../include/TicTacToe/Player.hpp"
+#include "IPlayer.hpp"
+
+class PlayerAdapter : public IPlayer {
+private:
+  Player *player;
+
+public:
+  PlayerAdapter(TicTacToe::cell mode);
+
+  void SetPlayer(Player *player_, TicTacToe::cell mode);
+  Player *GetPlayer();
+  int getScore() override;
+  void updateScore(int score);
+  int getMove() override;
+  TicTacToe::cell getPlayerMode() override;
+};
+
+#endif // PLAYERADAPTER_HPP
