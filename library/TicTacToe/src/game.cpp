@@ -20,27 +20,34 @@ void Game::run() {
 
   while (b.GetBoardState() == Continue) {
     int move = currentPlayer->getMove();
+    if (move < 0 || move > 8 || b.get(move / 3, move % 3) != EMPTY) {
+      cout << "Invalid move" << endl;
+      continue;
+    }
+
     b.set(move / 3, move % 3, currentPlayer->getPlayerMode());
     b.draw();
     currentPlayer = (currentPlayer == &playerX) ? &playerO : &playerX;
   }
+
   switch (b.GetBoardState()) {
   case WinX:
-    cout << "Player X wins!" << endl;
+    playerX.updateScore(playerX.getScore() + 1);
+    playerX.UserWin();
+    playerO.UserLost();
     break;
   case WinO:
-    cout << "Player O wins!" << endl;
+    playerO.updateScore(playerO.getScore() + 1);
+    playerO.UserWin();
+    playerX.UserLost();
     break;
   case Draw:
-    cout << "It's a draw!" << endl;
+    playerO.UserDraw();
+    playerX.UserDraw();
     break;
   default:
     break;
   }
-
-  cout << "Player X score: " << playerX.getScore() << endl;
-  playerX.updateScore(1);
-  std::cout << "Player X score: " << playerX.getScore() << std::endl;
   return;
 }
 } // namespace TicTacToe

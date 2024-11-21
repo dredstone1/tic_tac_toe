@@ -10,13 +10,15 @@ private:
 
 public:
   PlayerAdapter(TicTacToe::cell mode);
-
   void SetPlayer(Player *player_, TicTacToe::cell mode);
   Player *GetPlayer();
   int getScore() override;
   void updateScore(int score);
   int getMove() override;
   TicTacToe::cell getPlayerMode() override;
+  void UserLost() override;
+  void UserWin() override;
+  void UserDraw() override;
 };
 
 #endif // PLAYERADAPTER_HPP

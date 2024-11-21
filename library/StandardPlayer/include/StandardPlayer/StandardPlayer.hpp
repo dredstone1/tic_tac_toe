@@ -1,5 +1,5 @@
-#ifndef STANDARTPLAYER_HPP
-#define STANDARTPLAYER_HPP
+#ifndef STANDARDPLAYER_HPP
+#define STANDARDPLAYER_HPP
 #include <TicTacToe/Player.hpp>
 
 class StandardPlayer : public Player {
@@ -7,5 +7,9 @@ public:
   StandardPlayer();
   int getMove() override;
   ~StandardPlayer() override = default;
+    void UserLost() override;
+    void UserWin() override;
+    void UserDraw() override;
 };
-#endif // STANDARTPLAYER_HPP
+
+#endif // STANDARDPLAYER_HPP
