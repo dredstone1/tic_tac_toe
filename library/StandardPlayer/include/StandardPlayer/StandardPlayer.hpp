@@ -2,10 +2,10 @@
 #define STANDARTPLAYER_HPP
 #include <TicTacToe/Player.hpp>
 
-class StandartPlayer : public Player {
+class StandardPlayer : public Player {
 public:
-  StandartPlayer();
+  StandardPlayer();
   int getMove() override;
-  ~StandartPlayer() override = default;
+  ~StandardPlayer() override = default;
 };
 #endif // STANDARTPLAYER_HPP

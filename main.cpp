@@ -1,4 +1,4 @@
-#include <StandartPlayer/StandartPlayer.hpp>
+#include <StandardPlayer/StandardPlayer.hpp>
 #include <TicTacToe/game.hpp>
 #include <iostream>
 
@@ -6,8 +6,8 @@ using namespace TicTacToe;
 using namespace std;
 
 int main() {
-  StandartPlayer StandardPlayer1;
-  StandartPlayer StandardPlayer2;
+  StandardPlayer StandardPlayer1;
+  StandardPlayer StandardPlayer2;
   cout << "Start Game" << endl;
 
   Game game(&StandardPlayer1, &StandardPlayer2);

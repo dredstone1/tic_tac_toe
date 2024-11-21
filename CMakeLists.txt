@@ -6,7 +6,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 add_executable(TicTacToeGame main.cpp)
 
 add_subdirectory(library/TicTacToe)
-add_subdirectory(library/StandartPlayer)
+add_subdirectory(library/StandardPlayer)
 
-target_link_libraries(TicTacToeGame TicTacToe StandartPlayer)
+target_link_libraries(TicTacToeGame TicTacToe StandardPlayer)
 
