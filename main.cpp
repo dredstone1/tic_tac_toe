@@ -1,5 +1,6 @@
 #include <StandardPlayer/StandardPlayer.hpp>
 #include <TicTacToe/game.hpp>
+#include <AiPlayer/AiPlayer.hpp>
 #include <iostream>
 
 using namespace TicTacToe;
