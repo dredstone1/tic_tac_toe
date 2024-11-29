@@ -1,18 +1,21 @@
+#include <AiPlayer/AiModel.hpp>
 #include <StandardPlayer/StandardPlayer.hpp>
 #include <TicTacToe/game.hpp>
-#include <AiPlayer/AiPlayer.hpp>
 #include <iostream>
 
 using namespace TicTacToe;
 using namespace std;
 
-int main() {
-  StandardPlayer StandardPlayer1;
-  StandardPlayer StandardPlayer2;
-  cout << "Start Game" << endl;
+int main(int argc, char *argv[]) {
+    // StandardPlayer StandardPlayer1;
+    // StandardPlayer StandardPlayer2;
+    // cout << "Start Game" << endl;
+    //
+    // Game game(&StandardPlayer1, &StandardPlayer2);
+    //
+    // game.run();
 
-  Game game(&StandardPlayer1, &StandardPlayer2);
+    AiModel model;
 
-  game.run();
-  return 0;
+    return 0;
 }

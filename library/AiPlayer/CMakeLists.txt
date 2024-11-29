@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 project(AiPlayer)
 
-add_library(AiPlayer STATIC src/AiPlayer.cpp src/TrainerAi.cpp)
+add_library(AiPlayer STATIC src/AiPlayer.cpp src/AiModel.cpp)
 
 target_link_libraries(AiPlayer TicTacToe)
 
