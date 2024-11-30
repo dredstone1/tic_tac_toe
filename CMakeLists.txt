@@ -10,4 +10,3 @@ add_subdirectory(library/StandardPlayer)
 add_subdirectory(library/AiPlayer)
 
 target_link_libraries(TicTacToeGame TicTacToe StandardPlayer AiPlayer)
-

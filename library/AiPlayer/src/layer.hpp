@@ -1,0 +1,25 @@
+#ifndef LAYER_HPP
+#define LAYER_HPP
+
+#include <vector>
+using namespace std;
+enum LayerType { INPUT, HIDDEN, OUTPUT };
+
+class Layer {
+  private:
+    LayerType _type;
+    void (*activation)(vector<double> &metrix);
+    vector<vector<double>> weights;
+    vector<double> dots;
+
+  public:
+    Layer(int size, int prev_size, LayerType type,
+          void (*activations)(vector<double> &metrix));
+    LayerType getType() { return _type; }
+    int getSize() { return dots.size(); }
+
+    void forward(vector<double> &metrix);
+    ~Layer() = default;
+};
+
+#endif // LAYER_HPP

@@ -1,7 +1,6 @@
 #include <AiPlayer/AiModel.hpp>
 #include <StandardPlayer/StandardPlayer.hpp>
 #include <TicTacToe/game.hpp>
-#include <iostream>
 
 using namespace TicTacToe;
 using namespace std;

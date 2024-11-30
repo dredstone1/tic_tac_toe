@@ -6,15 +6,15 @@
 
 namespace TicTacToe {
 class Game {
-public:
-  Game(Player *playerX_, Player *playerO_);
-  void run();
-  PlayerAdapter playerO;
-  PlayerAdapter playerX;
-  ~Game() = default;
+  public:
+    Game(Player *playerX_, Player *playerO_);
+    void run();
+    PlayerAdapter playerO;
+    PlayerAdapter playerX;
+    ~Game() = default;
 
-private:
-  Board board;
+  private:
+    Board board;
 };
 } // namespace TicTacToe
 

@@ -5,16 +5,16 @@ namespace TicTacToe {
 enum cell { X = 'X', O = 'O', EMPTY = ' ' };
 
 class BoardGrid {
-private:
-  cell board[3][3];
+  private:
+    cell board[3][3];
 
-public:
-  BoardGrid();
+  public:
+    BoardGrid();
 
-  BoardGrid(BoardGrid &other);
+    BoardGrid(BoardGrid &other);
 
-  cell getCell(int x, int y);
-  void setCell(int x, int y, cell c);
+    cell getCell(int x, int y);
+    void setCell(int x, int y, cell c);
 };
 } // namespace TicTacToe
 #endif
