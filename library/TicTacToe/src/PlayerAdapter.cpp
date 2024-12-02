@@ -12,10 +12,11 @@ int PlayerAdapter::getMove() { return player->getMove(); }
 
 int PlayerAdapter::getScore() { return player->getScore(); }
 
-void PlayerAdapter::SetPlayer(Player *player_, TicTacToe::cell mode) {
+void PlayerAdapter::SetPlayer(Player *player_, TicTacToe::cell mode, TicTacToe::Board *board) {
     this->player = player_;
     this->player->playerMode = mode;
     this->player->score = 0;
+    this->player->board = board;
 }
 
 Player *PlayerAdapter::GetPlayer() { return player; }

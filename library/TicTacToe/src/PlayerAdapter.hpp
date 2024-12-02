@@ -2,6 +2,7 @@
 #define playeradapter_hpp
 
 #include "../include/TicTacToe/Player.hpp"
+#include "Board.hpp"
 #include "IPlayer.hpp"
 
 class PlayerAdapter : public IPlayer {
@@ -10,7 +11,7 @@ class PlayerAdapter : public IPlayer {
 
   public:
     PlayerAdapter(TicTacToe::cell mode);
-    void SetPlayer(Player *player_, TicTacToe::cell mode);
+    void SetPlayer(Player *player_, TicTacToe::cell mode, TicTacToe::Board *board);
     Player *GetPlayer();
     int getScore() override;
     void updateScore(int score);

@@ -1,8 +1,18 @@
 #ifndef AIPLAYER_HPP
 #define AIPLAYER_HPP
+#include "AiModel.hpp"
 #include <TicTacToe/Player.hpp>
 
+#define CELL_VALUE_X 1
+#define CELL_VALUE_O 0
+#define CELL_VALUE_EMPTY 0.5
+
 class AiPlayer : public Player {
+  private:
+    AiModel model;
+    double getBoardCellValue(int dot);
+    vector<double> getBoardVector();
+
   public:
     AiPlayer();
     int getMove() override;

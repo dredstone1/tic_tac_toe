@@ -13,6 +13,8 @@ class model {
     model(int input_size, int output_size, int hidden_layers_size,
           int hidden_layers_count);
     ~model() = default;
+    int run_model(vector<double> &input);
+    vector<double> getOutput() { return this->layers[this->layers.size()-1].getDots(); }
 };
 
 #endif // MODEL_HPP

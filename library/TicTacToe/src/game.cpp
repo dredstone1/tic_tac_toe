@@ -8,29 +8,33 @@ namespace TicTacToe {
 
 Game::Game(Player *playerX_, Player *playerO_)
     : playerO(EMPTY), playerX(EMPTY) {
-    playerX.SetPlayer(playerX_, X);
-    playerO.SetPlayer(playerO_, O);
+    this->board = new Board();
+
+    playerX.SetPlayer(playerX_, X, this->board);
+    playerO.SetPlayer(playerO_, O, this->board);
 }
+
+Game::~Game() { delete this->board; }
 
 void Game::run() {
     cout << "Start Game loop" << endl;
-    Board b;
-    b.draw();
+    this->board->draw();
     PlayerAdapter *currentPlayer = &playerX;
 
-    while (b.GetBoardState() == Continue) {
+    while (this->board->GetBoardState() == Continue) {
         int move = currentPlayer->getMove();
-        if (move < 0 || move > 8 || b.get(move / 3, move % 3) != EMPTY) {
-            cout << "Invalid move" << endl;
+        if (move < 0 || move > 8 ||
+            this->board->get(move / 3, move % 3) != EMPTY) {
+            cout << "Invalid move: << " << move << endl;
             continue;
         }
 
-        b.set(move / 3, move % 3, currentPlayer->getPlayerMode());
-        b.draw();
+        this->board->set(move / 3, move % 3, currentPlayer->getPlayerMode());
+        this->board->draw();
         currentPlayer = (currentPlayer == &playerX) ? &playerO : &playerX;
     }
 
-    switch (b.GetBoardState()) {
+    switch (this->board->GetBoardState()) {
     case WinX:
         playerX.updateScore(playerX.getScore() + 1);
         playerX.UserWin();

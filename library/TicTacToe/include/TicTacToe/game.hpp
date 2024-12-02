@@ -11,10 +11,10 @@ class Game {
     void run();
     PlayerAdapter playerO;
     PlayerAdapter playerX;
-    ~Game() = default;
+    ~Game();
 
   private:
-    Board board;
+    Board *board;
 };
 } // namespace TicTacToe
 

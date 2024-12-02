@@ -1,4 +1,5 @@
 #include <AiPlayer/AiModel.hpp>
+#include <AiPlayer/AiPlayer.hpp>
 #include <StandardPlayer/StandardPlayer.hpp>
 #include <TicTacToe/game.hpp>
 
@@ -14,7 +15,11 @@ int main(int argc, char *argv[]) {
     //
     // game.run();
 
-    AiModel model;
+    StandardPlayer player;
+    AiPlayer aiPlayer;
+    Game game(&player, &aiPlayer);
+
+    game.run();
 
     return 0;
 }
