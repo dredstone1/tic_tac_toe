@@ -2,6 +2,7 @@
 #define TRAINER_HPP
 
 class Trainer {
+  private:
   public:
     Trainer();
     int train();

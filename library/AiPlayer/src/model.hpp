@@ -14,7 +14,9 @@ class model {
           int hidden_layers_count);
     ~model() = default;
     int run_model(vector<double> &input);
-    vector<double> getOutput() { return this->layers[this->layers.size()-1].getDots(); }
+    vector<double> getOutput() {
+        return this->layers[this->layers.size() - 1].getDots();
+    }
 };
 
 #endif // MODEL_HPP
