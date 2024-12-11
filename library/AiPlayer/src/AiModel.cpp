@@ -1,53 +1,118 @@
 #include "../include/AiPlayer/AiModel.hpp"
+#include "layer.hpp"
 #include <algorithm>
+#include <cstring>
+#include <fstream>
+#include <iomanip>
 #include <iostream>
+#include <string.h>
+#include <string>
 #include <vector>
 
 void print(std::vector<double> a) {
-    std::cout << "The vector elements are : ";
-
     for (int i = 0; i < a.size(); i++) {
         std::cout << a[i] << ' ';
     }
 }
 
-AiModel::AiModel() { std::cout << "Creating AI Model" << std::endl; }
+AiModel::AiModel() {
+    this->_model = new model(9, 9, 15, 3,
+                             ActivationFunctions::ActivationFunctionType::RELU);
+}
 
-int AiModel::basic_setup() {
-    std::cout << "Setting up AI" << std::endl;
+AiModel::AiModel(string file_name) { this->load(file_name); }
 
-    if (this->_model != nullptr) {
+int AiModel::load(string file_name) {
+    int minus = 0;
+    int plus = 0;
+    ifstream file(file_name + ".model");
+
+    if (!file.is_open()) {
+        std::cout << "File not found" << std::endl;
+        return 1;
+    }
+
+    string line;
+    getline(file, line);
+    file.close();
+    char *line_ = &line[0];
+    int hidden_layers_count = atoi(strtok(line_, " ")) - 2;
+    ActivationFunctions::ActivationFunctionType activation =
+        (ActivationFunctions::ActivationFunctionType)atoi(
+            line_ = strtok(NULL, " "));
+    int input_size = atoi(strtok(NULL, " "));
+    int hidden_layers_size = atoi(strtok(NULL, " "));
+    int output_size = atoi(strtok(NULL, " "));
+
+    if (this->_model) {
         delete this->_model;
     }
-    this->_model = new model(9, 9, 36, 2);
+    this->_model = new model(input_size, output_size, hidden_layers_size,
+                             hidden_layers_count, activation);
 
+    for (int i = 0; i < this->_model->getLayerCount(); i++) {
+        if (this->_model->getLayer(i).getType() == LayerType::INPUT) {
+            continue;
+        }
+
+        for (int j = 0; j < this->_model->getLayer(i).getSize(); j++) {
+            for (int k = 0; k < this->_model->getLayer(i - 1).getSize(); k++) {
+                this->_model->getLayer(i).setWeight(j, k,
+                                                    atof(strtok(NULL, " ")));
+                std::cout << this->_model->getLayer(i).getWeight(j, k) << " ";
+                if (this->_model->getLayer(i).getWeight(j, k) < 0) {
+                    minus++;
+                } else {
+                    plus++;
+                }
+            }
+        }
+    }
+
+    std::cout << "Loaded model with " << minus << " negative weights and "
+              << plus << " positive weights" << std::endl;
     return 0;
 }
 
-int AiModel::load() {
-    std::cout << "Loading AI" << std::endl;
+int AiModel::save(string file_name) {
+    int minus = 0;
+    int plus = 0;
+    ofstream file(file_name + ".model");
+    file << std::fixed << std::setprecision(3) << this->_model->getLayerCount()
+         << " " << this->_model->getLayer(1).getActivation() << " "
+         << this->_model->getLayer(0).getSize() << " "
+         << this->_model->getLayer(1).getSize() << " "
+         << this->_model->getLayer(this->_model->getLayerCount() - 1).getSize()
+         << " ";
 
-    return 0;
-}
+    for (int i = 0; i < this->_model->getLayerCount(); i++) {
+        if (this->_model->getLayer(i).getType() == LayerType::INPUT) {
+            continue;
+        }
 
-AiModel::~AiModel() {
-    if (this->_model != nullptr) {
-        delete this->_model;
-        this->_model = nullptr;
+        for (int j = 0; j < this->_model->getLayer(i).getSize(); j++) {
+            for (int k = 0; k < this->_model->getLayer(i - 1).getSize(); k++) {
+                if (this->_model->getLayer(i).getWeight(j, k) < 0) {
+                    minus++;
+                } else {
+                    plus++;
+                }
+                file << this->_model->getLayer(i).getWeight(j, k) << " ";
+            }
+        }
     }
+    std::cout << "Saved model with " << minus << " negative weights and "
+              << plus << " positive weights" << std::endl;
+
+    file.close();
+    return 0;
 }
 
 int AiModel::run_model(std::vector<double> &input) {
-    std::cout << "Running AI" << std::endl;
-    this->_model->run_model(input);
-    return 0;
+    return this->_model->run_model(input);
 }
 
 int AiModel::getPrediction(std::vector<double> &input) {
-    // std::cout << "Output: ";
-    // print(this->_model->getOutput());
-    // std::cout << std::endl;
-
     int i, max = i = std::find(input.begin(), input.end(), 0.5) - input.begin();
     while (++i < input.size()) {
         if (this->_model->getOutput()[i] > this->_model->getOutput()[max] &&
@@ -57,3 +122,5 @@ int AiModel::getPrediction(std::vector<double> &input) {
     }
     return max;
 }
+
+AiModel::~AiModel() { delete this->_model; }

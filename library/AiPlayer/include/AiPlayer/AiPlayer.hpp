@@ -9,12 +9,13 @@
 
 class AiPlayer : public Player {
   private:
-    AiModel model;
+    AiModel *ai_model;
     double getBoardCellValue(int dot);
     vector<double> getBoardVector();
 
   public:
     AiPlayer();
+    AiPlayer(AiModel *ai_model);
     int getMove() override;
     ~AiPlayer() override = default;
     void UserLost() override;

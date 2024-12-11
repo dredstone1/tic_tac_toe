@@ -2,15 +2,17 @@
 #define AIMODEL_HPP
 
 #include "../src/model.hpp"
+#include <string>
 
 class AiModel {
-    private:
-        model *_model = nullptr;
+  private:
+    model *_model;
 
   public:
     AiModel();
-    int load();
-    int basic_setup();
+    AiModel(string file_name);
+    int load(string file_name);
+    int save(string file_name);
     int run_model(vector<double> &input);
     int getPrediction(vector<double> &input);
     ~AiModel();

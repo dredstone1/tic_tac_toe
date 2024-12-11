@@ -1,15 +1,12 @@
 #include "../include/AiPlayer/AiPlayer.hpp"
-#include <iostream>
 
 using namespace std;
 
-AiPlayer::AiPlayer() {
-    cout << "Creating AI Player" << endl;
-    model.basic_setup();
-}
+AiPlayer::AiPlayer() { this->ai_model = new AiModel(); }
+
+AiPlayer::AiPlayer(AiModel *ai_model) { this->ai_model = ai_model; }
 
 double AiPlayer::getBoardCellValue(int dot) {
-
     switch (getBoard(dot / 3, dot % 3)) {
     case TicTacToe::cell::X:
         return CELL_VALUE_X;
@@ -32,9 +29,8 @@ vector<double> AiPlayer::getBoardVector() {
 
 int AiPlayer::getMove() {
     vector<double> input = getBoardVector();
-    this->model.run_model(input);
-    return this->model.getPrediction(input);
-    // return 0;
+    this->ai_model->run_model(input);
+    return this->ai_model->getPrediction(input);
 }
 
 void AiPlayer::UserLost() {}

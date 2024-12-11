@@ -1,6 +1,7 @@
 #ifndef LAYER_HPP
 #define LAYER_HPP
 
+#include "ActivationFunctions.hpp"
 #include <vector>
 using namespace std;
 enum LayerType { INPUT, HIDDEN, OUTPUT };
@@ -8,19 +9,24 @@ enum LayerType { INPUT, HIDDEN, OUTPUT };
 class Layer {
   private:
     LayerType _type;
-    void (*activation)(vector<double> &metrix);
+    ActivationFunctions::ActivationFunction activation_function;
     vector<vector<double>> weights;
     vector<double> dots;
     double getRandWeights();
 
   public:
     Layer(int size, int prev_size, LayerType type,
-          void (*activations)(vector<double> &metrix));
+          ActivationFunctions::ActivationFunctionType activation);
     LayerType getType() { return _type; }
     int getSize() { return dots.size(); }
     vector<double> getDots() { return dots; }
     void forward(vector<double> metrix);
     ~Layer() = default;
+    double getWeight(int i, int j) { return weights[i][j]; }
+    void setWeight(int i, int j, double weight) { weights[i][j] = weight; }
+    ActivationFunctions::ActivationFunctionType getActivation() {
+        return activation_function.getType();
+    }
 };
 
 #endif // LAYER_HPP
