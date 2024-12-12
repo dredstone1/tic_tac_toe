@@ -51,7 +51,7 @@ void ActivationFunction::softmax(std::vector<double> &metrix) {
 
 void ActivationFunction::relu(vector<double> &metrix) {
     for (auto &layer : metrix) {
-        layer = std::max(layer * 0.1, layer);
+        layer = std::max(0.1*layer, layer);
     }
 }
 

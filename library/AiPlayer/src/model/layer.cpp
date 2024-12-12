@@ -1,9 +1,7 @@
 #include "layer.hpp"
 #include <cstdlib>
 #include <ctime>
-#include <iomanip>
 #include <iostream>
-#include <limits>
 #include <random>
 
 Layer::Layer(int size, int prev_size, LayerType type,
@@ -12,18 +10,35 @@ Layer::Layer(int size, int prev_size, LayerType type,
     this->_type = type;
     this->dots.resize(size);
     this->weights.resize(size, vector<double>(prev_size, 0.0));
+
     for (auto &neuron_weights : weights) {
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::normal_distribution<> dist(
+            0.0, std::sqrt(2.0 / (neuron_weights.size())));
         for (auto &weight : neuron_weights) {
-            weight = this->getRandWeights();
+            weight = dist(gen);
         }
     }
 }
 
-double Layer::getRandWeights() {
-    std::mt19937 generator(std::random_device{}());
-    std::uniform_int_distribution<int> distribution(-1000, 1000);
+void Layer::print_activations(const std::vector<double> &activations) {
+    double min_val = activations[0], max_val = activations[0], sum = 0.0;
+    for (double val : activations) {
+        min_val = std::min(min_val, val);
+        max_val = std::max(max_val, val);
+        sum += val;
+    }
+    double mean = sum / activations.size();
 
-    return distribution(generator) / 100.0;
+    double sq_sum = 0.0;
+    for (double val : activations) {
+        sq_sum += (val - mean) * (val - mean);
+    }
+    double std_dev = std::sqrt(sq_sum / activations.size());
+
+    std::cout << "Activations: Min=" << min_val << ", Max=" << max_val
+              << ", Mean=" << mean << ", StdDev=" << std_dev << std::endl;
 }
 
 void Layer::forward(vector<double> metrix) {
@@ -39,11 +54,5 @@ void Layer::forward(vector<double> metrix) {
     }
 
     this->activation_function.activate(this->dots);
-
-    std::cout << "Layer: " << this->_type << std::endl;
-    for (auto &dot : this->dots) {
-        cout << fixed << setprecision(numeric_limits<double>::max_digits10)
-             << dot << " ";
-    }
-    std::cout << std::endl;
+    print_activations(this->dots);
 }

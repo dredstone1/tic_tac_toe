@@ -13,6 +13,7 @@ class Layer {
     vector<vector<double>> weights;
     vector<double> dots;
     double getRandWeights();
+    static void print_activations(const std::vector<double> &activations);
 
   public:
     Layer(int size, int prev_size, LayerType type,

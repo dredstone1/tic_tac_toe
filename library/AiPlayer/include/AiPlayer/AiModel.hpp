@@ -1,7 +1,7 @@
 #ifndef AIMODEL_HPP
 #define AIMODEL_HPP
 
-#include "../src/model.hpp"
+#include "../src/model/model.hpp"
 #include <string>
 
 class AiModel {

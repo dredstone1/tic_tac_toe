@@ -4,12 +4,12 @@ project(AiPlayer)
 add_library(
   AiPlayer STATIC
   src/AiPlayer.cpp
-  src/AiModel.cpp
-  src/layer.cpp
-  src/model.cpp
+  src/model/AiModel.cpp
+  src/model/layer.cpp
+  src/model/model.cpp
   src/trainer/trainer.cpp
   src/trainer/database/dataBase.cpp
-  src/ActivationFunctions.cpp)
+  src/model/ActivationFunctions.cpp)
 
 target_link_libraries(AiPlayer TicTacToe)
 

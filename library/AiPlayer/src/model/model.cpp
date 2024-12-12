@@ -1,5 +1,5 @@
-#include "ActivationFunctions.hpp"
 #include "model.hpp"
+#include "ActivationFunctions.hpp"
 #include <cmath>
 #include <vector>
 
