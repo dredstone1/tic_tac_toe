@@ -148,13 +148,13 @@ def calculate_probabilities(boards):
 def get_string_list(list):
     string = ""
     for i in list:
-        string += str(i) + "|"
+        string += " " + str(i)
     return string
 
 def get_string_file(boards, probabilities):
-    string = ""
+    string = str(len(boards))
     for i in range(len(boards)):
-        string += get_string_list(boards[i]) + "_" + get_string_list(probabilities[i]) + "-"
+        string += get_string_list(boards[i]) + get_string_list(probabilities[i])
     return string
 
 

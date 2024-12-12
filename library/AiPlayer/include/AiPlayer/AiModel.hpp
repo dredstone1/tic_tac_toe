@@ -7,6 +7,7 @@
 class AiModel {
   private:
     model *_model;
+    friend class BackPropagation;
 
   public:
     AiModel();

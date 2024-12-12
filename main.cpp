@@ -2,6 +2,7 @@
 #include <AiPlayer/AiPlayer.hpp>
 #include <StandardPlayer/StandardPlayer.hpp>
 #include <TicTacToe/game.hpp>
+#include <Trainer/trainer.hpp>
 #include <iostream>
 #include <string>
 
@@ -27,6 +28,10 @@ int main(int argc, char *argv[]) {
     if (argc > 1 && argv[1][0] == 'l') {
         model.load(string("model1"));
     } else if (argc > 1 && argv[1][0] == 's') {
+        model.save(string("model1"));
+    } else if (argc > 1 && argv[1][0] == 't') {
+        Trainer trainer("database", &model);
+        trainer.train();
         model.save(string("model1"));
     }
     Game game(&StandardPlayer1, &aiPlayer);

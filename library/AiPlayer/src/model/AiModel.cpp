@@ -23,8 +23,6 @@ AiModel::AiModel() {
 AiModel::AiModel(string file_name) { this->load(file_name); }
 
 int AiModel::load(string file_name) {
-    int minus = 0;
-    int plus = 0;
     ifstream file(file_name + ".model");
 
     if (!file.is_open()) {
@@ -59,24 +57,14 @@ int AiModel::load(string file_name) {
             for (int k = 0; k < this->_model->getLayer(i - 1).getSize(); k++) {
                 this->_model->getLayer(i).setWeight(j, k,
                                                     atof(strtok(NULL, " ")));
-                std::cout << this->_model->getLayer(i).getWeight(j, k) << " ";
-                if (this->_model->getLayer(i).getWeight(j, k) < 0) {
-                    minus++;
-                } else {
-                    plus++;
-                }
             }
         }
     }
 
-    std::cout << "Loaded model with " << minus << " negative weights and "
-              << plus << " positive weights" << std::endl;
     return 0;
 }
 
 int AiModel::save(string file_name) {
-    int minus = 0;
-    int plus = 0;
     ofstream file(file_name + ".model");
     file << std::fixed << std::setprecision(3) << this->_model->getLayerCount()
          << " " << this->_model->getLayer(1).getActivation() << " "
@@ -92,17 +80,10 @@ int AiModel::save(string file_name) {
 
         for (int j = 0; j < this->_model->getLayer(i).getSize(); j++) {
             for (int k = 0; k < this->_model->getLayer(i - 1).getSize(); k++) {
-                if (this->_model->getLayer(i).getWeight(j, k) < 0) {
-                    minus++;
-                } else {
-                    plus++;
-                }
                 file << this->_model->getLayer(i).getWeight(j, k) << " ";
             }
         }
     }
-    std::cout << "Saved model with " << minus << " negative weights and "
-              << plus << " positive weights" << std::endl;
 
     file.close();
     return 0;
