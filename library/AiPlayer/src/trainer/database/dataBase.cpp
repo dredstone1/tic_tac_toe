@@ -2,6 +2,7 @@
 #include <cstring>
 #include <fstream>
 #include <iostream>
+#include <ostream>
 #include <string>
 
 DataBase::DataBase(string file_name) {
@@ -36,11 +37,9 @@ int DataBase::load(string file_name) {
     return 0;
 }
 
-TrainBoard DataBase::get_next_board() {
-    if (train_boards.size() > current_board) {
-        return train_boards.at(this->current_board++);
+TrainBoard &DataBase::get_next_board() {
+    if (train_boards.size() <= current_board) {
+        current_board = 0;
     }
-
-    return TrainBoard();
+    return (train_boards.at(this->current_board++));
 }
-

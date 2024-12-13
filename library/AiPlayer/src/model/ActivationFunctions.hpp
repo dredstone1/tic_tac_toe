@@ -1,6 +1,7 @@
 #ifndef ACTIVATIONFUNCTIONS_HPP
 #define ACTIVATIONFUNCTIONS_HPP
 
+#include "neuron.hpp"
 #include <cmath>
 #include <vector>
 
@@ -16,16 +17,18 @@ enum ActivationFunctionType {
 class ActivationFunction {
   private:
     ActivationFunctionType type;
-    static void softmax(vector<double> &metrix);
-    static void relu(vector<double> &metrix);
-    static void none(vector<double> &metrix);
-    static double max_vector(vector<double> &metrix);
-      
+
+    static void softmax(vector<neuron> &metrix);
+    static void relu(vector<neuron> &metrix);
+    static void none(vector<neuron> &metrix);
+    static double max_vector(vector<neuron> &metrix);
 
   public:
     ActivationFunction(ActivationFunctionType type_);
     ~ActivationFunction() = default;
-    void activate(vector<double> &metrix);
+    void activate(vector<neuron> &metrix);
+    static void derivitaive_softmax(vector<neuron> &metrix);
+    static void derivitaive_relu(vector<neuron> &metrix);
     ActivationFunctionType getType() { return this->type; };
 };
 }; // namespace ActivationFunctions

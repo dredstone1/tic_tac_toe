@@ -9,7 +9,9 @@ add_library(
   src/model/model.cpp
   src/trainer/trainer.cpp
   src/trainer/database/dataBase.cpp
-  src/model/ActivationFunctions.cpp)
+  src/model/ActivationFunctions.cpp
+  src/trainer/backPropagation.cpp
+  src/model/neuron.cpp)
 
 target_link_libraries(AiPlayer TicTacToe)
 

@@ -6,17 +6,15 @@
 
 class BackPropagation {
   private:
-    TrainBoard &train_board;
     AiModel &model;
     double learning_rate;
-    vector<vector<double>> delta_weights;
-    vector<double> cost_derivative(vector<double> &output,
-                                   vector<double> &target);
+    Gradient gradients;
+    void resetGradients();
 
   public:
-    BackPropagation(AiModel &model, double learning_rate,
-                    TrainBoard &train_board);
-    void run_back_propagation();
+    BackPropagation(AiModel &model, double learning_rate);
+    void run_back_propagation(vector<TrainBoard> &boards);
+    void update_weights(int bash_size);
     ~BackPropagation() = default;
 };
 

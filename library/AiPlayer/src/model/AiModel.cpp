@@ -16,7 +16,7 @@ void print(std::vector<double> a) {
 }
 
 AiModel::AiModel() {
-    this->_model = new model(9, 9, 15, 3,
+    this->_model = new model(9, 9, 33, 3,
                              ActivationFunctions::ActivationFunctionType::RELU);
 }
 
@@ -101,6 +101,18 @@ int AiModel::getPrediction(std::vector<double> &input) {
             max = i;
         }
     }
+
+    int best = 0;
+    for (int i = 0; i < 9; i++) {
+        if (this->_model->getOutput()[i] > this->_model->getOutput()[best]) {
+            best = i;
+        }
+    }
+
+    if (input[best] == 0.5) {
+        std::cout << "error" << std::endl;
+    }
+
     return max;
 }
 

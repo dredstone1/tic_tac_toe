@@ -18,8 +18,9 @@ class DataBase {
 
   public:
     DataBase(string file_name);
-    TrainBoard get_next_board();
+    TrainBoard& get_next_board();
     ~DataBase() = default;
+    int get_train_boards_count() { return this->train_boards.size(); }
 };
 
 #endif // DATABASE_HPP

@@ -22,18 +22,18 @@ Layer::Layer(int size, int prev_size, LayerType type,
     }
 }
 
-void Layer::print_activations(const std::vector<double> &activations) {
-    double min_val = activations[0], max_val = activations[0], sum = 0.0;
-    for (double val : activations) {
-        min_val = std::min(min_val, val);
-        max_val = std::max(max_val, val);
-        sum += val;
+void Layer::print_activations(const std::vector<neuron> &activations) {
+    double min_val = activations[0].out, max_val = activations[0].out, sum = 0.0;
+    for (auto val : activations) {
+        min_val = std::min(min_val, val.out);
+        max_val = std::max(max_val, val.out);
+        sum += val.out;
     }
     double mean = sum / activations.size();
 
     double sq_sum = 0.0;
-    for (double val : activations) {
-        sq_sum += (val - mean) * (val - mean);
+    for (auto val : activations) {
+        sq_sum += (val.out - mean) * (val.out - mean);
     }
     double std_dev = std::sqrt(sq_sum / activations.size());
 
@@ -41,18 +41,18 @@ void Layer::print_activations(const std::vector<double> &activations) {
               << ", Mean=" << mean << ", StdDev=" << std_dev << std::endl;
 }
 
-void Layer::forward(vector<double> metrix) {
+void Layer::forward(vector<neuron> metrix) {
     if (this->_type == LayerType::INPUT) {
         this->dots = metrix;
     } else {
         for (size_t i = 0; i < this->dots.size(); ++i) {
-            this->dots[i] = 0.0;
+            this->dots[i].net = 0.0;
             for (size_t j = 0; j < metrix.size(); ++j) {
-                this->dots[i] += this->weights[i][j] * metrix[j];
+                this->dots[i].out = this->dots[i].net += this->weights[i][j] * metrix[j].out;
             }
         }
     }
 
     this->activation_function.activate(this->dots);
-    print_activations(this->dots);
+    // print_activations(this->dots);
 }

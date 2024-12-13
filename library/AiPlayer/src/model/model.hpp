@@ -1,9 +1,12 @@
 #ifndef MODEL_HPP
 #define MODEL_HPP
 
+#include "../trainer/database/dataBase.hpp"
 #include "layer.hpp"
 
 #define FIX_LAYER_COUNT 2
+
+typedef vector<vector<vector<double>>> Gradient;
 
 class model {
   private:
@@ -15,12 +18,11 @@ class model {
           ActivationFunctions::ActivationFunctionType activations);
     ~model() = default;
     int run_model(vector<double> &input);
-    vector<double> getOutput() {
-        return this->layers.at(this->layers.size() - 1).getDots();
-    }
+    vector<double> getOutput();
+    void BackPropagate(TrainBoard &target, Gradient &gradient);
     void reset();
     int getLayerCount() { return this->layers.size(); }
-    Layer& getLayer(int i) { return this->layers.at(i); }
+    Layer &getLayer(int i) { return this->layers.at(i); }
 };
 
 #endif // MODEL_HPP
