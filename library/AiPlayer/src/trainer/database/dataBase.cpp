@@ -4,6 +4,9 @@
 #include <iostream>
 #include <ostream>
 #include <string>
+#include <vector>
+#include <algorithm>
+#include <random>
 
 DataBase::DataBase(string file_name) {
     this->current_board = 0;
@@ -40,6 +43,13 @@ int DataBase::load(string file_name) {
 TrainBoard &DataBase::get_next_board() {
     if (train_boards.size() <= current_board) {
         current_board = 0;
+        shuffle();
     }
-    return (train_boards.at(this->current_board++));
+    return train_boards.at(this->current_board++);
+}
+
+void DataBase::shuffle() {
+    std::random_device rd;
+    std::default_random_engine rng(rd());
+    std::shuffle(this->train_boards.begin(), this->train_boards.end(), rng);
 }

@@ -11,11 +11,13 @@ class Trainer {
     DataBase dataBase;
     AiModel *model;
     BackPropagation backPropagation;
-      
+    int batch_size;
+    int batch_count;
+
   public:
-    Trainer(string file_name, AiModel *model);
+    Trainer(string file_name, AiModel *model, int batch_size, int batch_count,
+            double learning_rate);
     int train();
-    int load();
     ~Trainer() = default;
 };
 

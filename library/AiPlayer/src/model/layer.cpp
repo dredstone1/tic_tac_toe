@@ -23,7 +23,8 @@ Layer::Layer(int size, int prev_size, LayerType type,
 }
 
 void Layer::print_activations(const std::vector<neuron> &activations) {
-    double min_val = activations[0].out, max_val = activations[0].out, sum = 0.0;
+    double min_val = activations[0].out, max_val = activations[0].out,
+           sum = 0.0;
     for (auto val : activations) {
         min_val = std::min(min_val, val.out);
         max_val = std::max(max_val, val.out);
@@ -45,10 +46,11 @@ void Layer::forward(vector<neuron> metrix) {
     if (this->_type == LayerType::INPUT) {
         this->dots = metrix;
     } else {
-        for (size_t i = 0; i < this->dots.size(); ++i) {
+        for (int i = 0; i < this->dots.size(); ++i) {
             this->dots[i].net = 0.0;
-            for (size_t j = 0; j < metrix.size(); ++j) {
-                this->dots[i].out = this->dots[i].net += this->weights[i][j] * metrix[j].out;
+            for (int j = 0; j < metrix.size(); ++j) {
+                this->dots[i].out = this->dots[i].net +=
+                    this->weights[i][j] * metrix[j].out;
             }
         }
     }
@@ -56,3 +58,24 @@ void Layer::forward(vector<neuron> metrix) {
     this->activation_function.activate(this->dots);
     // print_activations(this->dots);
 }
+
+vector<double> Layer::getNet() {
+    vector<double> net;
+    for (auto &dot : this->dots) {
+        net.push_back(dot.net);
+    }
+    return net;
+}
+
+vector<double> Layer::getOut() {
+    vector<double> out;
+    for (auto &dot : this->dots) {
+        out.push_back(dot.out);
+    }
+    return out;
+}
+
+ActivationFunctions::ActivationFunctionType Layer::getActivation() {
+    return activation_function.getType();
+}
+

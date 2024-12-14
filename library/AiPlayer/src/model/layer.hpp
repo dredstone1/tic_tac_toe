@@ -20,14 +20,13 @@ class Layer {
     Layer(int size, int prev_size, LayerType type,
           ActivationFunctions::ActivationFunctionType activation);
     LayerType getType() { return _type; }
-    int getSize() { return dots.size(); }
     vector<neuron> getDots() { return dots; }
     void forward(vector<neuron> metrix);
     double getWeight(int i, int j) { return weights[i][j]; }
     void setWeight(int i, int j, double weight) { weights[i][j] = weight; }
-    ActivationFunctions::ActivationFunctionType getActivation() {
-        return activation_function.getType();
-    }
+    ActivationFunctions::ActivationFunctionType getActivation();
+    vector<double> getNet();
+    vector<double> getOut();
     ~Layer() = default;
 };
 

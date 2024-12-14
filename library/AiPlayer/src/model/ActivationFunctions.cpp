@@ -4,7 +4,6 @@
 #include <vector>
 
 namespace ActivationFunctions {
-
 double ActivationFunction::max_vector(vector<neuron> &metrix) {
     double max = metrix[0].net;
 
@@ -26,8 +25,8 @@ void ActivationFunction::activate(vector<neuron> &metrix) {
     case ActivationFunctionType::SOFTMAX:
         softmax(metrix);
         break;
-    case ActivationFunctionType::RELU:
-        relu(metrix);
+    case ActivationFunctionType::RELU_LEAKY:
+        relu_leaky(metrix);
         break;
     case ActivationFunctionType::NONE:
         none(metrix);
@@ -49,38 +48,39 @@ void ActivationFunction::softmax(std::vector<neuron> &metrix) {
     }
 }
 
-void ActivationFunction::relu(vector<neuron> &metrix) {
+void ActivationFunction::relu_leaky(vector<neuron> &metrix) {
     for (auto &layer : metrix) {
-        layer.out = std::max(0.1 * layer.net, layer.net);
+        layer.out = std::max(RELU_LEAKY_ALPHA * layer.net, layer.net);
     }
 }
 
-void ActivationFunction::derivitaive_softmax(vector<neuron> &metrix) {
-    // 1. Calculate the Softmax of the input vector
-    std::vector<double> softmax_output(metrix.size());
-    double sum_exp = 0.0;
+void ActivationFunction::derivitaive_softmax(vector<double> &metrix) {
+    int size = metrix.size();
 
-    for (size_t i = 0; i < metrix.size(); ++i) {
-        softmax_output[i] = std::exp(metrix[i].net);
-        sum_exp += softmax_output[i];
+    std::vector<double> activations(size);
+    double sum = 0.0;
+    for (int i = 0; i < size; ++i) {
+        activations[i] = std::exp(metrix[i]);
+        sum += activations[i];
+    }
+    for (int i = 0; i < size; ++i) {
+        metrix[i] = activations[i] / sum;
     }
 
-    for (size_t i = 0; i < metrix.size(); ++i) {
-        softmax_output[i] /= sum_exp;
-    }
-
-    for (size_t i = 0; i < metrix.size(); ++i) {
-        for (size_t j = 0; j < metrix.size(); ++j) {
-            metrix[i].net = (i == j)
-                                ? softmax_output[i] * (1 - softmax_output[i])
-                                : -softmax_output[i] * softmax_output[j];
+    for (int i = 0; i < size; ++i) {
+        for (int j = 0; j < size; ++j) {
+            if (i == j) {
+                metrix[i] = metrix[i] * (1 - metrix[i]);
+            } else {
+                metrix[i] = -metrix[i] * metrix[j];
+            }
         }
     }
 }
 
-void ActivationFunction::derivitaive_relu(vector<neuron> &metrix) {
+void ActivationFunction::derivitaive_relu_leaky(vector<double> &metrix) {
     for (size_t i = 0; i < metrix.size(); ++i) {
-        metrix[i].net = (metrix[i].net > 0) ? 1.0 : 0.1;
+        metrix[i] = (metrix[i] > 0) ? 1.0 : RELU_LEAKY_ALPHA;
     }
 }
 

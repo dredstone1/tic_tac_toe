@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
     } else if (argc > 1 && argv[1][0] == 's') {
         model.save(string("model1"));
     } else if (argc > 1 && argv[1][0] == 't') {
-        Trainer trainer("database", &model);
+        Trainer trainer("database", &model, 100, 100, 0.1);
         trainer.train();
         model.save(string("model1"));
     }

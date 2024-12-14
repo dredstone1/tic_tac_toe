@@ -1,7 +1,6 @@
 #ifndef MODEL_HPP
 #define MODEL_HPP
 
-#include "../trainer/database/dataBase.hpp"
 #include "layer.hpp"
 
 #define FIX_LAYER_COUNT 2
@@ -19,7 +18,6 @@ class model {
     ~model() = default;
     int run_model(vector<double> &input);
     vector<double> getOutput();
-    void BackPropagate(TrainBoard &target, Gradient &gradient);
     void reset();
     int getLayerCount() { return this->layers.size(); }
     Layer &getLayer(int i) { return this->layers.at(i); }

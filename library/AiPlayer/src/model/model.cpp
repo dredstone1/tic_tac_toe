@@ -3,7 +3,6 @@
 #include "model.hpp"
 #include "neuron.hpp"
 #include <cmath>
-#include <iostream>
 #include <vector>
 
 model::model(int input_size, int output_size, int hidden_layers_size,
@@ -16,7 +15,7 @@ model::model(int input_size, int output_size, int hidden_layers_size,
 
     for (int i = 1; i < hidden_layers_count + 1; i++) {
         this->layers.emplace_back(Layer(hidden_layers_size,
-                                        this->layers.at(i - 1).getSize(),
+                                        this->layers.at(i - 1).getDots().size(),
                                         LayerType::HIDDEN, activations));
     }
 
@@ -43,48 +42,14 @@ int model::run_model(vector<double> &input) {
     return 0;
 }
 
-void model::BackPropagate(TrainBoard &target, Gradient &gradient) {
-    for (int layer_index = this->layers.size() - 1; layer_index >= 0;
-         layer_index--) {
-        if (this->layers[layer_index].getType() == OUTPUT) {
-            vector<neuron> derivative = this->layers[layer_index].getDots();
-            ActivationFunctions::ActivationFunction::derivitaive_softmax(
-                derivative);
-
-            for (int dot_index = 0;
-                 dot_index < this->layers[layer_index].getDots().size() - 1;
-                 dot_index++) {
-                double delta =
-                    (this->layers[layer_index].getDots()[dot_index].out -
-                     target.prediction_target[dot_index]) *
-                    derivative[dot_index].out;
-                for (int last_dot_index = 0;
-                     last_dot_index <
-                     this->layers[layer_index - 1].getDots().size();
-                     last_dot_index++) {
-                    gradient[layer_index][dot_index][last_dot_index] +=
-                        delta * this->layers[layer_index - 1]
-                                    .getDots()[last_dot_index]
-                                    .out;
-                }
-            }
-        } else if (this->layers[layer_index].getType() == HIDDEN) {
-        }
-    }
-}
-
 void model::reset() {
     for (auto &layer : this->layers) {
         for (auto &dot : layer.getDots()) {
-            dot.out = dot.out = 0.0;
+            dot.out = dot.net = 0.0;
         }
     }
 }
 
 vector<double> model::getOutput() {
-    vector<double> output;
-    for (auto &dot : this->layers[this->layers.size() - 1].getDots()) {
-        output.push_back(dot.out);
-    }
-    return output;
+    return this->layers[this->layers.size() - 1].getOut();
 }

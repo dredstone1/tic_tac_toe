@@ -15,6 +15,7 @@ class DataBase {
     vector<TrainBoard> train_boards;
     int current_board;
     int load(string file_name);
+    void shuffle();
 
   public:
     DataBase(string file_name);

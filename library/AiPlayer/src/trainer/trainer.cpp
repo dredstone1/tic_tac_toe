@@ -4,11 +4,11 @@
 
 int Trainer::train() {
     std::cout << "Training AI" << std::endl;
-    int loop_sum = 5 * this->dataBase.get_train_boards_count() / 5;
-    for (int loop_index = 0; loop_index < loop_sum; loop_index++) {
+
+    for (int loop_index = 0; loop_index < this->batch_count; loop_index++) {
         vector<TrainBoard> boards;
-        boards.resize(5);
-        for (int i = 0; i < 5; i++) {
+        boards.resize(this->batch_size);
+        for (int i = 0; i < this->batch_size; i++) {
             boards[i] = this->dataBase.get_next_board();
         }
 
@@ -17,8 +17,11 @@ int Trainer::train() {
     return 0;
 }
 
-Trainer::Trainer(string file_name, AiModel *_model)
-    : dataBase(file_name), backPropagation(*_model, 0.1) {
+Trainer::Trainer(string file_name, AiModel *_model, int batch_size,
+                 int batch_count, double learning_rate)
+    : dataBase(file_name), backPropagation(*_model, learning_rate) {
     this->file_name = file_name;
     this->model = _model;
+    this->batch_size = batch_size;
+    this->batch_count = batch_count;
 }
