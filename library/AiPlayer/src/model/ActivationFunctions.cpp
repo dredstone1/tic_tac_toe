@@ -34,12 +34,12 @@ void ActivationFunction::activate(vector<neuron> &metrix) {
     }
 }
 
-void ActivationFunction::softmax(std::vector<neuron> &metrix) {
+void ActivationFunction::softmax(vector<neuron> &metrix) {
     double max = max_vector(metrix);
     double sum = 0.0;
 
     for (auto &value : metrix) {
-        value.out = std::exp(value.net - max);
+        value.out = exp(value.net - max);
         sum += value.out;
     }
 
@@ -50,17 +50,17 @@ void ActivationFunction::softmax(std::vector<neuron> &metrix) {
 
 void ActivationFunction::relu_leaky(vector<neuron> &metrix) {
     for (auto &layer : metrix) {
-        layer.out = std::max(RELU_LEAKY_ALPHA * layer.net, layer.net);
+        layer.out = max(RELU_LEAKY_ALPHA * layer.net, layer.net);
     }
 }
 
 void ActivationFunction::derivitaive_softmax(vector<double> &metrix) {
     int size = metrix.size();
 
-    std::vector<double> activations(size);
+    vector<double> activations(size);
     double sum = 0.0;
     for (int i = 0; i < size; ++i) {
-        activations[i] = std::exp(metrix[i]);
+        activations[i] = exp(metrix[i]);
         sum += activations[i];
     }
     for (int i = 0; i < size; ++i) {

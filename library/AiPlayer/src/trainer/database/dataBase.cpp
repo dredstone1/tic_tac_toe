@@ -16,7 +16,7 @@ DataBase::DataBase(string file_name) {
 int DataBase::load(string file_name) {
     ifstream file(file_name + ".txt");
     if (!file.is_open()) {
-        std::cout << "File not found" << std::endl;
+        cout << "File not found" << endl;
         return 1;
     }
 
@@ -49,7 +49,7 @@ TrainBoard &DataBase::get_next_board() {
 }
 
 void DataBase::shuffle() {
-    std::random_device rd;
-    std::default_random_engine rng(rd());
+    random_device rd;
+    default_random_engine rng(rd());
     std::shuffle(this->train_boards.begin(), this->train_boards.end(), rng);
 }

@@ -3,7 +3,7 @@
 #include <iostream>
 
 int Trainer::train() {
-    std::cout << "Training AI" << std::endl;
+    cout << "Training AI" << endl;
 
     for (int loop_index = 0; loop_index < this->batch_count; loop_index++) {
         vector<TrainBoard> boards;

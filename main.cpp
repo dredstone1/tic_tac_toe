@@ -21,21 +21,29 @@ int main(int argc, char *argv[]) {
         return 0;
     }
 
-    std::cout << "AI Game" << std::endl;
+    cout << "AI Game" << endl;
 
-    AiModel model;
-    AiPlayer aiPlayer(&model);
+    AiModel *model = NULL;
     if (argc > 1 && argv[1][0] == 'l') {
-        model.load(string("model1"));
+        model = new AiModel("model1");
     } else if (argc > 1 && argv[1][0] == 's') {
-        model.save(string("model1"));
+        model = new AiModel();
+        model->save("model1");
     } else if (argc > 1 && argv[1][0] == 't') {
-        Trainer trainer("database", &model, 100, 100, 0.1);
+        model = new AiModel();
+        Trainer trainer("database", model, 3, 3000, 0.5);
         trainer.train();
-        model.save(string("model1"));
+        model->save("model1");
     }
+
+    if (model == NULL) {
+        model = new AiModel();
+    }
+       
+    AiPlayer aiPlayer(model);
     Game game(&StandardPlayer1, &aiPlayer);
     game.run();
+    delete model;
 
     return 0;
 }

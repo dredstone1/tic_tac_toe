@@ -8,9 +8,9 @@
 #include <string>
 #include <vector>
 
-void print(std::vector<double> a) {
+void print(vector<double> a) {
     for (int i = 0; i < a.size(); i++) {
-        std::cout << a[i] << ' ';
+        cout << a[i] << ' ';
     }
 }
 
@@ -25,7 +25,7 @@ int AiModel::load(string file_name) {
     ifstream file(file_name + ".model");
 
     if (!file.is_open()) {
-        std::cout << "File not found" << std::endl;
+        cout << "File not found" << endl;
         return 1;
     }
 
@@ -66,7 +66,7 @@ int AiModel::load(string file_name) {
 
 int AiModel::save(string file_name) {
     ofstream file(file_name + ".model");
-    file << std::fixed << std::setprecision(3) << this->_model->getLayerCount()
+    file << fixed << setprecision(3) << this->_model->getLayerCount()
          << " " << this->_model->getLayer(1).getActivation() << " "
          << this->_model->getLayer(0).getDots().size() << " "
          << this->_model->getLayer(1).getDots().size() << " "
@@ -92,11 +92,11 @@ int AiModel::save(string file_name) {
     return 0;
 }
 
-int AiModel::run_model(std::vector<double> &input) {
+int AiModel::run_model(vector<double> &input) {
     return this->_model->run_model(input);
 }
 
-int AiModel::getPrediction(std::vector<double> &input) {
+int AiModel::getPrediction(vector<double> &input) {
     int max1 = 0, max = 0;
     for (int i = 0; i < 9; i++) {
         if (this->_model->getOutput()[max1] < this->_model->getOutput()[i]) {
@@ -105,8 +105,8 @@ int AiModel::getPrediction(std::vector<double> &input) {
     }
 
     if (input[max1] != 0.5) {
-        std::cout << "error 1: " << this->_model->getOutput()[max1]
-                  << std::endl;
+        cout << "error 1: " << this->_model->getOutput()[max1]
+                  << endl;
     }
 
     while (input[max1] != 0.5) {

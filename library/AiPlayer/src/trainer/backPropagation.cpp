@@ -53,7 +53,7 @@ void BackPropagation::run_back_propagation(vector<TrainBoard> &boards) {
         run_back_propagation(train_board);
     }
     error /= boards.size();
-    std::cout << error << std::endl;
+    cout << error << endl;
     this->update_weights(boards.size());
 }
 
@@ -70,12 +70,12 @@ void BackPropagation::update_weights(int bash_size) {
                  weight_index++) {
                 this->model._model->getLayer(layer_index)
                     .setWeight(dot_index, weight_index,
-                               1 * (this->model._model->getLayer(layer_index)
-                                        .getWeight(dot_index, weight_index) -
-                                    this->learning_rate *
-                                        this->gradients[layer_index][dot_index]
-                                                       [weight_index] /
-                                        bash_size));
+                               this->model._model->getLayer(layer_index)
+                                       .getWeight(dot_index, weight_index) -
+                                   this->learning_rate *
+                                       this->gradients[layer_index][dot_index]
+                                                      [weight_index] /
+                                       bash_size);
             }
         }
     }

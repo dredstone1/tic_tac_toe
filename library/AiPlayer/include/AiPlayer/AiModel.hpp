@@ -12,6 +12,7 @@ class AiModel {
   public:
     AiModel();
     AiModel(string file_name);
+
     int load(string file_name);
     int save(string file_name);
     int run_model(vector<double> &input);

@@ -12,22 +12,22 @@ Layer::Layer(int size, int prev_size, LayerType type,
     this->weights.resize(size, vector<double>(prev_size, 0.0));
 
     for (auto &neuron_weights : weights) {
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::normal_distribution<> dist(
-            0.0, std::sqrt(2.0 / (neuron_weights.size())));
+        random_device rd;
+        mt19937 gen(rd());
+        normal_distribution<> dist(
+            0.0, sqrt(2.0 / (neuron_weights.size())));
         for (auto &weight : neuron_weights) {
             weight = dist(gen);
         }
     }
 }
 
-void Layer::print_activations(const std::vector<neuron> &activations) {
+void Layer::print_activations(const vector<neuron> &activations) {
     double min_val = activations[0].out, max_val = activations[0].out,
            sum = 0.0;
     for (auto val : activations) {
-        min_val = std::min(min_val, val.out);
-        max_val = std::max(max_val, val.out);
+        min_val = min(min_val, val.out);
+        max_val = max(max_val, val.out);
         sum += val.out;
     }
     double mean = sum / activations.size();
@@ -36,10 +36,10 @@ void Layer::print_activations(const std::vector<neuron> &activations) {
     for (auto val : activations) {
         sq_sum += (val.out - mean) * (val.out - mean);
     }
-    double std_dev = std::sqrt(sq_sum / activations.size());
+    double std_dev = sqrt(sq_sum / activations.size());
 
-    std::cout << "Activations: Min=" << min_val << ", Max=" << max_val
-              << ", Mean=" << mean << ", StdDev=" << std_dev << std::endl;
+    cout << "Activations: Min=" << min_val << ", Max=" << max_val
+              << ", Mean=" << mean << ", StdDev=" << std_dev << endl;
 }
 
 void Layer::forward(vector<neuron> metrix) {

@@ -4,7 +4,9 @@
 #include "ActivationFunctions.hpp"
 #include "neuron.hpp"
 #include <vector>
+
 using namespace std;
+
 enum LayerType { INPUT, HIDDEN, OUTPUT };
 
 class Layer {
@@ -14,7 +16,7 @@ class Layer {
     vector<vector<double>> weights;
     vector<neuron> dots;
     double getRandWeights();
-    static void print_activations(const std::vector<neuron> &activations);
+    static void print_activations(const vector<neuron> &activations);
 
   public:
     Layer(int size, int prev_size, LayerType type,
