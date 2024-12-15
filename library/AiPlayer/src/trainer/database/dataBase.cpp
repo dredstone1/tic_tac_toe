@@ -1,12 +1,12 @@
 #include "dataBase.hpp"
+#include <algorithm>
 #include <cstring>
 #include <fstream>
 #include <iostream>
 #include <ostream>
+#include <random>
 #include <string>
 #include <vector>
-#include <algorithm>
-#include <random>
 
 DataBase::DataBase(string file_name) {
     this->current_board = 0;

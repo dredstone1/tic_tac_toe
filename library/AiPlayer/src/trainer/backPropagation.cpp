@@ -1,4 +1,5 @@
 #include "backPropagation.hpp"
+#include "database/dataBase.hpp"
 #include <iostream>
 
 BackPropagation::BackPropagation(AiModel &model, double learning_rate)
@@ -39,10 +40,66 @@ double BackPropagation::get_error(TrainBoard &target) {
                         .out,
                 2);
     }
-    return error / target.prediction_target.size();
+    return error;
 }
 
-void BackPropagation::run_back_propagation(TrainBoard &boards) {}
+double leakyReluDerivative(double x) { return x > 0 ? 1 : RELU_LEAKY_ALPHA; }
+
+void BackPropagation::run_back_propagation_layers(TrainBoard &target) {
+    for (int layer_index = this->gradients.size() - 1; layer_index > 0;
+         layer_index--) {
+
+        vector<vector<double>> temp_gradient(
+            this->gradients[layer_index].size(),
+            vector<double>(this->gradients[layer_index][0].size(), 0.0));
+
+        for (int dot_index = 0; dot_index < this->gradients[layer_index].size();
+             dot_index++) {
+
+            double error =
+                (model._model->getLayer(layer_index).getType() == OUTPUT)
+                    ? target.prediction_target[dot_index]
+                    : 0.0;
+
+            if (model._model->getLayer(layer_index).getType() == HIDDEN) {
+                for (int new_dot_index_1 = 0;
+                     new_dot_index_1 < this->gradients[layer_index + 1].size();
+                     new_dot_index_1++) {
+                    error += model._model->getLayer(layer_index + 1)
+                                 .getDots()[new_dot_index_1]
+                                 .out *
+                             temp_gradient[new_dot_index_1][dot_index];
+                }
+            }
+
+            for (int weight_index = 0;
+                 weight_index < this->gradients[layer_index][dot_index].size();
+                 weight_index++) {
+                temp_gradient[dot_index][weight_index] =
+                    (this->model._model->getLayer(layer_index)
+                         .getDots()[dot_index]
+                         .out -
+                     error) *
+                    ((model._model->getLayer(layer_index).getType() == HIDDEN)
+                         ? leakyReluDerivative(
+                               model._model->getLayer(layer_index)
+                                   .getDots()[dot_index]
+                                   .net)
+                         : model._model->getLayer(layer_index - 1)
+                               .getDots()[weight_index]
+                               .out) *
+                    model._model->getLayer(layer_index)
+                        .getWeight(dot_index, weight_index);
+                this->gradients[layer_index][dot_index][weight_index] +=
+                    temp_gradient[dot_index][weight_index];
+            }
+        }
+    }
+}
+
+void BackPropagation::run_back_propagation(TrainBoard &boards) {
+    run_back_propagation_layers(boards);
+}
 
 void BackPropagation::run_back_propagation(vector<TrainBoard> &boards) {
     resetGradients();

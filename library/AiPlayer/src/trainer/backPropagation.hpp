@@ -12,6 +12,7 @@ class BackPropagation {
     void resetGradients();
     void run_back_propagation(TrainBoard &boards);
     double get_error(TrainBoard &target);
+    void run_back_propagation_layers(TrainBoard &target);
 
   public:
     BackPropagation(AiModel &model, double learning_rate);

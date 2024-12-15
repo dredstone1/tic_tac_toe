@@ -66,8 +66,8 @@ int AiModel::load(string file_name) {
 
 int AiModel::save(string file_name) {
     ofstream file(file_name + ".model");
-    file << fixed << setprecision(3) << this->_model->getLayerCount()
-         << " " << this->_model->getLayer(1).getActivation() << " "
+    file << fixed << setprecision(3) << this->_model->getLayerCount() << " "
+         << this->_model->getLayer(1).getActivation() << " "
          << this->_model->getLayer(0).getDots().size() << " "
          << this->_model->getLayer(1).getDots().size() << " "
          << this->_model->getLayer(this->_model->getLayerCount() - 1)
@@ -105,8 +105,7 @@ int AiModel::getPrediction(vector<double> &input) {
     }
 
     if (input[max1] != 0.5) {
-        cout << "error 1: " << this->_model->getOutput()[max1]
-                  << endl;
+        cout << "error 1: " << this->_model->getOutput()[max1] << endl;
     }
 
     while (input[max1] != 0.5) {

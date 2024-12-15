@@ -14,8 +14,7 @@ Layer::Layer(int size, int prev_size, LayerType type,
     for (auto &neuron_weights : weights) {
         random_device rd;
         mt19937 gen(rd());
-        normal_distribution<> dist(
-            0.0, sqrt(2.0 / (neuron_weights.size())));
+        normal_distribution<> dist(0.0, sqrt(2.0 / (neuron_weights.size())));
         for (auto &weight : neuron_weights) {
             weight = dist(gen);
         }
@@ -39,7 +38,7 @@ void Layer::print_activations(const vector<neuron> &activations) {
     double std_dev = sqrt(sq_sum / activations.size());
 
     cout << "Activations: Min=" << min_val << ", Max=" << max_val
-              << ", Mean=" << mean << ", StdDev=" << std_dev << endl;
+         << ", Mean=" << mean << ", StdDev=" << std_dev << endl;
 }
 
 void Layer::forward(vector<neuron> metrix) {
@@ -78,4 +77,3 @@ vector<double> Layer::getOut() {
 ActivationFunctions::ActivationFunctionType Layer::getActivation() {
     return activation_function.getType();
 }
-

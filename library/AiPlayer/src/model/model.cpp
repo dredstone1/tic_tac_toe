@@ -1,6 +1,6 @@
+#include "model.hpp"
 #include "ActivationFunctions.hpp"
 #include "layer.hpp"
-#include "model.hpp"
 #include "neuron.hpp"
 #include <cmath>
 #include <vector>

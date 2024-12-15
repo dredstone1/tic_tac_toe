@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
         model->save("model1");
     } else if (argc > 1 && argv[1][0] == 't') {
         model = new AiModel();
-        Trainer trainer("database", model, 3, 3000, 0.5);
+        Trainer trainer("database", model, 10, 30000, 0.5);
         trainer.train();
         model->save("model1");
     }
@@ -39,7 +39,7 @@ int main(int argc, char *argv[]) {
     if (model == NULL) {
         model = new AiModel();
     }
-       
+
     AiPlayer aiPlayer(model);
     Game game(&StandardPlayer1, &aiPlayer);
     game.run();
