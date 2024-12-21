@@ -1,9 +1,13 @@
 #include "../../include/Trainer/trainer.hpp"
 #include "database/dataBase.hpp"
 #include <iostream>
+#include <matplot/matplot.h>
 
+    using namespace matplot;
 int Trainer::train() {
     cout << "Training AI" << endl;
+
+    vector<double> errors(this->batch_count);
 
     for (int loop_index = 0; loop_index < this->batch_count; loop_index++) {
         vector<TrainBoard> boards;
@@ -12,13 +16,18 @@ int Trainer::train() {
             boards[i] = this->dataBase.get_next_board();
         }
 
-        this->backPropagation.run_back_propagation(boards);
+        errors[loop_index] = this->backPropagation.run_back_propagation(boards);
     }
+
+    title("cost function");
+    plot(errors, "r-");
+    save("./graph.png");
+    save("./graph.svg");
+    show();
     return 0;
 }
 
-Trainer::Trainer(string file_name, AiModel *_model, int batch_size,
-                 int batch_count, double learning_rate)
+Trainer::Trainer(string file_name, AiModel *_model, int batch_size, int batch_count, double learning_rate)
     : dataBase(file_name), backPropagation(*_model, learning_rate) {
     this->file_name = file_name;
     this->model = _model;

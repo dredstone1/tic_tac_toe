@@ -17,6 +17,7 @@ Layer::Layer(int size, int prev_size, LayerType type,
         normal_distribution<> dist(0.0, sqrt(2.0 / (neuron_weights.size())));
         for (auto &weight : neuron_weights) {
             weight = dist(gen);
+            // weight = 0.01;
         }
     }
 }
@@ -76,4 +77,12 @@ vector<double> Layer::getOut() {
 
 ActivationFunctions::ActivationFunctionType Layer::getActivation() {
     return activation_function.getType();
+}
+
+void Layer::updateWeights(vector<vector<double>> &new_weights) {
+    for (int i = 0; i < this->weights.size(); i++) {
+        for (int j = 0; j < this->weights[i].size(); j++) {
+            this->weights[i][j] += new_weights[i][j];
+        }
+    }
 }

@@ -16,7 +16,7 @@ void print(vector<double> a) {
 
 AiModel::AiModel() {
     this->_model = new model(
-        9, 9, 32, 3, ActivationFunctions::ActivationFunctionType::RELU_LEAKY);
+        9, 9, 32, 4, ActivationFunctions::ActivationFunctionType::RELU_LEAKY);
 }
 
 AiModel::AiModel(string file_name) { this->load(file_name); }

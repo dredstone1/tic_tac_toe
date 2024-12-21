@@ -29,6 +29,8 @@ class Layer {
     ActivationFunctions::ActivationFunctionType getActivation();
     vector<double> getNet();
     vector<double> getOut();
+    void updateWeights(vector<vector<double>> &new_weights);
+
     ~Layer() = default;
 };
 
