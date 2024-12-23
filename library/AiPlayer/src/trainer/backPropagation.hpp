@@ -9,12 +9,14 @@ class BackPropagation {
   private:
     AiModel &model;
     double learning_rate;
-    void run_back_propagation(TrainBoard &boards);
+    static vector<double> calculate_delta(vector<double> &target, vector<double> &derivatives);
     double get_total_error(TrainBoard &target);
     static double get_error(double prediction, double target);
     void calculate_pattern_gradients(TrainBoard &targer, gradient &gradients);
     void update_weights(int bash_size, gradient &gradients);
-
+    static vector<double> calculate_target(Layer &layer, Layer &next_layer, vector<double> &next_delta, vector<double> &target);
+    static vector<double> calculate_derivative(Layer &layer);
+    static gradient_layer calculate_gradient(Layer &layer, vector<double> &deltas);
   public:
     BackPropagation(AiModel &model, double learning_rate);
     double run_back_propagation(vector<TrainBoard> &boards);

@@ -3,6 +3,7 @@
 
 #include "ActivationFunctions.hpp"
 #include "neuron.hpp"
+#include "../trainer/gradient.hpp"
 #include <vector>
 
 using namespace std;
@@ -29,8 +30,9 @@ class Layer {
     ActivationFunctions::ActivationFunctionType getActivation();
     vector<double> getNet();
     vector<double> getOut();
-    void updateWeights(vector<vector<double>> &new_weights);
-
+    void updateWeights(gradient_layer const &gradients);
+    int getSize() { return dots.size(); }
+    int getPrevSize() { return weights[0].size(); }
     ~Layer() = default;
 };
 

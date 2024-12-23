@@ -7,8 +7,9 @@
 
 class model {
   private:
-      neural_network network;
-      friend class BackPropagation;
+    neural_network network;
+    friend class BackPropagation;
+
   public:
     model(int input_size, int output_size, int hidden_layers_size, int hidden_layers_count, ActivationFunctions::ActivationFunctionType activations) : network(input_size, output_size, hidden_layers_size, hidden_layers_count, activations) {}
     ~model() = default;

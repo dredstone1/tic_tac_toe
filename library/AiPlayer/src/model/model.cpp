@@ -35,6 +35,6 @@ vector<double> model::getOutput() {
 
 void model::updateWeights(gradient &gradients) {
     for (int i = 1; i < this->getLayerCount(); i++) {
-        this->getLayer(i).updateWeights(gradients.weights[i]);
+        this->getLayer(i).updateWeights(gradients.gradients[i-1]);
     }
 }

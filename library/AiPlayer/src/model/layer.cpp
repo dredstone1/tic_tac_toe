@@ -79,10 +79,10 @@ ActivationFunctions::ActivationFunctionType Layer::getActivation() {
     return activation_function.getType();
 }
 
-void Layer::updateWeights(vector<vector<double>> &new_weights) {
-    for (int i = 0; i < this->weights.size(); i++) {
-        for (int j = 0; j < this->weights[i].size(); j++) {
-            this->weights[i][j] += new_weights[i][j];
+void Layer::updateWeights(gradient_layer const &new_weights) {
+    for (int i = 0; i < this->getSize(); i++) {
+        for (int j = 0; j < this->getPrevSize(); j++) {
+            this->weights[i][j] += new_weights.weights[i][j];
         }
     }
 }
