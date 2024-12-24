@@ -5,6 +5,8 @@
 #include "database/dataBase.hpp"
 #include "gradient.hpp"
 
+#define CLIP_GRADIENTS 0.5
+
 class BackPropagation {
   private:
     AiModel &model;
@@ -17,6 +19,9 @@ class BackPropagation {
     static vector<double> calculate_target(Layer &layer, Layer &next_layer, vector<double> &next_delta, vector<double> &target);
     static vector<double> calculate_derivative(Layer &layer);
     static gradient_layer calculate_gradient(Layer &layer, vector<double> &deltas);
+    static void check_for_nan(const vector<double> &values, const string &label);
+    static void clip_gradients(gradient_layer &gradients, double clip_value);
+
   public:
     BackPropagation(AiModel &model, double learning_rate);
     double run_back_propagation(vector<TrainBoard> &boards);

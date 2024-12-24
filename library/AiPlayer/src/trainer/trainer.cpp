@@ -3,21 +3,54 @@
 #include <iostream>
 #include <matplot/matplot.h>
 
-    using namespace matplot;
+using namespace matplot;
+
+void Trainer::print_progress_bar(int current, int total) {
+    int bar_width = 70;
+    float progress = (float)current / total;
+    int pos = bar_width * progress;
+
+    cout << "[";
+    for (int i = 0; i < bar_width; ++i) {
+        if (i < pos)
+            cout << "=";
+        else if (i == pos)
+            cout << ">";
+        else
+            cout << " ";
+    }
+    cout << "] " << int(progress * 100.0) << " %\r";
+    cout.flush();
+}
+
 int Trainer::train() {
     cout << "Training AI" << endl;
 
-    vector<double> errors(this->batch_count);
+    auto start = chrono::high_resolution_clock::now();
 
+    vector<double> errors(graph_resolution, 0.0);
+    double error = 0.0;
     for (int loop_index = 0; loop_index < this->batch_count; loop_index++) {
         vector<TrainBoard> boards;
         boards.resize(this->batch_size);
         for (int i = 0; i < this->batch_size; i++) {
             boards[i] = this->dataBase.get_next_board();
         }
-
-        errors[loop_index] = this->backPropagation.run_back_propagation(boards);
+        double _error = this->backPropagation.run_back_propagation(boards);
+        error += _error;
+        if ((loop_index + 1) % (this->batch_count / graph_resolution) == 0) {
+            errors[loop_index / (this->batch_count / graph_resolution)] = error / ((double)this->batch_count / graph_resolution);
+            error = 0.0;
+        }
+        print_progress_bar(loop_index + 1, this->batch_count);
     }
+    cout << endl;
+    auto end = chrono::high_resolution_clock::now();
+    int time_taken = chrono::duration_cast<chrono::seconds>(end - start).count();
+    int minutes = time_taken / 60;
+    int seconds = time_taken % 60;
+    cout << "Training Done" << endl;
+    cout << "Training time: " << minutes << " minutes " << seconds << " seconds" << endl;
 
     title("cost function");
     plot(errors, "r-");
