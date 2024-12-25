@@ -1,5 +1,6 @@
 #include "../../include/Trainer/trainer.hpp"
 #include "database/dataBase.hpp"
+#include <chrono>
 #include <iostream>
 #include <matplot/matplot.h>
 
@@ -10,17 +11,17 @@ void Trainer::print_progress_bar(int current, int total) {
     float progress = (float)current / total;
     int pos = bar_width * progress;
 
-    cout << "[";
+    std::cout << "[";
     for (int i = 0; i < bar_width; ++i) {
         if (i < pos)
-            cout << "=";
+            std::cout << "=";
         else if (i == pos)
-            cout << ">";
+            std::cout << ">";
         else
-            cout << " ";
+            std::cout << " ";
     }
-    cout << "] " << int(progress * 100.0) << " %\r";
-    cout.flush();
+    std::cout << "] " << int(progress * 100.0) << " %\r";
+    std::cout.flush();
 }
 
 int Trainer::train() {
@@ -44,6 +45,7 @@ int Trainer::train() {
         }
         print_progress_bar(loop_index + 1, this->batch_count);
     }
+
     cout << endl;
     auto end = chrono::high_resolution_clock::now();
     int time_taken = chrono::duration_cast<chrono::seconds>(end - start).count();

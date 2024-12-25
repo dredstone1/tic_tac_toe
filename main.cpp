@@ -23,27 +23,32 @@ int main(int argc, char *argv[]) {
 
     cout << "AI Game" << endl;
 
-    AiModel *model = NULL;
-    if (argc > 1 && argv[1][0] == 'l') {
-        model = new AiModel("model1");
-    } else if (argc > 1 && argv[1][0] == 's') {
-        model = new AiModel();
-        model->save("model1");
-    } else if (argc > 1 && argv[1][0] == 't') {
-        model = new AiModel();
-        Trainer trainer("database", model, 100, 1000000000, 0.001);
-        trainer.train();
-        model->save("model1");
+    AiModel model;
+
+    char *arg = argv[1];
+    while (*(arg) != '\0') {
+        cout << *arg << endl;
+        switch (*arg) {
+        case 'l':
+            model.load("model1");
+            break;
+        case 's':
+            model.save("model1");
+            break;
+        case 't':
+            int batch_size = 100;
+            int batch_count = 10000;
+            Trainer trainer("database", &model, batch_size, batch_count, 0.001);
+            trainer.train();
+            model.save("model1");
+            break;
+        }
+        arg++;
     }
 
-    if (model == NULL) {
-        model = new AiModel();
-    }
-
-    AiPlayer aiPlayer(model);
+    AiPlayer aiPlayer(&model);
     Game game(&StandardPlayer1, &aiPlayer);
     game.run();
-    delete model;
 
     return 0;
 }

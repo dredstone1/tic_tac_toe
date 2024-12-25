@@ -11,16 +11,35 @@ BackPropagation::BackPropagation(AiModel &model, double learning_rate) : model(m
     this->learning_rate = learning_rate;
 }
 
+double get_cross_entropy_loss(const std::vector<double> &prediction, const std::vector<double> &target) {
+    double loss = 0.0;
+    for (size_t i = 0; i < prediction.size(); ++i) {
+        if (target[i] == 1.0) {
+            loss = -log(prediction[i] + 1e-9);
+            break;
+        }
+    }
+    return loss;
+}
+
+
 double BackPropagation::get_error(double prediction, double target) {
-    return pow(prediction - target, 2);
+    if (target == 0) {
+        return log(1 - prediction);
+    }
+    return log(prediction);
 }
 
 double BackPropagation::get_total_error(TrainBoard &target) {
-    double error = 0.0;
-    for (int i = 0; i < target.prediction_target.size(); i++) {
-        error += get_error(this->model._model->getLayer(this->model._model->getLayerCount() - 1).getDots()[i].out, target.prediction_target[i]);
+    double total_error = 0.0;
+    Layer &output_layer = this->model._model->getLayer(this->model._model->getLayerCount() - 1);
+    const auto &predictions = output_layer.getDots();
+    std::vector<double> prediction_values(predictions.size());
+    for (size_t i = 0; i < predictions.size(); ++i) {
+        prediction_values[i] = predictions[i].out;
     }
-    return error;
+    total_error = get_cross_entropy_loss(prediction_values, target.prediction_target);
+    return total_error;
 }
 
 vector<double> BackPropagation::calculate_target(Layer &layer, Layer &next_layer, vector<double> &next_delta, vector<double> &target_) {
@@ -30,7 +49,7 @@ vector<double> BackPropagation::calculate_target(Layer &layer, Layer &next_layer
             target[i] = layer.getDots()[i].out - target_[i];
         }
     } else if (layer.getType() == LayerType::HIDDEN) {
-        for (int i = 1; i < layer.getSize(); i++) {
+        for (int i = 0; i < layer.getSize(); i++) {
             target[i] = 0.0;
             for (int j = 0; j < next_layer.getSize(); j++) {
                 target[i] += next_delta[j] * next_layer.getWeight(j, i);
@@ -65,10 +84,7 @@ vector<double> BackPropagation::calculate_derivative(Layer &layer) {
 
     if (layer.getType() == LayerType::OUTPUT) {
         for (int i = 0; i < layer.getSize(); i++) {
-            double out = layer.getDots()[i].out;
-            derivatives[i] = out * (1.0 - out);
-            if (derivatives[i] < 1e-8)
-                derivatives[i] = 1e-8;
+            derivatives[i] = 1.0;
         }
     } else if (layer.getType() == LayerType::HIDDEN) {
         for (int i = 0; i < layer.getSize(); i++) {

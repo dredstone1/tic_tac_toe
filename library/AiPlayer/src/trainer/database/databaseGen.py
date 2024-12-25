@@ -131,6 +131,18 @@ def relu(vector):
             vector[value] = 0
     return vector
 
+def best_move(vector):
+    best = 0
+    for value in range(len(vector)):
+        if vector[value] > vector[best]:
+            best = value
+    for value in range(len(vector)):
+        if value == best:
+            vector[value] = 1.0
+        else:
+            vector[value] = 0.0
+    return vector
+
 def calculate_probabilities(boards):
     probabilities = []
     for board in boards:
@@ -141,7 +153,7 @@ def calculate_probabilities(boards):
             else:
                 probabilit.append(0.0)
 
-        probabilities.append(softmax(probabilit))
+        probabilities.append(best_move(probabilit))
 
     return probabilities
 
