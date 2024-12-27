@@ -8,6 +8,7 @@
 class model {
   private:
     neural_network network;
+    static int run_model(vector<double> &input, neural_network &temp_network);
     friend class BackPropagation;
 
   public:

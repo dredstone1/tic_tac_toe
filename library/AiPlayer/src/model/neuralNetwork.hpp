@@ -14,7 +14,8 @@ typedef struct neural_network {
     int output_size;
     int hidden_layers_size;
     int hidden_layers_count;
-    neural_network(int input_size, int output_size, int hidden_layers_size, int hidden_layers_count, ActivationFunctionType activations);
+    neural_network(int _input_size, int _output_size, int _hidden_layers_size, int _hidden_layers_count, ActivationFunctionType _activations);
+    neural_network(neural_network const &other);
     ~neural_network() = default;
 } neural_network;
 

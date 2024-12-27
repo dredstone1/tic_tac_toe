@@ -15,7 +15,7 @@ class AiPlayer : public Player {
 
   public:
     AiPlayer();
-    AiPlayer(AiModel *ai_model);
+    AiPlayer(AiModel *_ai_model);
     int getMove() override;
     ~AiPlayer() override = default;
     void UserLost() override;

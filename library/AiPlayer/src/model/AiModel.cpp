@@ -9,11 +9,11 @@
 #include <vector>
 
 AiModel::AiModel() {
-    this->_model = new model(
-        9, 9, 12, 3, ActivationFunctions::ActivationFunctionType::RELU_LEAKY);
+    _model = new model(
+        9, 9, 32, 2, ActivationFunctions::ActivationFunctionType::RELU_LEAKY);
 }
 
-AiModel::AiModel(string file_name) { this->load(file_name); }
+AiModel::AiModel(string _file_name) { load(_file_name); }
 
 int AiModel::load(string file_name) {
     ifstream file(file_name + ".model");
@@ -35,21 +35,21 @@ int AiModel::load(string file_name) {
     int hidden_layers_size = atoi(strtok(NULL, " "));
     int output_size = atoi(strtok(NULL, " "));
 
-    if (this->_model) {
-        delete this->_model;
+    if (_model) {
+        delete _model;
     }
-    this->_model = new model(input_size, output_size, hidden_layers_size,
+    _model = new model(input_size, output_size, hidden_layers_size,
                              hidden_layers_count, activation);
 
-    for (int i = 0; i < this->_model->getLayerCount(); i++) {
-        if (this->_model->getLayer(i).getType() == LayerType::INPUT) {
+    for (int i = 0; i < _model->getLayerCount(); i++) {
+        if (_model->getLayer(i).getType() == LayerType::INPUT) {
             continue;
         }
 
-        for (int j = 0; j < this->_model->getLayer(i).getDots().size(); j++) {
-            for (int k = 0; k < this->_model->getLayer(i - 1).getDots().size();
+        for (int j = 0; j < _model->getLayer(i).getDots().size(); j++) {
+            for (int k = 0; k < _model->getLayer(i - 1).getDots().size();
                  k++) {
-                this->_model->getLayer(i).setWeight(j, k,
+                _model->getLayer(i).setWeight(j, k,
                                                     atof(strtok(NULL, " ")));
             }
         }
@@ -60,24 +60,24 @@ int AiModel::load(string file_name) {
 
 int AiModel::save(string file_name) {
     ofstream file(file_name + ".model");
-    file << fixed << setprecision(3) << this->_model->getLayerCount() << " "
-         << this->_model->getLayer(1).getActivation() << " "
-         << this->_model->getLayer(0).getDots().size() << " "
-         << this->_model->getLayer(1).getDots().size() << " "
-         << this->_model->getLayer(this->_model->getLayerCount() - 1)
+    file << fixed << setprecision(3) << _model->getLayerCount() << " "
+         << _model->getLayer(1).getActivation() << " "
+         << _model->getLayer(0).getDots().size() << " "
+         << _model->getLayer(1).getDots().size() << " "
+         << _model->getLayer(_model->getLayerCount() - 1)
                 .getDots()
                 .size()
          << " ";
 
-    for (int i = 0; i < this->_model->getLayerCount(); i++) {
-        if (this->_model->getLayer(i).getType() == LayerType::INPUT) {
+    for (int i = 0; i < _model->getLayerCount(); i++) {
+        if (_model->getLayer(i).getType() == LayerType::INPUT) {
             continue;
         }
 
-        for (int j = 0; j < this->_model->getLayer(i).getDots().size(); j++) {
-            for (int k = 0; k < this->_model->getLayer(i - 1).getDots().size();
+        for (int j = 0; j < _model->getLayer(i).getDots().size(); j++) {
+            for (int k = 0; k < _model->getLayer(i - 1).getDots().size();
                  k++) {
-                file << this->_model->getLayer(i).getWeight(j, k) << " ";
+                file << _model->getLayer(i).getWeight(j, k) << " ";
             }
         }
     }
@@ -87,19 +87,19 @@ int AiModel::save(string file_name) {
 }
 
 int AiModel::run_model(vector<double> &input) {
-    return this->_model->run_model(input);
+    return _model->run_model(input);
 }
 
 int AiModel::getPrediction(vector<double> &input) {
     int max1 = 0, max = 0;
     for (int i = 0; i < 9; i++) {
-        if (this->_model->getOutput()[max1] < this->_model->getOutput()[i]) {
+        if (_model->getOutput()[max1] < _model->getOutput()[i]) {
             max1 = i;
         }
     }
 
     if (input[max1] != 0.5) {
-        cout << "error 1: " << this->_model->getOutput()[max1] << endl;
+        cout << "error 1: " << _model->getOutput()[max1] << endl;
     }
 
     while (input[max1] != 0.5) {
@@ -114,4 +114,4 @@ int AiModel::getPrediction(vector<double> &input) {
     return max1;
 }
 
-AiModel::~AiModel() { delete this->_model; }
+AiModel::~AiModel() { delete _model; }

@@ -18,10 +18,10 @@ class DataBase {
     void shuffle();
 
   public:
-    DataBase(string file_name);
+    DataBase(string _file_name);
     TrainBoard &get_next_board();
     ~DataBase() = default;
-    int get_train_boards_count() { return this->train_boards.size(); }
+    int get_train_boards_count() { return train_boards.size(); }
 };
 
 #endif // DATABASE_HPP

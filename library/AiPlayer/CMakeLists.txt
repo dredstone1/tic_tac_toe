@@ -11,7 +11,6 @@ add_library(
   src/trainer/database/dataBase.cpp
   src/model/ActivationFunctions.cpp
   src/trainer/backPropagation.cpp
-  src/model/neuron.cpp
   src/model/neuralNetwork.cpp
   src/trainer/gradient.cpp)
 add_subdirectory(matplotplusplus)

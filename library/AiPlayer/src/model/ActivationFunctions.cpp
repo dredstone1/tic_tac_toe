@@ -17,11 +17,11 @@ double ActivationFunction::max_vector(vector<neuron> &metrix) {
 }
 
 ActivationFunction::ActivationFunction(ActivationFunctionType type_) {
-    this->type = type_;
+    type = type_;
 }
 
 void ActivationFunction::activate(vector<neuron> &metrix) {
-    switch (this->type) {
+    switch (type) {
     case ActivationFunctionType::SOFTMAX:
         softmax(metrix);
         break;

@@ -7,65 +7,76 @@
 using namespace matplot;
 
 void Trainer::print_progress_bar(int current, int total) {
-    int bar_width = 70;
     float progress = (float)current / total;
-    int pos = bar_width * progress;
+    int progress_percentage = int(progress * 100.0);
 
-    std::cout << "[";
-    for (int i = 0; i < bar_width; ++i) {
-        if (i < pos)
-            std::cout << "=";
-        else if (i == pos)
-            std::cout << ">";
-        else
-            std::cout << " ";
+    if (progress_percentage != last_progress) {
+        int pos = BAR_WIDTH * progress;
+        last_progress = progress_percentage;
+
+        ostringstream oss;
+        oss << "[";
+        for (int i = 0; i < BAR_WIDTH; ++i) {
+            if (i < pos)
+                oss << "=";
+            else if (i == pos)
+                oss << ">";
+            else
+                oss << " ";
+        }
+        oss << "] " << progress_percentage << " %\r";
+
+        cout << oss.str();
+        cout.flush();
     }
-    std::cout << "] " << int(progress * 100.0) << " %\r";
-    std::cout.flush();
 }
 
 int Trainer::train() {
     cout << "Training AI" << endl;
 
     auto start = chrono::high_resolution_clock::now();
-
+    const double graph_resolution = (GRAPH_RESOLUTION > batch_count) ? batch_count : GRAPH_RESOLUTION;
+    const int graph_draw_interval = batch_count / graph_resolution;
     vector<double> errors(graph_resolution, 0.0);
     double error = 0.0;
-    for (int loop_index = 0; loop_index < this->batch_count; loop_index++) {
+
+    for (int loop_index = 0; loop_index < batch_count; loop_index++) {
         vector<TrainBoard> boards;
-        boards.resize(this->batch_size);
-        for (int i = 0; i < this->batch_size; i++) {
-            boards[i] = this->dataBase.get_next_board();
+        boards.resize(batch_size);
+        for (int i = 0; i < batch_size; i++) {
+            boards[i] = dataBase.get_next_board();
         }
-        double _error = this->backPropagation.run_back_propagation(boards);
-        error += _error;
-        if ((loop_index + 1) % (this->batch_count / graph_resolution) == 0) {
-            errors[loop_index / (this->batch_count / graph_resolution)] = error / ((double)this->batch_count / graph_resolution);
+
+        error += backPropagation.run_back_propagation(boards);
+
+        if ((loop_index + 1) % graph_draw_interval == 0) {
+            errors[loop_index / graph_draw_interval] = error / graph_draw_interval;
             error = 0.0;
+            print_progress_bar(loop_index + 1, batch_count);
         }
-        print_progress_bar(loop_index + 1, this->batch_count);
     }
 
-    cout << endl;
     auto end = chrono::high_resolution_clock::now();
     int time_taken = chrono::duration_cast<chrono::seconds>(end - start).count();
-    int minutes = time_taken / 60;
-    int seconds = time_taken % 60;
-    cout << "Training Done" << endl;
-    cout << "Training time: " << minutes << " minutes " << seconds << " seconds" << endl;
-
+    int minutes = time_taken / SECONDS_IN_MINUTE;
+    int seconds = time_taken % SECONDS_IN_MINUTE;
+    int time_taken_milliseconds = chrono::duration_cast<chrono::milliseconds>(end - start).count();
+    cout << endl
+         << "Training Done!" << endl
+         << "Training time: " << minutes << " minutes " << seconds << " seconds" << " (" << time_taken_milliseconds << " ms)" << endl;
     title("cost function");
-    plot(errors, "r-");
-    save("./graph.png");
+    plot(errors);
     save("./graph.svg");
     show();
+
     return 0;
 }
 
-Trainer::Trainer(string file_name, AiModel *_model, int batch_size, int batch_count, double learning_rate)
-    : dataBase(file_name), backPropagation(*_model, learning_rate) {
-    this->file_name = file_name;
-    this->model = _model;
-    this->batch_size = batch_size;
-    this->batch_count = batch_count;
+Trainer::Trainer(string _file_name, AiModel *_model, int _batch_size, int _batch_count, double _learning_rate)
+    : dataBase(_file_name), backPropagation(*_model, _learning_rate) {
+    file_name = _file_name;
+    model = _model;
+    batch_size = _batch_size;
+    batch_count = _batch_count;
+    last_progress = 0;
 }

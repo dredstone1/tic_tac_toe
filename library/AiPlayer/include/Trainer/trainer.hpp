@@ -5,7 +5,9 @@
 #include "../../src/trainer/database/dataBase.hpp"
 #include "../AiPlayer/AiModel.hpp"
 
-#define graph_resolution 1000
+#define GRAPH_RESOLUTION 100
+#define BAR_WIDTH 100
+#define SECONDS_IN_MINUTE 60
 
 class Trainer {
   private:
@@ -15,11 +17,11 @@ class Trainer {
     BackPropagation backPropagation;
     int batch_size;
     int batch_count;
-    static void print_progress_bar(int current, int total);
+    void print_progress_bar(int current, int total);
+    int last_progress;
 
   public:
-    Trainer(string file_name, AiModel *model, int batch_size, int batch_count,
-            double learning_rate);
+    Trainer(string _file_name, AiModel *_model, int _batch_size, int _batch_count, double _learning_rate);
     int train();
     ~Trainer() = default;
 };
