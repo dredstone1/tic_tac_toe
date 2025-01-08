@@ -2,24 +2,28 @@
 #define MODEL_HPP
 
 #include "../trainer/gradient.hpp"
-#include "layer.hpp"
+#include "Layers/layer.hpp"
 #include "neuralNetwork.hpp"
 
 class model {
   private:
     neural_network network;
-    static int run_model(vector<double> &input, neural_network &temp_network);
+    static void run_model(const vector<double> &input, neural_network &temp_network);
     friend class BackPropagation;
 
   public:
-    model(int input_size, int output_size, int hidden_layers_size, int hidden_layers_count, ActivationFunctions::ActivationFunctionType activations) : network(input_size, output_size, hidden_layers_size, hidden_layers_count, activations) {}
+    model(const int input_size, const int output_size, const int hidden_layers_size, const int hidden_layers_count) : network(input_size, output_size, hidden_layers_size, hidden_layers_count) {}
     ~model() = default;
-    int run_model(vector<double> &input);
-    vector<double> getOutput();
+    void run_model(const vector<double> &input);
+    const vector<double>& getOutput() const;
     void reset();
-    int getLayerCount() { return (this->network.hidden_layers_count + FIX_LAYER_COUNT); }
-    Layer &getLayer(int i) { return this->network.layers.at(i); }
-    void updateWeights(gradient &gradients);
+    Layer &getLayer(const int i) { return *(network.layers[i]); }
+    void updateWeights(const gradient &gradients);
+    int getOutputSize() const { return network.output_size; }
+    int getInputSize() const { return network.input_size; }
+    int getHiddenLayerSize() const { return network.hidden_layers_size; }
+    int getHiddenLayerCount() const { return network.hidden_layers_count; }
+    int getLayerCount() const { return network.hidden_layers_count + 1; }
 };
 
 #endif // MODEL_HPP

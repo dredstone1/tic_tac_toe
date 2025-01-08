@@ -5,29 +5,27 @@
 #include "database/dataBase.hpp"
 #include "gradient.hpp"
 
-#define CLIP_GRADIENTS 0.5
+#define CLIP_GRADIENTS 1.0
 
 class BackPropagation {
   private:
     AiModel &model;
-    double learning_rate;
-    gradient gradients;
-    static vector<double> calculate_delta(vector<double> &target, vector<double> &derivatives);
-    static double get_total_error(TrainBoard &target, neural_network &temp_network);
-    static double get_cross_entropy_loss(vector<double> prediction, vector<double> &target);
-    static void calculate_pattern_gradients(TrainBoard &targer, gradient &gradients, neural_network &temp_network);
-    void update_weights(int bash_size, gradient &gradients);
-    static vector<double> calculate_target(Layer &layer, Layer &next_layer, vector<double> &next_delta, vector<double> &target);
-    static vector<double> calculate_derivative(Layer &layer);
-    static gradient_layer calculate_gradient(Layer &layer, vector<double> &deltas);
-    static void check_for_nan(const vector<double> &values);
-    static void clip_gradients(gradient_layer &gradients, double clip_value);
-    double run_back_propagation(TrainBoard &board, gradient &gradients);
+    gradient global_gradient;
+    static double get_total_error(const neural_network &temp_network, const int target);
+    static double get_cross_entropy_loss(const vector<double> &prediction, const int target);
+    static void calculate_pattern_gradients(const TrainBoard &targer, gradient &gradients, const neural_network &temp_network);
+    void update_weights(int bash_size, gradient &gradients, double learning_rate);
+    static void calculate_gradient(const Layer &layer, const vector<double> &deltas, const vector<double> &prevLayer, LayerParameters &gradients);
+    static double clip_gradients(double value);
+    double run_back_propagation(const TrainBoard &board, gradient &local_gradient);
+    static vector<double> calculate_delta_for_hidden(const Layer &current_layer, const Layer &next_layer, const vector<double> &next_deltas);
+    static vector<double> calculate_delta_for_output(const vector<double> &out, const int target);
+    static void calculate_gradient_for_bias(const Layer &layer, const vector<double> &deltas, LayerParameters &gradients);
+    static void calculate_gradient_for_weights(const Layer &layer, const vector<double> &prevLayer, const vector<double> &deltas, LayerParameters &gradients);
 
   public:
-    BackPropagation(AiModel &_model, double _learning_rate);
-    double run_back_propagation(vector<TrainBoard> &boards);
+    BackPropagation(AiModel &_model);
+    double run_back_propagation(const vector<TrainBoard> &boards, const double learning_rate);
     ~BackPropagation() = default;
 };
-
 #endif // BACKPROPAGATION

@@ -1,43 +1,39 @@
 #include "model.hpp"
-#include "neuron.hpp"
 #include <cmath>
+#include <iostream>
 #include <vector>
 
-int model::run_model(vector<double> &input) {
-    reset();
-    return run_model(input, network);
+void model::run_model(const vector<double> &input) {
+    run_model(input, network);
 }
 
-int model::run_model(vector<double> &input, neural_network &temp_network) {
-    vector<neuron> input_layer;
-    for (auto dot : input) {
-        neuron new_neuron;
-        new_neuron.out = dot;
-        new_neuron.net = dot;
-        input_layer.push_back(new_neuron);
+void print_vector(const vector<double> &metrix) {
+    for (auto &value : metrix) {
+        cout << value << " ";
     }
-        
-    temp_network.layers[0].forward(input_layer);
-    for (int i = 1; i < temp_network.layers.size(); i++) {
-        temp_network.layers[i].forward(temp_network.layers[i - 1].getDots());
+    cout << endl
+         << endl;
+}
+
+void model::run_model(const vector<double> &input, neural_network &temp_network) {
+    temp_network.layers[0]->forward(input);
+    for (int i = 1; i < temp_network.getLayerCount(); i++) {
+        temp_network.layers[i]->forward(temp_network.layers[i - 1]->getOut());
     }
-    return 0;
 }
 
 void model::reset() {
     for (auto &layer : network.layers) {
-        for (auto &dot : layer.getDots()) {
-            dot.out = dot.net = 0.0;
-        }
+        layer->reset();
     }
 }
 
-vector<double> model::getOutput() {
-    return getLayer(getLayerCount() - 1).getOut();
+const vector<double> &model::getOutput() const {
+    return network.layers[getHiddenLayerCount()]->getOut();
 }
 
-void model::updateWeights(gradient &gradients) {
-    for (int i = 1; i < getLayerCount(); i++) {
-        getLayer(i).updateWeights(gradients.gradients[i-1]);
+void model::updateWeights(const gradient &gradients) {
+    for (int i = 0; i < getLayerCount(); i++) {
+        getLayer(i).add(gradients.gradients[i]);
     }
 }

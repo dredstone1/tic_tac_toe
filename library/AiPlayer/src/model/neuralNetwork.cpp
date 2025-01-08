@@ -1,35 +1,33 @@
-#include "ActivationFunctions.hpp"
+#include "Layers/Hidden_Layer.hpp"
+#include "Layers/Output_Layer.hpp"
+#include "Layers/layer.hpp"
 #include "neuralNetwork.hpp"
 
-neural_network::neural_network(int _input_size, int _output_size, int _hidden_layers_size, int _hidden_layers_count, ActivationFunctionType _activations) {
-    input_size = _input_size;
-    output_size = _output_size;
-    hidden_layers_size = _hidden_layers_size;
-    hidden_layers_count = _hidden_layers_count;
+neural_network::neural_network(const int _input_size, const int _output_size, const int _hidden_layers_size, const int _hidden_layers_count) : input_size(_input_size), output_size(_output_size), hidden_layers_size(_hidden_layers_size), hidden_layers_count(_hidden_layers_count) {
+    layers.reserve(_hidden_layers_count + 1);
 
-    layers.reserve(FIX_LAYER_COUNT + _hidden_layers_count);
-    layers.emplace_back(
-        Layer(input_size, 1, LayerType::INPUT,
-              ActivationFunctionType::NONE));
-
-    for (int i = 1; i < hidden_layers_count + 1; i++) {
-        layers.emplace_back(Layer(hidden_layers_size,
-                                        layers.at(i - 1).getDots().size(),
-                                        LayerType::HIDDEN, _activations));
+    int prev_size = input_size;
+    for (int i = 0; i < hidden_layers_count; i++) {
+        Layer *temp = new Hidden_Layer(hidden_layers_size, prev_size);
+        layers.push_back(temp);
+        prev_size = hidden_layers_size;
     }
 
-    layers.emplace_back(
-        Layer(output_size, hidden_layers_size, LayerType::OUTPUT,
-              ActivationFunctionType::SOFTMAX));
+    layers.push_back(new Output_Layer(_output_size, prev_size));
 }
 
-neural_network::neural_network(neural_network const &other) {
-    input_size = other.input_size;
-    output_size = other.output_size;
-    hidden_layers_size = other.hidden_layers_size;
-    hidden_layers_count = other.hidden_layers_count;
-    for (auto &layer : other.layers) {
-        Layer layer_(layer);
-        layers.emplace_back(layer_);
+neural_network::neural_network(neural_network const &other) : input_size(other.input_size), output_size(other.output_size), hidden_layers_size(other.hidden_layers_size), hidden_layers_count(other.hidden_layers_count) {
+    layers.reserve(hidden_layers_count + 1);
+
+    for (int i = 0; i < hidden_layers_count; i++) {
+        layers.push_back(new Hidden_Layer(*(other.layers[i])));
+    }
+
+    layers.push_back(new Output_Layer(*(other.layers[hidden_layers_count])));
+}
+
+void neural_network::reset() {
+    for (auto &layer : layers) {
+        layer->reset();
     }
 }

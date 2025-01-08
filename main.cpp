@@ -27,7 +27,6 @@ int main(int argc, char *argv[]) {
         AiModel model;
         char *arg = argv[1];
         while (*(arg) != '\0') {
-            cout << *arg << endl;
             switch (*arg) {
             case 'l':
                 model.load("model1");
@@ -36,10 +35,17 @@ int main(int argc, char *argv[]) {
                 model.save("model1");
                 break;
             case 't':
-                int batch_size = 100, batch_count = 1000;
-                double learning_rate = 0.001;
+                int batch_size = 36, batch_count = 4000;
 
-                Trainer trainer("database", &model, batch_size, batch_count, learning_rate);
+                double learning_rate = 0.025;
+
+                Trainer trainer(
+                    "database",
+                    &model,
+                    batch_size,
+                    batch_count,
+                    learning_rate);
+
                 trainer.train();
                 model.save("model1");
                 break;
@@ -49,7 +55,7 @@ int main(int argc, char *argv[]) {
 
         AiPlayer aiPlayer(&model);
 
-        Game game(&StandardPlayer1, &aiPlayer);
+        Game game(&aiPlayer, &StandardPlayer1);
         game.run();
         return 0;
     }

@@ -19,8 +19,8 @@ double AiPlayer::getBoardCellValue(int dot) {
 }
 
 vector<double> AiPlayer::getBoardVector() {
-    vector<double> boardState;
-    boardState.resize(9);
+    vector<double> boardState(9);
+
     for (int i = 0; i < 9; i++) {
         boardState[i] = getBoardCellValue(i);
     }

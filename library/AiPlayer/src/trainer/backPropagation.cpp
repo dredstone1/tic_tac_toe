@@ -1,151 +1,120 @@
 #include "backPropagation.hpp"
-#include "database/dataBase.hpp"
+#include "../model/activations.hpp"
 #include "gradient.hpp"
 #include <cmath>
 #include <iostream>
-#include <thread>
 #include <vector>
 
 using namespace std;
 
-BackPropagation::BackPropagation(AiModel &_model, double _learning_rate) : model(_model), gradients(_model._model->network.input_size, _model._model->network.output_size, _model._model->network.hidden_layers_size, _model._model->network.hidden_layers_count), learning_rate(_learning_rate) {}
+BackPropagation::BackPropagation(AiModel &_model) : model(_model), global_gradient(gradient(_model._model->network.input_size, _model._model->network.output_size, _model._model->network.hidden_layers_size, _model._model->network.hidden_layers_count)) {}
 
-double BackPropagation::get_cross_entropy_loss(vector<double> prediction, vector<double> &target) {
-    double loss = 0.0;
-    for (size_t i = 0; i < prediction.size(); ++i) {
-        if (target[i] == 1.0) {
-            loss = -log(prediction[i] + 1e-9);
-            break;
-        }
-    }
-    return loss;
+double BackPropagation::get_cross_entropy_loss(const vector<double> &prediction, const int target) {
+    return -log(prediction[target]);
 }
 
-double BackPropagation::get_total_error(TrainBoard &target, neural_network &temp_network) {
-
+double BackPropagation::get_total_error(const neural_network &temp_network, const int target) {
     return get_cross_entropy_loss(
-        temp_network.layers[temp_network.hidden_layers_count + 1]
-            .getOut(),
-        target.prediction_target);
+        temp_network.layers[temp_network.hidden_layers_count]->getOut(),
+        target);
 }
 
-vector<double> BackPropagation::calculate_target(Layer &layer, Layer &next_layer, vector<double> &next_delta, vector<double> &target_) {
-    vector<double> target(layer.getSize(), 0.0);
-    if (layer.getType() == LayerType::OUTPUT) {
-        for (int i = 0; i < layer.getSize(); i++) {
-            target[i] = layer.getDots()[i].out - target_[i];
-        }
-    } else if (layer.getType() == LayerType::HIDDEN) {
-        for (int i = 0; i < layer.getSize(); i++) {
-            target[i] = 0.0;
-            for (int j = 0; j < next_layer.getSize(); j++) {
-                target[i] += next_delta[j] * next_layer.getWeight(j, i);
-            }
-        }
+double BackPropagation::clip_gradients(double value) {
+    if (value > CLIP_GRADIENTS) {
+        return CLIP_GRADIENTS;
     }
-    return target;
+
+    if (value < -CLIP_GRADIENTS) {
+        return -CLIP_GRADIENTS;
+    }
+    return value;
 }
 
-void BackPropagation::clip_gradients(gradient_layer &gradients, double clip_value) {
-    for (auto &weights : gradients.weights) {
-        for (auto &weight : weights) {
-            weight = max(-clip_value, min(weight, clip_value));
+void BackPropagation::calculate_gradient(const Layer &layer, const vector<double> &deltas, const vector<double> &prevLayer, LayerParameters &gradient_) {
+    calculate_gradient_for_bias(layer, deltas, gradient_);
+    calculate_gradient_for_weights(layer, prevLayer, deltas, gradient_);
+}
+
+vector<double> BackPropagation::calculate_delta_for_hidden(const Layer &current_layer, const Layer &next_layer, const vector<double> &next_deltas) {
+    vector<double> deltas(current_layer.getSize(), 0.0);
+
+    for (int i = 0; i < current_layer.getSize(); i++) {
+        deltas[i] = 0.0;
+        for (int j = 0; j < next_layer.getSize(); j++) {
+            deltas[i] += next_deltas[j] * next_layer.getWeight(j, i);
         }
+
+        deltas[i] *= ActivationFunctions::DerivativeRelu(current_layer.getDots().net[i]);
+    }
+
+    return deltas;
+}
+
+void BackPropagation::calculate_gradient_for_bias(const Layer &layer, const vector<double> &deltas, LayerParameters &gradients) {
+    for (int i = 0; i < layer.getSize(); i++) {
+        gradients.bias[i] += clip_gradients(deltas[i]);
     }
 }
 
-gradient_layer BackPropagation::calculate_gradient(Layer &layer, vector<double> &deltas) {
-    gradient_layer gradient(layer.getSize(), layer.getPrevSize());
+void BackPropagation::calculate_gradient_for_weights(const Layer &layer, const vector<double> &prevLayer, const vector<double> &deltas, LayerParameters &gradients) {
     for (int i = 0; i < layer.getSize(); i++) {
         for (int j = 0; j < layer.getPrevSize(); j++) {
-            gradient.weights[i][j] = deltas[i] * layer.getDots()[i].out;
+            gradients.weights[i][j] += clip_gradients(deltas[i] * prevLayer[j]);
         }
     }
-
-    clip_gradients(gradient, CLIP_GRADIENTS);
-    return gradient;
 }
 
-vector<double> BackPropagation::calculate_derivative(Layer &layer) {
-    vector<double> derivatives(layer.getSize(), 1.0);
+vector<double> BackPropagation::calculate_delta_for_output(const vector<double> &out, const int target) {
+    vector<double> deltas(out);
 
-    if (layer.getType() == LayerType::HIDDEN) {
-        for (int i = 0; i < layer.getSize(); i++) {
-            if (layer.getDots()[i].out < 0) {
-                derivatives[i] = RELU_LEAKY_ALPHA;
-            }
-        }
-    }
-    return derivatives;
+    deltas[target] -= 1.0;
+
+    return deltas;
 }
 
-vector<double> BackPropagation::calculate_delta(vector<double> &target, vector<double> &derivatives) {
-    vector<double> new_deltas;
-    for (int i = 0; i < target.size(); i++) {
-        new_deltas.push_back(target[i] * derivatives[i]);
-    }
-
-    return new_deltas;
-}
-
-void BackPropagation::calculate_pattern_gradients(TrainBoard &target_, gradient &gradients, neural_network &temp_network) {
+void BackPropagation::calculate_pattern_gradients(const TrainBoard &target, gradient &_gradients, const neural_network &temp_network) {
     vector<double> deltas;
 
-    for (int layer_index = gradients.gradients.size() - 1; layer_index > 0; layer_index--) {
-        Layer &layer = temp_network.layers[layer_index + 1];
-        Layer &next_layer = temp_network.layers[layer_index + ((layer.getType() == LayerType::OUTPUT) ? 0 : 2)];
+    for (int layer_index = _gradients.gradients.size() - 1; layer_index >= 0; layer_index--) {
+        Layer &layer = *temp_network.layers[layer_index];
 
-        vector<double> target = calculate_target(layer, next_layer, deltas, target_.prediction_target);
-        vector<double> derivatives = calculate_derivative(layer);
+        if (layer.getType() == OUTPUT) {
+            deltas = calculate_delta_for_output(layer.getOut(), target.best_next_move);
+        } else {
+            deltas = calculate_delta_for_hidden(layer, *temp_network.layers[layer_index + 1], deltas);
+        }
 
-        deltas = calculate_delta(target, derivatives);
-
-        gradients.gradients[layer_index].add(calculate_gradient(layer, deltas));
+        if (layer_index == 0) {
+            calculate_gradient(layer, deltas, target.board, _gradients.gradients[layer_index]);
+        } else {
+            calculate_gradient(layer, deltas, temp_network.layers[layer_index - 1]->getOut(), _gradients.gradients[layer_index]);
+        }
     }
 }
 
-void BackPropagation::check_for_nan(const vector<double> &values) {
-    if (isnan(values[0]) || isinf(values[0])) {
-        cerr << "NaN/Inf detected in " << values[0] << endl;
-        exit(1);
-    }
+double BackPropagation::run_back_propagation(const TrainBoard &board, gradient &local_gradient) {
+    model.run_model(board.board);
+    calculate_pattern_gradients(board, local_gradient, model._model->network);
+
+    return get_total_error(model._model->network, board.best_next_move);
 }
 
-double BackPropagation::run_back_propagation(TrainBoard &board, gradient &gradients) {
-    neural_network temp_network(model._model->network);
-
-    model._model->run_model(board.board, temp_network);
-    calculate_pattern_gradients(board, gradients, temp_network);
-
-    return get_total_error(board, temp_network);
-}
-
-double BackPropagation::run_back_propagation(vector<TrainBoard> &boards) {
-    gradients.reset();
+double BackPropagation::run_back_propagation(const vector<TrainBoard> &boards, const double learning_rate) {
+    const int batch_size = boards.size();
+    const neural_network &network = model._model->network;
     double error = 0.0;
 
-    int thread_count = thread::hardware_concurrency();
-    vector<thread> threads(thread_count);
+    global_gradient.reset();
 
-    for (int i = 0; i < thread_count; i++) {
-        threads[i] = thread([&, i] {
-            for (int j = i; j < boards.size(); j += thread_count) {
-                error += run_back_propagation(boards[j], gradients);
-            }
-        });
-
-        threads[i].join();
+    for (int i = 0; i < batch_size; i++) {
+        error += run_back_propagation(boards[i], global_gradient);
     }
 
-    int batch_size = boards.size();
-
-    check_for_nan(gradients.gradients[1].weights[0]);
-    update_weights(batch_size, gradients);
-    error /= batch_size;
-    return error;
+    update_weights(batch_size, global_gradient, learning_rate);
+    return error / batch_size;
 }
 
-void BackPropagation::update_weights(int batch_size, gradient &gradients) {
+void BackPropagation::update_weights(int batch_size, gradient &gradients, double learning_rate) {
     gradients.multiply(-learning_rate / batch_size);
     model._model->updateWeights(gradients);
 }

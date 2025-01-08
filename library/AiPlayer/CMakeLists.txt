@@ -5,14 +5,19 @@ add_library(
   AiPlayer STATIC
   src/AiPlayer.cpp
   src/model/AiModel.cpp
-  src/model/layer.cpp
   src/model/model.cpp
   src/trainer/trainer.cpp
   src/trainer/database/dataBase.cpp
-  src/model/ActivationFunctions.cpp
+  src/model/activations.cpp
   src/trainer/backPropagation.cpp
   src/model/neuralNetwork.cpp
-  src/trainer/gradient.cpp)
+  src/trainer/gradient.cpp
+  src/model/LayerParameters.cpp
+  src/model/neuron.cpp
+  src/model/Layers/Hidden_Layer.cpp
+  src/model/Layers/layer.cpp
+  src/model/Layers/Output_Layer.cpp)
+
 add_subdirectory(matplotplusplus)
 
 target_link_libraries(AiPlayer TicTacToe matplot)

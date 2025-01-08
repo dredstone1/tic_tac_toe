@@ -19,10 +19,11 @@ class Trainer {
     int batch_count;
     void print_progress_bar(int current, int total);
     int last_progress;
+    double learning_rate;
 
   public:
     Trainer(string _file_name, AiModel *_model, int _batch_size, int _batch_count, double _learning_rate);
-    int train();
+    void train();
     ~Trainer() = default;
 };
 

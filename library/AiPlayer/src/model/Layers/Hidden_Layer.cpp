@@ -1,0 +1,14 @@
+#include "Hidden_Layer.hpp"
+#include "../activations.hpp"
+
+void Hidden_Layer::forward(const vector<double> &metrix) {
+    for (int i = 0; i < dots.size(); i++) {
+        dots.net[i] = Parameters->bias[i];
+
+        for (int j = 0; j < metrix.size(); j++) {
+            dots.net[i] += Parameters->weights[i][j] * metrix[i];
+        }
+
+        dots.out[i] = ActivationFunctions::Relu(dots.net[i]);
+    }
+}

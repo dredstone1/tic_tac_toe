@@ -23,4 +23,4 @@ class Player : public IPlayer {
     TicTacToe::cell getPlayerMode() override { return playerMode; }
 };
 
-#endif // IPLAYER_HPP
+#endif // PLAYER_HPP

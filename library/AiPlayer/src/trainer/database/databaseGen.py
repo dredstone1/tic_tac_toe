@@ -1,190 +1,122 @@
-from math import floor, exp
-from random import choice, randrange
+import sys
 
-def check_win(board):
-    if board[0] == board[1] == board[2] and board[0] != 0.5:
+def is_winner(board, player):
+    """Checks if the given player has won."""
+    # Check rows
+    for i in range(0, 9, 3):
+        if all(board[i + j] == player for j in range(3)):
+            return True
+    # Check columns
+    for i in range(3):
+        if all(board[i + j] == player for j in range(0, 9, 3)):
+            return True
+    # Check diagonals
+    if all(board[i] == player for i in [0, 4, 8]):
         return True
-    elif board[3] == board[4] == board[5] and board[3] != 0.5:
+    if all(board[i] == player for i in [2, 4, 6]):
         return True
-    elif board[6] == board[7] == board[8] and board[6] != 0.5:
-        return True
-    elif board[0] == board[3] == board[6] and board[0] != 0.5:
-        return True
-    elif board[1] == board[4] == board[7] and board[1] != 0.5:
-        return True
-    elif board[2] == board[5] == board[8] and board[2] != 0.5:
-        return True
-    elif board[0] == board[4] == board[8] and board[0] != 0.5:
-        return True
-    elif board[2] == board[4] == board[6] and board[2] != 0.5:
-        return True
-    else:
-        return False
+    return False
 
-def get_win_draw_or_lose_value_for_O(board):
-    if board[0] == board[1] == board[2] == board[3] == board[4] == board[5] == board[6] == board[7] == board[8] != 0.5:
-        return 0;
-    if board[0] == board[1] == board[2] == 0.0:
-        return 10
-    if board[3] == board[4] == board[5] == 0.0:
-        return 10
-    if board[6] == board[7] == board[8] == 0.0:
-        return 10
-    if board[0] == board[3] == board[6] == 0.0:
-        return 10
-    if board[1] == board[4] == board[7] == 0.0:
-        return 10
-    if board[2] == board[5] == board[8] == 0.0:
-        return 10
-    if board[0] == board[4] == board[8] == 0.0:
-        return 10
-    if board[2] == board[4] == board[6] == 0.0:
-        return 10
-    if (check_win(board)):
-        return -10
-    return 5
+def is_full(board):
+    """Checks if the board is full."""
+    return ' ' not in board
 
-def get_next_possible_random_moves_move(board):
-    next_moves = randrange(0,8)
+def get_possible_moves(board):
+    """Returns a list of indices of empty cells."""
+    return [i for i, cell in enumerate(board) if cell == ' ']
 
-    while (board[next_moves] != 0.5):
-        next_moves = randrange(0,8)
+def get_opponent(player):
+    """Returns the opponent's mark."""
+    return 'O' if player == 'X' else 'X'
 
-    return next_moves
+def minimax(board, player):
+    """
+    Calculates the best move for the given player using the minimax algorithm.
+    Returns a dictionary: {'score': score, 'move': move_index}
+    """
+    opponent = get_opponent(player)
+    possible_moves = get_possible_moves(board)
 
-def generate_X_Boards(x):
-    new_boards = []
-    game_length = 0
-    while len(new_boards) < x:
-        board = [0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5]
-        turn = 1.0
-        fix = 0
-        game_length = choice([1,3,5,7])
+    if is_winner(board, opponent):
+        return {'score': -1 if player == 'X' else 1, 'move': None}
+    if is_full(board):
+        return {'score': 0, 'move': None}
 
-        for j in range(0, game_length):
-            board[get_next_possible_random_moves_move(board)] = turn
-            if get_win_draw_or_lose_value_for_O(board) != 5:
-                break
+    best_move = None
+    if player == 'X':
+        best_score = -2  # Initialize with negative infinity
+        for move in possible_moves:
+            new_board = list(board)
+            new_board[move] = player
+            score = minimax(tuple(new_board), opponent)['score']
+            if score > best_score:
+                best_score = score
+                best_move = move
+    else:  # player == 'O'
+        best_score = 2   # Initialize with positive infinity
+        for move in possible_moves:
+            new_board = list(board)
+            new_board[move] = player
+            score = minimax(tuple(new_board), opponent)['score']
+            if score < best_score:
+                best_score = score
+                best_move = move
 
-            if turn == 1.0:
-                turn = 0.0
-            elif turn == 0.0:
-                turn = 1.0
-            fix = 1
-        if board not in new_boards and fix == 1:
-            new_boards.append(board)
-    return new_boards
+    return {'score': best_score, 'move': best_move}
 
-def get_next_turn(board):
-    if board.count(0.5) % 2 == 0:
-        return 1.0
-    else:
-        return 0.0
+def generate_all_boards():
+    """Generates all possible tic-tac-toe boards and their best next moves."""
+    all_boards_with_moves = {}
 
-def get_best_next_move(board, next_move, iterations):
-    if iterations > 8:
-        return 0.0
-    if board[next_move] != 0.5:
-        return 0.0
-    new_board = board.copy()
+    def generate(board):
+        board_tuple = tuple(board)
+        if board_tuple in all_boards_with_moves:
+            return
 
-    new_board[next_move] = get_next_turn(board)
-    if get_win_draw_or_lose_value_for_O(board) == 10.0:
-        return 30.0 - iterations
-    elif get_win_draw_or_lose_value_for_O(board) == -10.0:
-        return 9.0 - iterations
-    elif get_win_draw_or_lose_value_for_O(board) == 0.0:
-        return 18.0-iterations
-    else:
-        return max([get_best_next_move(new_board, i, iterations + 1) for i in range(9)])
+        x_count = board.count('X')
+        o_count = board.count('O')
 
-def max_for_list(list):
-    max = list[0]
-    for i in list:
-        if i > max:
-            max = i
-    return max
+        if is_winner(board, 'X') or is_winner(board, 'O') or is_full(board):
+            all_boards_with_moves[board_tuple] = "Game Over"
+            return
 
-def sum_for_list(list):
-    sum = 0.0
-    for i in list:
-        sum += i
-    return sum
+        if x_count == o_count:
+            # X's turn
+            best_move_info = minimax(board_tuple, 'X')
+            best_move = best_move_info['move']
+            all_boards_with_moves[board_tuple] = best_move
 
-def softmax(vector):
-    max = max_for_list(vector)
-    sum = 0
+            for i in get_possible_moves(board):
+                new_board = list(board)
+                new_board[i] = 'X'
+                generate(new_board)
+        elif x_count > o_count:
+            # O's turn
+            best_move_info = minimax(board_tuple, 'O')
+            best_move = best_move_info['move']
+            all_boards_with_moves[board_tuple] = best_move
 
-    for value in range(len(vector)):
-        if vector[value] != 0.0:
-            vector[value] = floor(exp(vector[value] - max) * 1000) / 1000
-        sum += vector[value]
-    for value in range(len(vector)):
-        if vector[value] != 0.0:
-            vector[value] /= sum
+            for i in get_possible_moves(board):
+                new_board = list(board)
+                new_board[i] = 'O'
+                generate(new_board)
 
-    return vector
+    generate([' '] * 9)
+    return all_boards_with_moves
 
-def relu(vector):
-    for value in range(len(vector)):
-        if vector[value] < 0:
-            vector[value] = 0
-    return vector
+filename = "tic_tac_toe_boards_with_moves.txt"
 
-def best_move(vector):
-    best = 0
-    for value in range(len(vector)):
-        if vector[value] > vector[best]:
-            best = value
-    for value in range(len(vector)):
-        if value == best:
-            vector[value] = 1.0
-        else:
-            vector[value] = 0.0
-    return vector
+if __name__ == "__main__":
+    print("Generating all possible Tic-Tac-Toe boards and best moves...")
+    boards_and_moves = generate_all_boards()
+    
+    if len(sys.argv) > 1:
+        filename = sys.argv[1]
 
-def calculate_probabilities(boards):
-    probabilities = []
-    for board in boards:
-        probabilit = []
-        for i in range(9):
-            if board[i] == 0.5:
-                probabilit.append(get_best_next_move(board, i, 0))
-            else:
-                probabilit.append(0.0)
+    with open(filename, "w") as f:
+        f.write(f"Total number of boards: {len(boards_and_moves)}\n\n")
+        for board_tuple, best_move in boards_and_moves.items():
+            board_str = "".join(board_tuple)
+            f.write(f"Board: {board_str}, Best_Next_Move: {best_move}\n")
 
-        probabilities.append(best_move(probabilit))
-
-    return probabilities
-
-def get_string_list(list):
-    string = ""
-    for i in list:
-        string += " " + str(i)
-    return string
-
-def get_string_file(boards, probabilities):
-    string = str(len(boards))
-    for i in range(len(boards)):
-        string += get_string_list(boards[i]) + get_string_list(probabilities[i])
-    return string
-
-
-def write_to_file(boards, probabilities):
-    string = get_string_file(boards, probabilities)
-    with open("database.txt", "w") as file:
-        file.write(string)
-        file.close()
-
-#1035
-boards = generate_X_Boards(1035)
-print("Boards generated")
-
-probabilities = calculate_probabilities(boards)
-print("Probabilities calculated")
-
-write_to_file(boards, probabilities)
-print("File written")
-
-print("Done")
-#this is the worst#this is the worse code i could have written, but it works, and i am happy with it, so deal with it! code i could have written, but it works, and i am happy with it!:)
+    print("All boards and best moves have been saved to tic_tac_toe_boards_with_moves.txt")
