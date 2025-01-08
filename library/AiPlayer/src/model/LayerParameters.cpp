@@ -15,7 +15,7 @@
 //
 //
 //         for (int j = 0; j < prev_size; j++) {
-//             weights = 
+//             weights =
 //         }
 //     }
 // }
@@ -27,31 +27,30 @@ LayerParameters::LayerParameters(const int size, const int prev_size, const bool
     if (!random)
         return;
 
-    // Initialize weights using a random distribution
-    std::random_device rd;
-    std::mt19937 gen(rd());
+    random_device rd;
+    mt19937 gen(rd());
 
     // Choose an appropriate initialization method:
     // 1. Xavier/Glorot Initialization (Normal Distribution):
     //    - Good for layers with activation functions like tanh or sigmoid.
     //    - Scales the variance of the weights based on the number of input and output connections.
 
-    //    std::normal_distribution<> dist(0.0, sqrt(2.0 / (prev_size + size))); 
+    //    normal_distribution<> dist(0.0, sqrt(2.0 / (prev_size + size)));
 
     // 2. He Initialization (Normal Distribution):
     //    - Good for layers with ReLU or Leaky ReLU activations.
     //    - Scales the variance of the weights based primarily on the number of input connections.
 
-    std::normal_distribution<> dist(0.0, sqrt(2.0 / prev_size));
+    normal_distribution<> dist(0.0, sqrt(2.0 / (prev_size+1)));
 
     // 3. Uniform Distribution (within a specific range):
     //    - Can also be used, but normal distributions are generally preferred.
     // double range = sqrt(6.0 / (prev_size + size)); // Example range for Xavier uniform
-    // std::uniform_real_distribution<> dist(-range, range); 
+    // uniform_real_distribution<> dist(-range, range);
 
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < prev_size; j++) {
-            weights[i][j] = dist(gen); // Assign the random weight
+            weights[i][j] = dist(gen);
         }
     }
 }

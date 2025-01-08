@@ -35,9 +35,9 @@ int main(int argc, char *argv[]) {
                 model.save("model1");
                 break;
             case 't':
-                int batch_size = 36, batch_count = 4000;
+                int batch_size = 9, batch_count = 10000;
 
-                double learning_rate = 0.025;
+                double learning_rate = 0.001;
 
                 Trainer trainer(
                     "database",

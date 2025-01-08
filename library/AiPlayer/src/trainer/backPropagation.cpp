@@ -44,7 +44,7 @@ vector<double> BackPropagation::calculate_delta_for_hidden(const Layer &current_
             deltas[i] += next_deltas[j] * next_layer.getWeight(j, i);
         }
 
-        deltas[i] *= ActivationFunctions::DerivativeRelu(current_layer.getDots().net[i]);
+        deltas[i] *= ActivationFunctions::DerivativeLeakyRelu(current_layer.getDots().net[i]);
     }
 
     return deltas;
@@ -68,7 +68,7 @@ vector<double> BackPropagation::calculate_delta_for_output(const vector<double> 
     vector<double> deltas(out);
 
     deltas[target] -= 1.0;
-
+    
     return deltas;
 }
 
