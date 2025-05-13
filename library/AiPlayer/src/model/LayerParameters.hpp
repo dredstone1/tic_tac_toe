@@ -19,4 +19,13 @@ struct LayerParameters {
     void reset();
 };
 
+static double fix_value(double value) {
+    if (value > 1.0) {
+        return 1.0;
+    } else if (value < -1.0) {
+        return -1.0;
+    }
+    return value;
+}
+
 #endif // LAYER_PARAMETERS_HPP

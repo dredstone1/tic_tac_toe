@@ -35,12 +35,12 @@ int main(int argc, char *argv[]) {
                 model.save("model1");
                 break;
             case 't':
-                int batch_size = 9, batch_count = 10000;
-
-                double learning_rate = 0.001;
+                int batch_size = 10, batch_count = 100;
+                
+                double learning_rate = 0.0001;
 
                 Trainer trainer(
-                    "database",
+                    "database2",
                     &model,
                     batch_size,
                     batch_count,
@@ -55,7 +55,8 @@ int main(int argc, char *argv[]) {
 
         AiPlayer aiPlayer(&model);
 
-        Game game(&aiPlayer, &StandardPlayer1);
+        Game game(&StandardPlayer1, &aiPlayer);
+        // Game game(&aiPlayer, &StandardPlayer1);
         game.run();
         return 0;
     }

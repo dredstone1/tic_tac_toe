@@ -1,5 +1,5 @@
-#include "backPropagation.hpp"
 #include "../model/activations.hpp"
+#include "backPropagation.hpp"
 #include "gradient.hpp"
 #include <cmath>
 #include <iostream>

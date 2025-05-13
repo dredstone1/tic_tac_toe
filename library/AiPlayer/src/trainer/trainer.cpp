@@ -68,8 +68,9 @@ void Trainer::train() {
 
     plot(errors);
 
-    save("./graph.svg");
     show();
+    double min = *min_element(errors.begin(), errors.end());
+    printf("Minimum error: %f\n", min);
 }
 
 Trainer::Trainer(string _file_name, AiModel *_model, int _batch_size, int _batch_count, double _learning_rate)

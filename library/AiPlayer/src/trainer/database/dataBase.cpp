@@ -74,6 +74,7 @@ int DataBase::is_X_Turn(const vector<double> &board) {
             o_count++;
         }
     }
+    // X's turn if x_count == o_count, return 0 if it's X's turn
     return x_count == o_count;
 }
 
@@ -112,7 +113,6 @@ int DataBase::load() {
         if (board.best_next_move == -1) {
             continue;
         }
-
         count--;
 
         insert_board(board);
@@ -138,3 +138,4 @@ vector<TrainBoard> DataBase::get_Batch(const int batch_size) {
     }
     return batch;
 }
+
