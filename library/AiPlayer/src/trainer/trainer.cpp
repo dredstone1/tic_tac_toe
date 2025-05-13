@@ -5,7 +5,7 @@
 #include <iostream>
 #include <matplot/matplot.h>
 
-using namespace matplot;
+// using namespace matplot;
 
 void Trainer::print_progress_bar(int current, int total) {
     float progress = (float)current / total;
@@ -64,11 +64,11 @@ void Trainer::train() {
          << "Training Done!" << endl
          << "Training time: " << minutes << " minutes " << seconds << " seconds" << " (" << time_taken_milliseconds << " ms)" << endl;
 
-    title("cost function");
-
-    plot(errors);
-
-    show();
+    // title("cost function");
+    //
+    // plot(errors);
+    //
+    // show();
     double min = *min_element(errors.begin(), errors.end());
     printf("Minimum error: %f\n", min);
 }

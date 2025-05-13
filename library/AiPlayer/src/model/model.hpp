@@ -4,11 +4,15 @@
 #include "../trainer/gradient.hpp"
 #include "Layers/layer.hpp"
 #include "neuralNetwork.hpp"
+#include "../visualizer/visualizer.hpp"
+
+using namespace Visualizer;
 
 class model {
   private:
     neural_network network;
-    static void run_model(const vector<double> &input, neural_network &temp_network);
+    visualizer visual();
+   static void run_model(const vector<double> &input, neural_network &temp_network);
     friend class BackPropagation;
 
   public:

@@ -16,7 +16,9 @@ add_library(
   src/model/neuron.cpp
   src/model/Layers/Hidden_Layer.cpp
   src/model/Layers/layer.cpp
-  src/model/Layers/Output_Layer.cpp)
+  src/model/Layers/Output_Layer.cpp
+  src/visualizer/visualizer.cpp
+  )
 
 add_subdirectory(matplotplusplus)
 
