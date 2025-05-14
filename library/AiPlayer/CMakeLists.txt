@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
 project(AiPlayer)
 
+find_package(SFML 2.6 COMPONENTS graphics window system REQUIRED)
+
 add_library(
   AiPlayer STATIC
   src/AiPlayer.cpp
@@ -22,6 +24,6 @@ add_library(
 
 add_subdirectory(matplotplusplus)
 
-target_link_libraries(AiPlayer TicTacToe matplot)
+target_link_libraries(AiPlayer TicTacToe matplot sfml-graphics sfml-window sfml-system)
 
 target_include_directories(AiPlayer PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
