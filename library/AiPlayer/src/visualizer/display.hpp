@@ -13,6 +13,7 @@ class Display {
 	~Display() = default;
 	void Update();
 	void run();
+    void handleEvents();
 	int isOpen() { return mWindow.isOpen(); }
 };
 } // namespace Visualizer
