@@ -6,7 +6,7 @@
 namespace Visualizer {
 class Display {
   private:
-	sf::RenderWindow mWindow;
+	sf::RenderWindow window;
 
   public:
 	Display();
@@ -14,7 +14,7 @@ class Display {
 	void Update();
 	void run();
     void handleEvents();
-	int isOpen() { return mWindow.isOpen(); }
+	int isOpen() { return window.isOpen(); }
 };
 } // namespace Visualizer
 

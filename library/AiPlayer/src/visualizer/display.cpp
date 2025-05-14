@@ -1,19 +1,19 @@
 #include "display.hpp"
 
 namespace Visualizer {
-Display::Display() : mWindow{sf::VideoMode(800, 600), "hello world"} {
+Display::Display() : window{sf::VideoMode::getDesktopMode(), "hello world"} {
 }
 
 void Display::Update() {
-	mWindow.clear(sf::Color::Red);
-	mWindow.display();
+	window.clear(sf::Color::White);
+	window.display();
 }
 
 void Display::handleEvents() {
 	sf::Event event;
-	while (mWindow.pollEvent(event)) {
+	while (window.pollEvent(event)) {
 		if (event.type == sf::Event::Closed)
-			mWindow.close();
+			window.close();
 	}
 }
 
