@@ -44,24 +44,24 @@ namespace ActivationFunctions {
 // }
 
 static double max_vector(const vector<double> &metrix) {
-    double max = metrix[0];
-    for (auto &value : metrix) {
-        if (value > max) {
-            max = value;
-        }
-    }
-    return max;
+	double max = metrix[0];
+	for (auto &value : metrix) {
+		if (value > max) {
+			max = value;
+		}
+	}
+	return max;
 }
 
 void Softmax(neurons &metrix) {
-    double max = max_vector(metrix.net);
-    double sum = 0.0;
-    for (int i = 0; i < metrix.size(); ++i) {
-        metrix.out[i] = exp(metrix.net[i] - max);
-        sum += metrix.out[i];
-    }
-    for (int i = 0; i < metrix.size(); ++i) {
-        metrix.out[i] /= sum;
-    }
+	double max = max_vector(metrix.net);
+	double sum = 0.0;
+	for (int i = 0; i < metrix.size(); ++i) {
+		metrix.out[i] = exp(metrix.net[i] - max);
+		sum += metrix.out[i];
+	}
+	for (int i = 0; i < metrix.size(); ++i) {
+		metrix.out[i] /= sum;
+	}
 }
 } // namespace ActivationFunctions

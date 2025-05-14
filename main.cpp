@@ -10,57 +10,57 @@ using namespace TicTacToe;
 using namespace std;
 
 int main(int argc, char *argv[]) {
-    if (argc > 1) {
-        StandardPlayer StandardPlayer1;
-        cout << "Start Game" << endl;
+	if (argc > 1) {
+		StandardPlayer StandardPlayer1;
+		cout << "Start Game" << endl;
 
-        if (argc > 1 && argv[1][0] == '2') {
-            cout << "2 Players Game" << endl;
-            StandardPlayer StandardPlayer2;
-            Game game(&StandardPlayer1, &StandardPlayer2);
-            game.run();
-            return 0;
-        }
+		if (argc > 1 && argv[1][0] == '2') {
+			cout << "2 Players Game" << endl;
+			StandardPlayer StandardPlayer2;
+			Game game(&StandardPlayer1, &StandardPlayer2);
+			game.run();
+			return 0;
+		}
 
-        cout << "AI Game" << endl;
+		cout << "AI Game" << endl;
 
-        AiModel model;
-        char *arg = argv[1];
-        while (*(arg) != '\0') {
-            switch (*arg) {
-            case 'l':
-                model.load("model1");
-                break;
-            case 's':
-                model.save("model1");
-                break;
-            case 't':
-                int batch_size = 10, batch_count = 100;
-                
-                double learning_rate = 0.0001;
+		AiModel model;
+		char *arg = argv[1];
+		while (*(arg) != '\0') {
+			switch (*arg) {
+			case 'l':
+				model.load("model1");
+				break;
+			case 's':
+				model.save("model1");
+				break;
+			case 't':
+				int batch_size = 10, batch_count = 100;
 
-                Trainer trainer(
-                    "database2",
-                    &model,
-                    batch_size,
-                    batch_count,
-                    learning_rate);
+				double learning_rate = 0.0001;
 
-                trainer.train();
-                model.save("model1");
-                break;
-            }
-            arg++;
-        }
+				Trainer trainer(
+				    "database2",
+				    &model,
+				    batch_size,
+				    batch_count,
+				    learning_rate);
 
-        AiPlayer aiPlayer(&model);
+				trainer.train();
+				model.save("model1");
+				break;
+			}
+			arg++;
+		}
 
-        Game game(&StandardPlayer1, &aiPlayer);
-        // Game game(&aiPlayer, &StandardPlayer1);
-        game.run();
-        return 0;
-    }
+		AiPlayer aiPlayer(&model);
 
-    cout << "Need at least 1 input!" << endl;
-    return 1;
+		Game game(&StandardPlayer1, &aiPlayer);
+		// Game game(&aiPlayer, &StandardPlayer1);
+		game.run();
+		return 0;
+	}
+
+	cout << "Need at least 1 input!" << endl;
+	return 1;
 }

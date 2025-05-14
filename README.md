@@ -1,3 +1,3 @@
 ## tic_tac_toe
 
-### still in development! ###
+### still in development!

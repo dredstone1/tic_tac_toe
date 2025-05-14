@@ -7,14 +7,14 @@
 namespace TicTacToe {
 class Game {
   public:
-    Game(Player *playerX_, Player *playerO_);
-    void run();
-    PlayerAdapter playerO;
-    PlayerAdapter playerX;
-    ~Game();
+	Game(Player *playerX_, Player *playerO_);
+	void run();
+	PlayerAdapter playerO;
+	PlayerAdapter playerX;
+	~Game();
 
   private:
-    Board *board;
+	Board *board;
 };
 } // namespace TicTacToe
 

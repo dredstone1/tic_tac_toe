@@ -36,31 +36,31 @@ namespace ActivationFunctions {
 // };
 
 inline double Relu(const double x) {
-    return max(0.0, x);
+	return max(0.0, x);
 }
 inline double DerivativeRelu(const double x) {
-    return (x > 0) ? 1.0 : 0.0;
+	return (x > 0) ? 1.0 : 0.0;
 }
 
 inline double LeakyRelu(const double x) {
-    return (x > 0) ? x : RELU_LEAKY_ALPHA * x;
+	return (x > 0) ? x : RELU_LEAKY_ALPHA * x;
 }
 inline double DerivativeLeakyRelu(const double x) {
-    return (x > 0) ? 1.0 : RELU_LEAKY_ALPHA;
+	return (x > 0) ? 1.0 : RELU_LEAKY_ALPHA;
 }
 
 inline double Sigmoid(const double x) {
-    return 1.0 / (1.0 + exp(-x));
+	return 1.0 / (1.0 + exp(-x));
 }
 inline double DerivativeSigmoid(const double x) {
-    return x * (1.0 - x);
+	return x * (1.0 - x);
 }
 
 inline double Tanh(const double x) {
-    return tanh(x);
+	return tanh(x);
 }
 inline double DerivativeTanh(const double x) {
-    return 1.0 - x * x;
+	return 1.0 - x * x;
 }
 
 void Softmax(neurons &metrix);
