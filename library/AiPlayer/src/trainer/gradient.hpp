@@ -7,13 +7,13 @@
 using namespace std;
 
 typedef struct gradient {
-    vector<LayerParameters> gradients;
-    void add(const gradient &new_gradient);
-    void multiply(const double value);
-    void reset();
-    ~gradient() = default;
-    gradient(const int input_size, const int output_size, const int hidden_layers_size, const int hidden_layers_count);
-    gradient(const gradient &other);
+	vector<LayerParameters> gradients;
+	void add(const gradient &new_gradient);
+	void multiply(const double value);
+	void reset();
+	~gradient() = default;
+	gradient(const int input_size, const int output_size, const int hidden_layers_size, const int hidden_layers_count);
+	gradient(const gradient &other);
 } gradient;
 
 #endif // GRADIENT_HPP

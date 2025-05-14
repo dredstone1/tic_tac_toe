@@ -19,7 +19,8 @@ add_library(
   src/model/Layers/Hidden_Layer.cpp
   src/model/Layers/layer.cpp
   src/model/Layers/Output_Layer.cpp
-  src/visualizer/visualizer.cpp
+  src/visualizer/VisualizerRenderer.cpp
+  src/visualizer/VisualizerController.cpp
   )
 
 add_subdirectory(matplotplusplus)
