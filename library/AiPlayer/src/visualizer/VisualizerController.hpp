@@ -7,9 +7,10 @@
 namespace Visualizer {
 class visualizerController {
   private:
-	sf::RenderWindow window;
 	void update_display();
-	VisualizerRenderer visual;
+	unique_ptr<VisualizerRenderer> renderer;
+	void stop();
+	void start();
 
   public:
 	visualizerController(const neural_network &network);

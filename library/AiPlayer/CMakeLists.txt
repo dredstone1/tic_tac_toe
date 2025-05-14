@@ -21,6 +21,7 @@ add_library(
   src/model/Layers/Output_Layer.cpp
   src/visualizer/VisualizerRenderer.cpp
   src/visualizer/VisualizerController.cpp
+  src/visualizer/display.cpp
   )
 
 add_subdirectory(matplotplusplus)
