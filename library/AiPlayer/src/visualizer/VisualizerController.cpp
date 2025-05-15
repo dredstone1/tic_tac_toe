@@ -1,9 +1,10 @@
 #include "VisualizerController.hpp"
+#include "VisualizerRenderer.hpp"
 
 namespace Visualizer {
 
-visualizerController::visualizerController(const neural_network &network) : renderer(std::make_unique<VisualizerRenderer>(network)) {
-	start();
+visualizerController::visualizerController(const neural_network &network) {
+	start(network);
 }
 
 visualizerController::~visualizerController() {
@@ -11,20 +12,36 @@ visualizerController::~visualizerController() {
 }
 
 void visualizerController::stop() {
+	running = false;
 	if (renderer) {
-		renderer->stoptLoop();
+		renderer->close();
 	}
 }
 
-void visualizerController::start() {
-	renderer->startLoop();
+void visualizerController::start(const neural_network &network) {
+	if (running)
+		return;
+
+	running = true;
+	display_thread = thread(&visualizerController::start_visuals, this, std::cref(network));
+}
+
+void visualizerController::start_visuals(const neural_network &network) {
+	running = true;
+	renderer = new VisualizerRenderer(network);
+	delete renderer;
+	running = false;
 }
 
 void visualizerController::update(const neural_network &network) {
-	renderer->update(network);
+	if (renderer) {
+		renderer->update(network);
+	}
 }
 
 void visualizerController::update(const gradient &gradient_) {
-	renderer->update(gradient_);
+	if (renderer) {
+		renderer->update(gradient_);
+	}
 }
 } // namespace Visualizer

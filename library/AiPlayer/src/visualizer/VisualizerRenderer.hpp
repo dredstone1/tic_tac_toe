@@ -3,33 +3,29 @@
 
 #include "../model/neuralNetwork.hpp"
 #include "../trainer/gradient.hpp"
-#include "display.hpp"
+#include <SFML/Graphics.hpp>
 #include <atomic>
-#include <mutex>
-#include <thread>
 
 using namespace std;
 
 namespace Visualizer {
 class VisualizerRenderer {
   private:
-	thread display_thread;
-	mutex mtx;
-	atomic<bool> running_{false};
-	atomic<bool> needUpdate{false};
-	void Update();
+	sf::RenderWindow window;
 	neural_network LocalNetwork;
-	Display display;
+	atomic<bool> needUpdate{true};
+	atomic<bool> running{false};
+    void update();
 	gradient LocalGradient;
 	void renderLoop();
 	void processEvents();
 
   public:
 	VisualizerRenderer(const neural_network &network);
-	void startLoop();
-	void stoptLoop();
+	~VisualizerRenderer();
 	void update(const neural_network &network);
 	void update(const gradient &gradient);
+	void close();
 };
 } // namespace Visualizer
 

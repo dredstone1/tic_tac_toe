@@ -3,14 +3,21 @@
 
 #include "VisualizerRenderer.hpp"
 #include <SFML/Graphics.hpp>
+#include <atomic>
+#include <mutex>
+#include <thread>
 
 namespace Visualizer {
 class visualizerController {
   private:
 	void update_display();
-	unique_ptr<VisualizerRenderer> renderer;
+	mutex mtx;
+	atomic<bool> running{false};
+	VisualizerRenderer *renderer;
 	void stop();
-	void start();
+	void start(const neural_network &network);
+	thread display_thread;
+	void start_visuals(const neural_network &network);
 
   public:
 	visualizerController(const neural_network &network);
