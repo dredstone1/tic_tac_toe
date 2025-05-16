@@ -2,9 +2,10 @@
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/System/Vector2.hpp>
+#include <cmath>
 
 namespace Visualizer {
-visualL::visualL(Layer const &other, const int size_a) : Layer(other.getSize(), other.getPrevSize()) {
+visualL::visualL(Layer const &other, const int size_a) : Layer(other.getSize(), other.getPrevSize(), true) {
 	createLayerVisual(size_a);
 }
 visualL::visualL(int _size, int _prev_size, const int size_a) : Layer(_size, _prev_size) {
@@ -33,10 +34,42 @@ sf::Sprite visualL::getSprite() {
 	return sf::Sprite(layerRender.getTexture());
 }
 
+float visualL::calculateGap(const float size) {
+	return (LAYER_HEIGHT - (size * NEURON_RADIUS * 2)) / (size + 1);
+}
+
+float visualL::calculateDistance(sf::Vector2f pos1, sf::Vector2f pos2) {
+	return sqrt(pow(pos1.x - pos2.x, 2) + pow(pos1.y - pos2.y, 2));
+}
+
+float visualL::calculateAngle(sf::Vector2f pos1, sf::Vector2f pos2) {
+	double angleRadians = atan2(pos2.y - pos1.y, pos2.x - pos1.x);
+	double angleDegrees = angleRadians * 180.0 / M_PI;
+	return angleDegrees;
+}
+
 void visualL::drawNeurons() {
-	float gap = (LAYER_HEIGHT - (getSize() * NEURON_RADIUS)) / (getSize() + 1);
+	float gap = calculateGap(getSize());
+	float prevGap = calculateGap(getPrevSize());
+
 	for (int neuron = 0; neuron < getSize(); neuron++) {
-		drawNeuron(dots.net[neuron], dots.out[neuron], {LAYER_WIDTH - NEURON_RADIUS * 2, (gap) + neuron * (gap + NEURON_RADIUS)});
+		float x = LAYER_WIDTH - NEURON_RADIUS * 2;
+		float y = gap + neuron * (gap + NEURON_RADIUS * 2);
+		drawNeuron(dots.net[neuron], dots.out[neuron], {x, y});
+
+		for (int neuronP = 0; neuronP < getPrevSize(); neuronP++) {
+			float xP = 0.f;
+			float yP = prevGap + neuronP * (prevGap + NEURON_RADIUS * 2);
+
+			float width = calculateDistance({x, y}, {xP, yP});
+			float angle = calculateAngle({xP, yP}, {x, y});
+
+			sf::RectangleShape line({width, 5 * (float)Parameters->weights[neuron][neuronP]});
+			line.setFillColor(sf::Color::Black);
+			line.setPosition(xP, yP+NEURON_RADIUS);
+			line.setRotation(angle);
+			layerRender.draw(line);
+		}
 	}
 }
 

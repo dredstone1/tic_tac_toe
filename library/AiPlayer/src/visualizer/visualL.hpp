@@ -20,6 +20,9 @@ class visualL : public Layer {
 	void display();
 	void drawNeuron(const double input, const double output, sf::Vector2f pos);
 	void drawNeurons();
+	static float calculateGap(const float size);
+	static float calculateDistance(sf::Vector2f pos1, sf::Vector2f pos2);
+    static float calculateAngle(sf::Vector2f pos1, sf::Vector2f pos2);
 
   public:
 	visualL(int _size, int _prev_size, const int size_a);
