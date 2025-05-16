@@ -19,6 +19,7 @@ void VisualizerRenderer::processEvents() {
 }
 
 void VisualizerRenderer::renderObjects() {
+	visualNetwork.render();
 	// sf::Font font;
 	// string path = string(RESOURCE_DIR) + "/Inter.ttc";
 	// if (!font.loadFromFile(path)) {
@@ -31,6 +32,7 @@ void VisualizerRenderer::renderObjects() {
 	// text.setFillColor(sf::Color::Black);
 	// text.setPosition(100.f, 100.f);
 	// window.draw(text);
+	window.draw(visualNetwork.getSprite());
 }
 
 void VisualizerRenderer::update() {

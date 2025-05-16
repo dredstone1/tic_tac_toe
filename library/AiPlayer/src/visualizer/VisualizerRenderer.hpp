@@ -18,7 +18,7 @@ class VisualizerRenderer {
 	void update();
 	void renderLoop();
 	void processEvents();
-    void renderObjects();
+	void renderObjects();
 
   public:
 	VisualizerRenderer(const neural_network &network);
