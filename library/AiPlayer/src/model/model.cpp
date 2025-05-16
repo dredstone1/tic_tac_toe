@@ -3,6 +3,9 @@
 #include <iostream>
 #include <vector>
 
+model::model(const int input_size, const int output_size, const int hidden_layers_size, const int hidden_layers_count) : network(input_size, output_size, hidden_layers_size, hidden_layers_count), visual(network) {
+}
+
 void model::run_model(const vector<double> &input) {
 	run_model(input, network);
 }

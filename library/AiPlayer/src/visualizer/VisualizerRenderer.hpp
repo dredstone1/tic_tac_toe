@@ -1,8 +1,8 @@
 #ifndef VISUALIZER
 #define VISUALIZER
 
-#include "../model/neuralNetwork.hpp"
 #include "../trainer/gradient.hpp"
+#include "visualNN.hpp"
 #include <SFML/Graphics.hpp>
 #include <atomic>
 
@@ -12,13 +12,13 @@ namespace Visualizer {
 class VisualizerRenderer {
   private:
 	sf::RenderWindow window;
-	neural_network LocalNetwork;
+	visualNN visualNetwork;
 	atomic<bool> needUpdate{true};
 	atomic<bool> running{false};
-    void update();
-	gradient LocalGradient;
+	void update();
 	void renderLoop();
 	void processEvents();
+    void renderObjects();
 
   public:
 	VisualizerRenderer(const neural_network &network);

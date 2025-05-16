@@ -1,9 +1,10 @@
 #include "VisualizerRenderer.hpp"
+#include "visualNN.hpp"
 #include <SFML/Window/Event.hpp>
 #include <cstdio>
 
 namespace Visualizer {
-VisualizerRenderer::VisualizerRenderer(const neural_network &network) : LocalNetwork(network), LocalGradient(network.input_size, network.output_size, network.hidden_layers_size, network.hidden_layers_count), window(sf::VideoMode(800, 600), "hello world") {
+VisualizerRenderer::VisualizerRenderer(const neural_network &network) : window(sf::VideoMode(800, 600), ""), visualNetwork(network) {
 	renderLoop();
 }
 
@@ -17,8 +18,26 @@ void VisualizerRenderer::processEvents() {
 	}
 }
 
+void VisualizerRenderer::renderObjects() {
+	sf::Font font;
+	string path = string(RESOURCE_DIR) + "/Inter.ttc";
+	if (!font.loadFromFile(path)) {
+		return;
+	}
+	sf::Text text;
+	text.setFont(font);
+	text.setString("Hello, SFML!");
+	text.setCharacterSize(48);
+	text.setFillColor(sf::Color::Black);
+	text.setPosition(100.f, 100.f);
+	window.draw(text);
+}
+
 void VisualizerRenderer::update() {
-	window.clear(sf::Color::Red);
+	window.clear(sf::Color::White);
+
+	renderObjects();
+
 	window.display();
 }
 
@@ -37,9 +56,6 @@ void VisualizerRenderer::renderLoop() {
 }
 
 void VisualizerRenderer::update(const neural_network &new_network) {
-	LocalNetwork.reset();
-	for (int layer = 0; layer < LocalNetwork.getLayerCount(); layer++) {
-	}
 
 	needUpdate = true;
 }

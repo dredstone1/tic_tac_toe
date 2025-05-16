@@ -16,7 +16,7 @@ class model {
 	friend class BackPropagation;
 
   public:
-	model(const int input_size, const int output_size, const int hidden_layers_size, const int hidden_layers_count) : network(input_size, output_size, hidden_layers_size, hidden_layers_count), visual(network) {}
+	model(const int input_size, const int output_size, const int hidden_layers_size, const int hidden_layers_count);
 	~model() = default;
 	void run_model(const vector<double> &input);
 	const vector<double> &getOutput() const;

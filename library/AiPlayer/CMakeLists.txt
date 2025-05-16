@@ -24,9 +24,9 @@ add_library(
   src/visualizer/visualNN.cpp
   src/visualizer/visualL.cpp
   )
-
 add_subdirectory(matplotplusplus)
 
+target_compile_definitions(AiPlayer PUBLIC RESOURCE_DIR="${RESOURCE_DIR}")
 target_link_libraries(AiPlayer TicTacToe matplot sfml-graphics sfml-window sfml-system)
 
 target_include_directories(AiPlayer PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
