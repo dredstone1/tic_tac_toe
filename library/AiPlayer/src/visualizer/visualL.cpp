@@ -7,7 +7,7 @@ visualL::visualL(Layer const &other) : Layer(other.getSize(), other.getPrevSize(
 }
 
 void visualL::createLayerVisual() {
-	layerRender.create(50, 500);
+	layerRender.create(LAYER_WIDTH, LAYER_HEIGHT);
 }
 
 void visualL::display() {

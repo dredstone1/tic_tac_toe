@@ -1,10 +1,11 @@
 #include "VisualizerRenderer.hpp"
 #include "visualNN.hpp"
+#include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Window/Event.hpp>
 #include <cstdio>
 
 namespace Visualizer {
-VisualizerRenderer::VisualizerRenderer(const neural_network &network) : window(sf::VideoMode(800, 600), ""), visualNetwork(network) {
+VisualizerRenderer::VisualizerRenderer(const neural_network &network) : window(sf::VideoMode(1600, 800), "Visualizer", sf::Style::Titlebar | sf::Style::Titlebar), visualNetwork(network) {
 	renderLoop();
 }
 
@@ -13,8 +14,9 @@ void VisualizerRenderer::processEvents() {
 	while (window.pollEvent(event)) {
 		if (event.type == sf::Event::Closed)
 			close();
-		if (event.type == sf::Event::Resized)
+		if (event.type == sf::Event::Resized) {
 			needUpdate = true;
+		}
 	}
 }
 
@@ -32,7 +34,11 @@ void VisualizerRenderer::renderObjects() {
 	// text.setFillColor(sf::Color::Black);
 	// text.setPosition(100.f, 100.f);
 	// window.draw(text);
-	window.draw(visualNetwork.getSprite());
+
+	sf::Sprite visualNetworkSprite = visualNetwork.getSprite();
+	visualNetworkSprite.setPosition(50, 50);
+
+	window.draw(visualNetworkSprite);
 }
 
 void VisualizerRenderer::update() {

@@ -1,4 +1,5 @@
 #include "visualNN.hpp"
+#include "visualL.hpp"
 #include <SFML/Graphics/Sprite.hpp>
 #include <bits/types/locale_t.h>
 
@@ -14,7 +15,7 @@ visualNN::visualNN(const neural_network &network) : LocalGradient(network.input_
 }
 
 void visualNN::createNnVisual() {
-	NNRender.create(NNwidth, NNwidth);
+	NNRender.create(NN_WIDTH, NN_HEIGHT);
 }
 
 void visualNN::display() {
@@ -28,7 +29,9 @@ void visualNN::clear() {
 void visualNN::renderLayers() {
 	for (int layer = 0; layer < NnLength; layer++) {
 		layers[layer]->renderLayer();
-		NNRender.draw(layers[layer]->getSprite());
+		sf::Sprite newSprite = layers[layer]->getSprite();
+		newSprite.setPosition(layer * LAYER_WIDTH, 0);
+		NNRender.draw(newSprite);
 	}
 }
 

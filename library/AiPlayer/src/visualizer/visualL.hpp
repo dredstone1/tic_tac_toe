@@ -6,6 +6,8 @@
 #include <SFML/Graphics/Sprite.hpp>
 
 namespace Visualizer {
+#define LAYER_WIDTH 100
+#define LAYER_HEIGHT 500
 class visualL : public Layer {
   private:
 	sf::RenderTexture layerRender;

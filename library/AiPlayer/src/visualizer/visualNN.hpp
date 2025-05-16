@@ -11,9 +11,8 @@
 using namespace std;
 
 namespace Visualizer {
-#define LayerGap 150
-#define NNwidth 700
-#define NNheigh 700
+#define NN_WIDTH 1500
+#define NN_HEIGHT 700
 
 class visualNN {
   private:
