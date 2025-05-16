@@ -4,18 +4,19 @@
 #include <bits/types/locale_t.h>
 
 namespace Visualizer {
-visualNN::visualNN(const neural_network &network) : LocalGradient(network.input_size, network.output_size, network.hidden_layers_size, network.hidden_layers_count), NnLength(network.getLayerCount()) {
-	layers.reserve(network.getLayerCount());
+visualNN::visualNN(const neural_network &network) : LocalGradient(network.input_size, network.output_size, network.hidden_layers_size, network.hidden_layers_count), NnLength(network.getLayerCount() + 1) {
+	layers.reserve(network.getLayerCount() + 1);
 
+	layers.push_back(new visualL(network.input_size, 0, network.getLayerCount() + 1));
 	for (int layer = 0; layer < network.getLayerCount(); layer++) {
-		layers.push_back(new visualL(*network.layers[layer]));
+		layers.push_back(new visualL(*network.layers[layer], network.getLayerCount() + 1));
 	}
 
 	createNnVisual();
 }
 
 void visualNN::createNnVisual() {
-	NNRender.create(NN_WIDTH, NN_HEIGHT);
+	NNRender.create(NN_WIDTH, LAYER_HEIGHT);
 }
 
 void visualNN::display() {
