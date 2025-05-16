@@ -3,6 +3,7 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <cmath>
+#include <sstream>
 
 namespace Visualizer {
 visualL::visualL(Layer const &other, const int size_a) : Layer(other.getSize(), other.getPrevSize(), true) {
@@ -73,7 +74,7 @@ void visualL::drawNeurons() {
 		float y = gap + neuron * (gap + NEURON_RADIUS * 2);
 		drawNeuron(dots.net[neuron], dots.out[neuron], {x, y});
 
-        drawWeights(neuron, {x, y}, prevGap);
+		drawWeights(neuron, {x, y}, prevGap);
 	}
 }
 
@@ -82,7 +83,25 @@ void visualL::drawNeuron(const double input, const double output, sf::Vector2f p
 	shape.setFillColor(sf::Color::Blue);
 	shape.setPosition(pos);
 
+	sf::Font font;
+	string path = string(RESOURCE_DIR) + "/Inter.ttc";
+	if (!font.loadFromFile(path)) {
+		return;
+	}
+	sf::Text text;
+	text.setFont(font);
+	text.setCharacterSize(10);
+	ostringstream ss;
+	ss << input;
+	text.setString(ss.str());
+	text.setFillColor(sf::Color::White);
+	text.setPosition({pos.x + NEURON_RADIUS, pos.y + NEURON_RADIUS});
 	layerRender.draw(shape);
+	layerRender.draw(text);
 }
 
+void visualL::setDots(vector<double> out, vector<double> net) {
+    dots.net = net;
+    dots.out = out;
+}
 } // namespace Visualizer

@@ -28,6 +28,7 @@ class visualNN {
 	~visualNN() = default;
 	sf::Sprite getSprite();
 	void render();
+	void updateDots(const int layer, vector<double> out, vector<double> net);
 };
 } // namespace Visualizer
 

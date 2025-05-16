@@ -1,7 +1,6 @@
 #ifndef VISUALIZER
 #define VISUALIZER
 
-#include "../trainer/gradient.hpp"
 #include "visualNN.hpp"
 #include <SFML/Graphics.hpp>
 #include <atomic>
@@ -23,10 +22,7 @@ class VisualizerRenderer {
   public:
 	VisualizerRenderer(const neural_network &network);
 	~VisualizerRenderer();
-	void update(const neural_network &network);
-	void update(const gradient &gradient);
 	void close();
 };
 } // namespace Visualizer
-
 #endif

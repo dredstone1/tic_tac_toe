@@ -22,18 +22,6 @@ void VisualizerRenderer::processEvents() {
 
 void VisualizerRenderer::renderObjects() {
 	visualNetwork.render();
-	// sf::Font font;
-	// string path = string(RESOURCE_DIR) + "/Inter.ttc";
-	// if (!font.loadFromFile(path)) {
-	// 	return;
-	// }
-	// sf::Text text;
-	// text.setFont(font);
-	// text.setString("Hello, SFML!");
-	// text.setCharacterSize(48);
-	// text.setFillColor(sf::Color::Black);
-	// text.setPosition(100.f, 100.f);
-	// window.draw(text);
 
 	sf::Sprite visualNetworkSprite = visualNetwork.getSprite();
 	visualNetworkSprite.setPosition(50, 50);
@@ -61,16 +49,6 @@ void VisualizerRenderer::renderLoop() {
 	}
 
 	window.close();
-}
-
-void VisualizerRenderer::update(const neural_network &new_network) {
-
-	needUpdate = true;
-}
-
-void VisualizerRenderer::update(const gradient &gradient_) {
-
-	needUpdate = true;
 }
 
 void VisualizerRenderer::close() {

@@ -12,7 +12,7 @@ class model {
   private:
 	neural_network network;
 	visualizerController visual;
-	static void run_model(const vector<double> &input, neural_network &temp_network);
+	void run_model(const vector<double> &input, neural_network &temp_network);
 	friend class BackPropagation;
 
   public:

@@ -35,13 +35,16 @@ void visualizerController::start_visuals(const neural_network &network) {
 
 void visualizerController::update(const neural_network &network) {
 	if (renderer) {
-		renderer->update(network);
+	}
+}
+
+void visualizerController::updateDots(const int layer, vector<double> out, vector<double> net) {
+	if (renderer) {
 	}
 }
 
 void visualizerController::update(const gradient &gradient_) {
 	if (renderer) {
-		renderer->update(gradient_);
 	}
 }
 } // namespace Visualizer

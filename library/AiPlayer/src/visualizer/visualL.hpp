@@ -20,10 +20,10 @@ class visualL : public Layer {
 	void display();
 	void drawNeuron(const double input, const double output, sf::Vector2f pos);
 	void drawNeurons();
-    void drawWeights(int neuron_i, sf::Vector2f pos, float prevGap);
+	void drawWeights(int neuron_i, sf::Vector2f pos, float prevGap);
 	static float calculateGap(const float size);
 	static float calculateDistance(sf::Vector2f pos1, sf::Vector2f pos2);
-    static float calculateAngle(sf::Vector2f pos1, sf::Vector2f pos2);
+	static float calculateAngle(sf::Vector2f pos1, sf::Vector2f pos2);
 
   public:
 	visualL(int _size, int _prev_size, const int size_a);
@@ -31,6 +31,7 @@ class visualL : public Layer {
 	LayerType getType() const override { return LayerType::NONE; }
 	sf::Sprite getSprite();
 	void renderLayer();
+	void setDots(vector<double> out, vector<double> net);
 };
 } // namespace Visualizer
 

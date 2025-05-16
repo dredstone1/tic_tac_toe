@@ -19,7 +19,9 @@ void print_vector(const vector<double> &metrix) {
 }
 
 void model::run_model(const vector<double> &input, neural_network &temp_network) {
+	visual.updateDots(0, input, input);
 	temp_network.layers[0]->forward(input);
+
 	for (int i = 1; i < temp_network.getLayerCount(); i++) {
 		temp_network.layers[i]->forward(temp_network.layers[i - 1]->getOut());
 	}

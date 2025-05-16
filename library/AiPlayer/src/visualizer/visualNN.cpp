@@ -45,4 +45,8 @@ sf::Sprite visualNN::getSprite() {
 	display();
 	return sf::Sprite(NNRender.getTexture());
 }
+
+void visualNN::updateDots(const int layer, vector<double> out, vector<double> net) {
+	layers[layer]->setDots(out, net);
+}
 } // namespace Visualizer
