@@ -48,6 +48,22 @@ float visualL::calculateAngle(sf::Vector2f pos1, sf::Vector2f pos2) {
 	return angleDegrees;
 }
 
+void visualL::drawWeights(int neuron_i, sf::Vector2f pos, float prevGap) {
+	for (int neuronP = 0; neuronP < getPrevSize(); neuronP++) {
+		float xP = 0.f;
+		float yP = prevGap + neuronP * (prevGap + NEURON_RADIUS * 2);
+
+		float width = calculateDistance(pos, {xP, yP});
+		float angle = calculateAngle({xP, yP}, pos);
+
+		sf::RectangleShape line({width, 5 * (float)Parameters->weights[neuron_i][neuronP]});
+		line.setFillColor(sf::Color::Black);
+		line.setPosition(xP, yP + NEURON_RADIUS);
+		line.setRotation(angle);
+		layerRender.draw(line);
+	}
+}
+
 void visualL::drawNeurons() {
 	float gap = calculateGap(getSize());
 	float prevGap = calculateGap(getPrevSize());
@@ -57,19 +73,7 @@ void visualL::drawNeurons() {
 		float y = gap + neuron * (gap + NEURON_RADIUS * 2);
 		drawNeuron(dots.net[neuron], dots.out[neuron], {x, y});
 
-		for (int neuronP = 0; neuronP < getPrevSize(); neuronP++) {
-			float xP = 0.f;
-			float yP = prevGap + neuronP * (prevGap + NEURON_RADIUS * 2);
-
-			float width = calculateDistance({x, y}, {xP, yP});
-			float angle = calculateAngle({xP, yP}, {x, y});
-
-			sf::RectangleShape line({width, 5 * (float)Parameters->weights[neuron][neuronP]});
-			line.setFillColor(sf::Color::Black);
-			line.setPosition(xP, yP+NEURON_RADIUS);
-			line.setRotation(angle);
-			layerRender.draw(line);
-		}
+        drawWeights(neuron, {x, y}, prevGap);
 	}
 }
 
