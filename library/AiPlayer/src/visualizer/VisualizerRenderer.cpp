@@ -19,18 +19,18 @@ void VisualizerRenderer::processEvents() {
 }
 
 void VisualizerRenderer::renderObjects() {
-	sf::Font font;
-	string path = string(RESOURCE_DIR) + "/Inter.ttc";
-	if (!font.loadFromFile(path)) {
-		return;
-	}
-	sf::Text text;
-	text.setFont(font);
-	text.setString("Hello, SFML!");
-	text.setCharacterSize(48);
-	text.setFillColor(sf::Color::Black);
-	text.setPosition(100.f, 100.f);
-	window.draw(text);
+	// sf::Font font;
+	// string path = string(RESOURCE_DIR) + "/Inter.ttc";
+	// if (!font.loadFromFile(path)) {
+	// 	return;
+	// }
+	// sf::Text text;
+	// text.setFont(font);
+	// text.setString("Hello, SFML!");
+	// text.setCharacterSize(48);
+	// text.setFillColor(sf::Color::Black);
+	// text.setPosition(100.f, 100.f);
+	// window.draw(text);
 }
 
 void VisualizerRenderer::update() {
