@@ -21,13 +21,15 @@ class visualNN {
 	void createNnVisual();
 	void clear();
 	void display();
-	void renderLayers();
+	void renderLayers(const long layersD, const long layersW);
+	void renderLayer(const int layer, const float posx);
+	static bool getBit(const long num, const int index);
 
   public:
 	visualNN(const neural_network &network);
 	~visualNN() = default;
 	sf::Sprite getSprite();
-	void render();
+	void render(const long layersD, const long layersW);
 	void updateDots(const int layer, vector<double> out, vector<double> net);
 	void update(const int layer, const LayerParameters &gradients);
 };

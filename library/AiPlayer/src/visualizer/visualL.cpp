@@ -10,18 +10,19 @@
 #include <sstream>
 
 namespace Visualizer {
-visualL::visualL(Layer const &other, const int size_a) : Layer(other.getSize(), other.getPrevSize(), false), is_params(other.getPrevSize() != 0) {
+visualL::visualL(Layer const &other, const int size_a) : Layer(other.getSize(), other.getPrevSize(), false), is_params(other.getPrevSize() != 0), WIDTH(calculateWIDTH(size_a, is_params)) {
 	createLayerVisual(size_a);
 }
-visualL::visualL(int _size, int _prev_size, const int size_a) : Layer(_size, _prev_size), is_params(_prev_size != 0) {
+visualL::visualL(int _size, int _prev_size, const int size_a) : Layer(_size, _prev_size), is_params(_prev_size != 0), WIDTH(calculateWIDTH(size_a, is_params)) {
 	createLayerVisual(size_a);
 }
 
+const float visualL::calculateWIDTH(const int size_a, const bool is_params) {
+	return ((is_params) ? (NN_WIDTH - NEURON_RADIUS * 2) / (size_a - 1.f) : 2 * NEURON_RADIUS);
+}
+
 void visualL::createLayerVisual(const int size_a) {
-	if (is_params)
-		layerRender.create(NN_WIDTH / size_a, LAYER_HEIGHT);
-	else
-		layerRender.create(2 * NEURON_RADIUS, LAYER_HEIGHT);
+	layerRender.create(WIDTH, NN_HEIGHT);
 }
 
 void visualL::display() {
@@ -43,7 +44,7 @@ sf::Sprite visualL::getSprite() {
 }
 
 float visualL::calculateGap(const float size) {
-	return (LAYER_HEIGHT - (size * NEURON_RADIUS * 2)) / (size + 1);
+	return (NN_HEIGHT - (size * NEURON_RADIUS * 2)) / (size + 1);
 }
 
 float visualL::calculateDistance(sf::Vector2f pos1, sf::Vector2f pos2) {
@@ -83,7 +84,7 @@ void visualL::drawNeurons() {
 	float prevGap = calculateGap(getPrevSize());
 
 	for (int neuron = 0; neuron < getSize(); neuron++) {
-		float x = is_params ? LAYER_WIDTH - NEURON_RADIUS * 2 : 0;
+		float x = WIDTH - NEURON_RADIUS * 2;
 		float y = gap + neuron * (gap + NEURON_RADIUS * 2);
 		if (is_params)
 			drawWeights(neuron, {x, y}, prevGap);

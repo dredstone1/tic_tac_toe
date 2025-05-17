@@ -3,6 +3,7 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <bits/types/locale_t.h>
 #include <cstdio>
+#include <iostream>
 
 namespace Visualizer {
 visualNN::visualNN(const neural_network &network) : LocalGradient(network.input_size, network.output_size, network.hidden_layers_size, network.hidden_layers_count), NnLength(network.getLayerCount() + 1) {
@@ -17,7 +18,8 @@ visualNN::visualNN(const neural_network &network) : LocalGradient(network.input_
 }
 
 void visualNN::createNnVisual() {
-	NNRender.create(NN_WIDTH, LAYER_HEIGHT);
+	NNRender.create(NN_WIDTH, NN_HEIGHT);
+	clear();
 }
 
 void visualNN::display() {
@@ -28,21 +30,30 @@ void visualNN::clear() {
 	NNRender.clear(sf::Color::Red);
 }
 
-void visualNN::renderLayers() {
+bool visualNN::getBit(long num, int index) {
+	return (num & (1UL << index)) != 0;
+}
+
+void visualNN::renderLayers(const long layersD, const long layersW) {
+	float posx = 0;
 	for (int layer = 0; layer < NnLength; layer++) {
-		layers[layer]->renderLayer();
-		sf::Sprite newSprite = layers[layer]->getSprite();
-        if (layers[layer]->is_params)
-		    newSprite.setPosition((2*NEURON_RADIUS) + (layer-1) * LAYER_WIDTH, 0);
-        else
-		    newSprite.setPosition(0, 0);
-		NNRender.draw(newSprite);
+		if ((getBit(layersD, layer) || getBit(layersW, layer))) {
+			renderLayer(layer, posx);
+		}
+		posx += layers[layer]->WIDTH;
 	}
 }
 
-void visualNN::render() {
-	clear();
-	renderLayers();
+void visualNN::render(const long layersD, const long layersW) {
+	renderLayers(layersD, layersW);
+}
+
+void visualNN::renderLayer(const int layer, const float posx) {
+	layers[layer]->renderLayer();
+	sf::Sprite newSprite = layers[layer]->getSprite();
+	newSprite.setPosition(posx, 0);
+
+	NNRender.draw(newSprite);
 }
 
 sf::Sprite visualNN::getSprite() {

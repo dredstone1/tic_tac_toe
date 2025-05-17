@@ -5,21 +5,26 @@
 #include "visualNN.hpp"
 #include <SFML/Graphics.hpp>
 #include <atomic>
+#include <climits>
 
 using namespace std;
 
 namespace Visualizer {
+
 class VisualizerRenderer {
   private:
 	sf::RenderWindow window;
 	visualNN visualNetwork;
-	atomic<bool> needUpdate{true};
+	atomic<int> needUpdate{true};
+	long updatedLayersDot = LONG_MAX;
+	long updatedLayersWeight = LONG_MAX;
 	atomic<bool> running{false};
 	state *Vstate;
 	void update();
 	void renderLoop();
 	void processEvents();
 	void renderObjects();
+    void setUpdate(int Dot, int Weight);
 
   public:
 	VisualizerRenderer(const neural_network &network, state *vstate);

@@ -7,8 +7,7 @@
 #include <SFML/System/Vector2.hpp>
 
 namespace Visualizer {
-#define LAYER_WIDTH 200
-#define LAYER_HEIGHT 700
+#define NN_HEIGHT 700
 #define NEURON_RADIUS 20.f
 #define NN_WIDTH 1500
 
@@ -24,6 +23,7 @@ class visualL : public Layer {
 	static float calculateGap(const float size);
 	static float calculateDistance(sf::Vector2f pos1, sf::Vector2f pos2);
 	static float calculateAngle(sf::Vector2f pos1, sf::Vector2f pos2);
+	static const float calculateWIDTH(const int size_a, const bool is_params);
 
   public:
 	visualL(int _size, int _prev_size, const int size_a);
@@ -33,6 +33,7 @@ class visualL : public Layer {
 	void renderLayer();
 	void setDots(vector<double> out, vector<double> net);
 	const bool is_params;
+	const float WIDTH;
 };
 } // namespace Visualizer
 
