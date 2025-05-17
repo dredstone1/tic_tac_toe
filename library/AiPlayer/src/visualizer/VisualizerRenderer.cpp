@@ -6,7 +6,6 @@
 
 namespace Visualizer {
 VisualizerRenderer::VisualizerRenderer(const neural_network &network) : window(sf::VideoMode(1600, 800), "Visualizer", sf::Style::Titlebar | sf::Style::Titlebar), visualNetwork(network) {
-	renderLoop();
 }
 
 void VisualizerRenderer::processEvents() {
@@ -53,6 +52,21 @@ void VisualizerRenderer::renderLoop() {
 
 void VisualizerRenderer::close() {
 	running = false;
+}
+
+void VisualizerRenderer::start() {
+	running = true;
+	renderLoop();
+}
+
+void VisualizerRenderer::updateDots(const int layer, vector<double> out, vector<double> net) {
+	visualNetwork.updateDots(layer, out, net);
+	needUpdate = true;
+}
+
+void VisualizerRenderer::update(const int layer, const LayerParameters &gradients) {
+	visualNetwork.update(layer, gradients);
+	needUpdate = true;
 }
 
 VisualizerRenderer::~VisualizerRenderer() {

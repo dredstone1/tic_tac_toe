@@ -112,4 +112,6 @@ int AiModel::getPrediction(const vector<double> &input) {
 	return max1;
 }
 
-AiModel::~AiModel() { delete _model; }
+AiModel::~AiModel() { 
+    delete _model; 
+}

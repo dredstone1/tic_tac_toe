@@ -2,6 +2,7 @@
 #include "visualL.hpp"
 #include <SFML/Graphics/Sprite.hpp>
 #include <bits/types/locale_t.h>
+#include <cstdio>
 
 namespace Visualizer {
 visualNN::visualNN(const neural_network &network) : LocalGradient(network.input_size, network.output_size, network.hidden_layers_size, network.hidden_layers_count), NnLength(network.getLayerCount() + 1) {
@@ -49,4 +50,9 @@ sf::Sprite visualNN::getSprite() {
 void visualNN::updateDots(const int layer, vector<double> out, vector<double> net) {
 	layers[layer]->setDots(out, net);
 }
+
+void visualNN::update(const int layer, const LayerParameters &gradients) {
+	layers[layer]->add(gradients);
+}
+
 } // namespace Visualizer

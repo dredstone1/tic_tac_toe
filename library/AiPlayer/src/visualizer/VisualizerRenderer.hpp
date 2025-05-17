@@ -23,6 +23,9 @@ class VisualizerRenderer {
 	VisualizerRenderer(const neural_network &network);
 	~VisualizerRenderer();
 	void close();
+	void updateDots(const int layer, vector<double> out, vector<double> net);
+	void start();
+	void update(const int layer, const LayerParameters &gradients);
 };
 } // namespace Visualizer
 #endif

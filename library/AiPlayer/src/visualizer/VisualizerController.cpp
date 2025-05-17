@@ -1,9 +1,12 @@
 #include "VisualizerController.hpp"
 #include "VisualizerRenderer.hpp"
+#include <cstdio>
+#include <thread>
 
 namespace Visualizer {
 
 visualizerController::visualizerController(const neural_network &network) {
+	printf("start Visualizer\n");
 	start(network);
 }
 
@@ -13,8 +16,11 @@ visualizerController::~visualizerController() {
 
 void visualizerController::stop() {
 	running = false;
-	if (renderer) {
-		renderer->close();
+	if (display_thread.joinable()) {
+		if (renderer) {
+			renderer->close();
+		}
+		display_thread.join();
 	}
 }
 
@@ -22,13 +28,19 @@ void visualizerController::start(const neural_network &network) {
 	if (running)
 		return;
 
-	running = true;
-	display_thread = thread(&visualizerController::start_visuals, this, std::cref(network));
+	display_thread = thread(&visualizerController::start_visuals, this, cref(network));
+	while (!renderer) {
+		std::this_thread::sleep_for(1ms);
+	}
 }
 
 void visualizerController::start_visuals(const neural_network &network) {
-	running = true;
 	renderer = new VisualizerRenderer(network);
+	if (!renderer)
+		return;
+
+	running = true;
+	renderer->start();
 	delete renderer;
 	running = false;
 }
@@ -40,11 +52,13 @@ void visualizerController::update(const neural_network &network) {
 
 void visualizerController::updateDots(const int layer, vector<double> out, vector<double> net) {
 	if (renderer) {
+		renderer->updateDots(layer, out, net);
 	}
 }
 
-void visualizerController::update(const gradient &gradient_) {
+void visualizerController::update(const int layer, const LayerParameters &gradient_) {
 	if (renderer) {
+		renderer->update(layer, gradient_);
 	}
 }
 } // namespace Visualizer

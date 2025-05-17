@@ -29,6 +29,7 @@ class visualNN {
 	sf::Sprite getSprite();
 	void render();
 	void updateDots(const int layer, vector<double> out, vector<double> net);
+	void update(const int layer, const LayerParameters &gradients);
 };
 } // namespace Visualizer
 

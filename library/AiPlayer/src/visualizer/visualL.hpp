@@ -7,9 +7,9 @@
 #include <SFML/System/Vector2.hpp>
 
 namespace Visualizer {
-#define LAYER_WIDTH 100
+#define LAYER_WIDTH 200
 #define LAYER_HEIGHT 700
-#define NEURON_RADIUS 20.f
+#define NEURON_RADIUS 30.f
 #define NN_WIDTH 1500
 
 class visualL : public Layer {

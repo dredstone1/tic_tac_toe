@@ -2,7 +2,6 @@
 #include "../model/activations.hpp"
 #include "gradient.hpp"
 #include <cmath>
-#include <iostream>
 #include <vector>
 
 using namespace std;

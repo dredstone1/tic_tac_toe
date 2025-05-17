@@ -19,3 +19,7 @@ Layer::~Layer() {
 Layer::Layer(int _size, int _prev_size, int random) : dots(_size), destroyParams(1) {
 	Parameters = new LayerParameters(_size, _prev_size, random);
 }
+
+const LayerParameters Layer::getParms() {
+    return *Parameters;
+}

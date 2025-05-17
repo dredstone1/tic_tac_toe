@@ -1,12 +1,15 @@
 #include "visualL.hpp"
 #include <SFML/Graphics/Color.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <cmath>
+#include <iomanip>
+#include <ostream>
 #include <sstream>
 
 namespace Visualizer {
-visualL::visualL(Layer const &other, const int size_a) : Layer(other.getSize(), other.getPrevSize(), true) {
+visualL::visualL(Layer const &other, const int size_a) : Layer(other.getSize(), other.getPrevSize(), false) {
 	createLayerVisual(size_a);
 }
 visualL::visualL(int _size, int _prev_size, const int size_a) : Layer(_size, _prev_size) {
@@ -57,7 +60,7 @@ void visualL::drawWeights(int neuron_i, sf::Vector2f pos, float prevGap) {
 		float width = calculateDistance(pos, {xP, yP});
 		float angle = calculateAngle({xP, yP}, pos);
 
-		sf::RectangleShape line({width, 5 * (float)Parameters->weights[neuron_i][neuronP]});
+		sf::RectangleShape line({width, 0.05f * abs( (float)Parameters->weights[neuron_i][neuronP])});
 		line.setFillColor(sf::Color::Black);
 		line.setPosition(xP, yP + NEURON_RADIUS);
 		line.setRotation(angle);
@@ -79,7 +82,7 @@ void visualL::drawNeurons() {
 }
 
 void visualL::drawNeuron(const double input, const double output, sf::Vector2f pos) {
-	sf::CircleShape shape(NEURON_RADIUS);
+	sf::RectangleShape shape({NEURON_RADIUS * 2, NEURON_RADIUS * 2});
 	shape.setFillColor(sf::Color::Blue);
 	shape.setPosition(pos);
 
@@ -88,20 +91,29 @@ void visualL::drawNeuron(const double input, const double output, sf::Vector2f p
 	if (!font.loadFromFile(path)) {
 		return;
 	}
+
+	std::ostringstream ss;
+	ss << std::fixed << std::setprecision(4) << input << "\n"
+	   << output;
+
 	sf::Text text;
 	text.setFont(font);
-	text.setCharacterSize(10);
-	ostringstream ss;
-	ss << input;
+	text.setCharacterSize(17);
 	text.setString(ss.str());
 	text.setFillColor(sf::Color::White);
-	text.setPosition({pos.x + NEURON_RADIUS, pos.y + NEURON_RADIUS});
+
+	sf::FloatRect textBounds = text.getLocalBounds();
+	text.setOrigin(textBounds.left + textBounds.width / 2.0f,
+	               textBounds.top + textBounds.height / 2.0f);
+
+	text.setPosition(pos.x + NEURON_RADIUS, pos.y + NEURON_RADIUS);
+
 	layerRender.draw(shape);
 	layerRender.draw(text);
 }
 
 void visualL::setDots(vector<double> out, vector<double> net) {
-    dots.net = net;
-    dots.out = out;
+	dots.net = net;
+	dots.out = out;
 }
 } // namespace Visualizer
