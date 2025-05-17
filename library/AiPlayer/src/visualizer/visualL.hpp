@@ -9,7 +9,7 @@
 namespace Visualizer {
 #define LAYER_WIDTH 200
 #define LAYER_HEIGHT 700
-#define NEURON_RADIUS 30.f
+#define NEURON_RADIUS 20.f
 #define NN_WIDTH 1500
 
 class visualL : public Layer {
@@ -32,6 +32,7 @@ class visualL : public Layer {
 	sf::Sprite getSprite();
 	void renderLayer();
 	void setDots(vector<double> out, vector<double> net);
+	const bool is_params;
 };
 } // namespace Visualizer
 

@@ -3,21 +3,25 @@
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/System/Vector2.hpp>
+#include <SFML/Window/Keyboard.hpp>
 #include <cmath>
 #include <iomanip>
 #include <ostream>
 #include <sstream>
 
 namespace Visualizer {
-visualL::visualL(Layer const &other, const int size_a) : Layer(other.getSize(), other.getPrevSize(), false) {
+visualL::visualL(Layer const &other, const int size_a) : Layer(other.getSize(), other.getPrevSize(), false), is_params(other.getPrevSize() != 0) {
 	createLayerVisual(size_a);
 }
-visualL::visualL(int _size, int _prev_size, const int size_a) : Layer(_size, _prev_size) {
+visualL::visualL(int _size, int _prev_size, const int size_a) : Layer(_size, _prev_size), is_params(_prev_size != 0) {
 	createLayerVisual(size_a);
 }
 
 void visualL::createLayerVisual(const int size_a) {
-	layerRender.create(NN_WIDTH / size_a, LAYER_HEIGHT);
+	if (is_params)
+		layerRender.create(NN_WIDTH / size_a, LAYER_HEIGHT);
+	else
+		layerRender.create(2*NEURON_RADIUS, LAYER_HEIGHT);
 }
 
 void visualL::display() {
@@ -60,10 +64,11 @@ void visualL::drawWeights(int neuron_i, sf::Vector2f pos, float prevGap) {
 		float width = calculateDistance(pos, {xP, yP});
 		float angle = calculateAngle({xP, yP}, pos);
 
-		sf::RectangleShape line({width, 0.05f * abs( (float)Parameters->weights[neuron_i][neuronP])});
+		sf::RectangleShape line({width, 1});
 		line.setFillColor(sf::Color::Black);
 		line.setPosition(xP, yP + NEURON_RADIUS);
 		line.setRotation(angle);
+		line.setSize({line.getSize().x, 2 * abs((float)Parameters->weights[neuron_i][neuronP])});
 		layerRender.draw(line);
 	}
 }
@@ -73,11 +78,11 @@ void visualL::drawNeurons() {
 	float prevGap = calculateGap(getPrevSize());
 
 	for (int neuron = 0; neuron < getSize(); neuron++) {
-		float x = LAYER_WIDTH - NEURON_RADIUS * 2;
+		float x = is_params ? LAYER_WIDTH - NEURON_RADIUS * 2 : 0;
 		float y = gap + neuron * (gap + NEURON_RADIUS * 2);
+        if (is_params)
+            drawWeights(neuron, {x, y}, prevGap);
 		drawNeuron(dots.net[neuron], dots.out[neuron], {x, y});
-
-		drawWeights(neuron, {x, y}, prevGap);
 	}
 }
 
@@ -92,13 +97,13 @@ void visualL::drawNeuron(const double input, const double output, sf::Vector2f p
 		return;
 	}
 
-	std::ostringstream ss;
-	ss << std::fixed << std::setprecision(4) << input << "\n"
+	ostringstream ss;
+	ss << fixed << setprecision(4) << input << "\n"
 	   << output;
 
 	sf::Text text;
 	text.setFont(font);
-	text.setCharacterSize(17);
+	text.setCharacterSize(10);
 	text.setString(ss.str());
 	text.setFillColor(sf::Color::White);
 

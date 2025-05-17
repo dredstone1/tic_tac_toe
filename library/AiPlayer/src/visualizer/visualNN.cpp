@@ -32,7 +32,10 @@ void visualNN::renderLayers() {
 	for (int layer = 0; layer < NnLength; layer++) {
 		layers[layer]->renderLayer();
 		sf::Sprite newSprite = layers[layer]->getSprite();
-		newSprite.setPosition(layer * LAYER_WIDTH, 0);
+        if (layers[layer]->is_params)
+		    newSprite.setPosition((2*NEURON_RADIUS) + (layer-1) * LAYER_WIDTH, 0);
+        else
+		    newSprite.setPosition(0, 0);
 		NNRender.draw(newSprite);
 	}
 }

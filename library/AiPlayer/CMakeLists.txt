@@ -23,7 +23,9 @@ add_library(
   src/visualizer/VisualizerController.cpp
   src/visualizer/visualNN.cpp
   src/visualizer/visualL.cpp
+  src/visualizer/state.cpp
   )
+
 add_subdirectory(matplotplusplus)
 
 target_compile_definitions(AiPlayer PUBLIC RESOURCE_DIR="${RESOURCE_DIR}")

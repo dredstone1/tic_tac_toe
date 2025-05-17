@@ -30,19 +30,45 @@ void visualizerController::start(const neural_network &network) {
 
 	display_thread = thread(&visualizerController::start_visuals, this, cref(network));
 	while (!renderer) {
-		std::this_thread::sleep_for(1ms);
+		this_thread::sleep_for(1ms);
 	}
 }
 
 void visualizerController::start_visuals(const neural_network &network) {
-	renderer = new VisualizerRenderer(network);
+	Vstate = new state;
+	if (!Vstate)
+		return;
+	renderer = new VisualizerRenderer(network, Vstate);
 	if (!renderer)
 		return;
 
 	running = true;
 	renderer->start();
 	delete renderer;
+	delete Vstate;
 	running = false;
+}
+
+void visualizerController::wait_until_updated() {
+	if (!renderer || !Vstate->preciseMode)
+		return;
+
+	while (renderer->updateStatus()) {
+		this_thread::sleep_for(1ms);
+	}
+}
+
+void visualizerController::pause() {
+	if (!renderer || !Vstate)
+		return;
+     
+    if(Vstate->pause){
+        printf("pause\n");
+    }
+
+	while (Vstate->pause) {
+		this_thread::sleep_for(10ms);
+	}
 }
 
 void visualizerController::update(const neural_network &network) {
@@ -53,12 +79,16 @@ void visualizerController::update(const neural_network &network) {
 void visualizerController::updateDots(const int layer, vector<double> out, vector<double> net) {
 	if (renderer) {
 		renderer->updateDots(layer, out, net);
+		wait_until_updated();
+        pause();
 	}
 }
 
 void visualizerController::update(const int layer, const LayerParameters &gradient_) {
 	if (renderer) {
 		renderer->update(layer, gradient_);
+		wait_until_updated();
+        pause();
 	}
 }
 } // namespace Visualizer

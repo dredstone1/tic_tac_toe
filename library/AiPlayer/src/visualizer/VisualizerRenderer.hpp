@@ -1,6 +1,7 @@
 #ifndef VISUALIZER
 #define VISUALIZER
 
+#include "state.hpp"
 #include "visualNN.hpp"
 #include <SFML/Graphics.hpp>
 #include <atomic>
@@ -14,16 +15,18 @@ class VisualizerRenderer {
 	visualNN visualNetwork;
 	atomic<bool> needUpdate{true};
 	atomic<bool> running{false};
+	state *Vstate;
 	void update();
 	void renderLoop();
 	void processEvents();
 	void renderObjects();
 
   public:
-	VisualizerRenderer(const neural_network &network);
+	VisualizerRenderer(const neural_network &network, state *vstate);
 	~VisualizerRenderer();
 	void close();
 	void updateDots(const int layer, vector<double> out, vector<double> net);
+	bool updateStatus() { return needUpdate; }
 	void start();
 	void update(const int layer, const LayerParameters &gradients);
 };

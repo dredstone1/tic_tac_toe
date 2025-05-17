@@ -2,8 +2,8 @@
 #define VISUALIZERCONTROLLER
 
 #include "VisualizerRenderer.hpp"
+#include "state.hpp"
 #include <SFML/Graphics.hpp>
-#include <atomic>
 #include <mutex>
 #include <thread>
 
@@ -14,10 +14,13 @@ class visualizerController {
 	mutex mtx;
 	atomic<bool> running{false};
 	VisualizerRenderer *renderer;
+	state *Vstate;
 	void stop();
 	void start(const neural_network &network);
 	thread display_thread;
 	void start_visuals(const neural_network &network);
+	void wait_until_updated();
+	void pause();
 
   public:
 	visualizerController(const neural_network &network);
