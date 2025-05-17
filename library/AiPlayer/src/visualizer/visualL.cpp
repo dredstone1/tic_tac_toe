@@ -21,7 +21,7 @@ void visualL::createLayerVisual(const int size_a) {
 	if (is_params)
 		layerRender.create(NN_WIDTH / size_a, LAYER_HEIGHT);
 	else
-		layerRender.create(2*NEURON_RADIUS, LAYER_HEIGHT);
+		layerRender.create(2 * NEURON_RADIUS, LAYER_HEIGHT);
 }
 
 void visualL::display() {
@@ -58,6 +58,9 @@ float visualL::calculateAngle(sf::Vector2f pos1, sf::Vector2f pos2) {
 
 void visualL::drawWeights(int neuron_i, sf::Vector2f pos, float prevGap) {
 	for (int neuronP = 0; neuronP < getPrevSize(); neuronP++) {
+		if (Parameters->weights[neuron_i][neuronP] < 0) {
+			continue;
+		}
 		float xP = 0.f;
 		float yP = prevGap + neuronP * (prevGap + NEURON_RADIUS * 2);
 
@@ -68,7 +71,9 @@ void visualL::drawWeights(int neuron_i, sf::Vector2f pos, float prevGap) {
 		line.setFillColor(sf::Color::Black);
 		line.setPosition(xP, yP + NEURON_RADIUS);
 		line.setRotation(angle);
-		line.setSize({line.getSize().x, 2 * abs((float)Parameters->weights[neuron_i][neuronP])});
+
+		float Size = (float)Parameters->weights[neuron_i][neuronP];
+		line.setSize({line.getSize().x, Size});
 		layerRender.draw(line);
 	}
 }
@@ -80,8 +85,8 @@ void visualL::drawNeurons() {
 	for (int neuron = 0; neuron < getSize(); neuron++) {
 		float x = is_params ? LAYER_WIDTH - NEURON_RADIUS * 2 : 0;
 		float y = gap + neuron * (gap + NEURON_RADIUS * 2);
-        if (is_params)
-            drawWeights(neuron, {x, y}, prevGap);
+		if (is_params)
+			drawWeights(neuron, {x, y}, prevGap);
 		drawNeuron(dots.net[neuron], dots.out[neuron], {x, y});
 	}
 }

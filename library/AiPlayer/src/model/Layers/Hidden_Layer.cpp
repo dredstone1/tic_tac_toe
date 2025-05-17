@@ -9,6 +9,6 @@ void Hidden_Layer::forward(const vector<double> &metrix) {
 			dots.net[i] += Parameters->weights[i][j] * metrix[j];
 		}
 
-		dots.out[i] = ActivationFunctions::LeakyRelu(dots.net[i]);
+		dots.out[i] = ActivationFunctions::Relu(dots.net[i]);
 	}
 }

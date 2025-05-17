@@ -7,7 +7,7 @@ using namespace std;
 
 namespace Visualizer {
 typedef struct state {
-	atomic<bool> pause{true};
+	atomic<bool> pause{false};
 	atomic<bool> preciseMode{true};
 	state();
 } state;
