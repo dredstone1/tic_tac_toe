@@ -21,6 +21,7 @@ class visualizerController {
 	void start_visuals(const neural_network &network);
 	void wait_until_updated();
 	void pause();
+	void autoPause();
 
   public:
 	visualizerController(const neural_network &network);

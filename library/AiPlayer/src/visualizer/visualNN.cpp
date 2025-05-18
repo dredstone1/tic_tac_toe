@@ -3,7 +3,6 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <bits/types/locale_t.h>
 #include <cstdio>
-#include <iostream>
 
 namespace Visualizer {
 visualNN::visualNN(const neural_network &network) : LocalGradient(network.input_size, network.output_size, network.hidden_layers_size, network.hidden_layers_count), NnLength(network.getLayerCount() + 1) {

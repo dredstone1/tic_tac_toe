@@ -9,7 +9,7 @@
 namespace Visualizer {
 #define NN_HEIGHT 700
 #define NEURON_RADIUS 20.f
-#define NN_WIDTH 1500
+#define NN_WIDTH 1000
 
 class visualL : public Layer {
   private:

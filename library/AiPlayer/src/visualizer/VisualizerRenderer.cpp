@@ -1,12 +1,13 @@
 #include "VisualizerRenderer.hpp"
 #include "state.hpp"
+#include "visualL.hpp"
 #include "visualNN.hpp"
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Window/Event.hpp>
 #include <cstdio>
 
 namespace Visualizer {
-VisualizerRenderer::VisualizerRenderer(const neural_network &network, state *vstate) : window(sf::VideoMode(1600, 800), "Visualizer", sf::Style::Titlebar | sf::Style::Titlebar), visualNetwork(network), Vstate(vstate) {
+VisualizerRenderer::VisualizerRenderer(const neural_network &network, state *vstate) : window(sf::VideoMode(1600, 800), "Visualizer", sf::Style::Titlebar | sf::Style::Titlebar), visualNetwork(network), Vstate(vstate), interface(vstate) {
 }
 
 void VisualizerRenderer::processEvents() {
@@ -17,6 +18,14 @@ void VisualizerRenderer::processEvents() {
 		if (event.type == sf::Event::Resized) {
 			needUpdate = true;
 		}
+		if (event.type == sf::Event::MouseButtonPressed) {
+			sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+			interface.handleClick(mousePos, {NN_WIDTH + 50 + 15, 50});
+			needUpdate = true;
+		} else if (event.type == sf::Event::MouseButtonReleased) {
+			interface.handleNoClick();
+			needUpdate = true;
+		}
 	}
 }
 
@@ -25,8 +34,12 @@ void VisualizerRenderer::renderObjects() {
 
 	sf::Sprite visualNetworkSprite = visualNetwork.getSprite();
 	visualNetworkSprite.setPosition(50, 50);
-
 	window.draw(visualNetworkSprite);
+
+	interface.renderInterface();
+	sf::Sprite interfaceSprite = interface.getSprite();
+	interfaceSprite.setPosition(visualNetworkSprite.getGlobalBounds().getSize().x + visualNetworkSprite.getGlobalBounds().getPosition().x + 15, 50);
+	window.draw(interfaceSprite);
 }
 
 void VisualizerRenderer::update() {

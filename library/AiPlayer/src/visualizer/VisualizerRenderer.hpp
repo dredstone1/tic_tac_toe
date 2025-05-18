@@ -1,6 +1,7 @@
 #ifndef VISUALIZER
 #define VISUALIZER
 
+#include "VInterface.hpp"
 #include "state.hpp"
 #include "visualNN.hpp"
 #include <SFML/Graphics.hpp>
@@ -15,6 +16,7 @@ class VisualizerRenderer {
   private:
 	sf::RenderWindow window;
 	visualNN visualNetwork;
+	vInteface interface;
 	atomic<int> needUpdate{true};
 	long updatedLayersDot = LONG_MAX;
 	long updatedLayersWeight = LONG_MAX;
@@ -24,7 +26,7 @@ class VisualizerRenderer {
 	void renderLoop();
 	void processEvents();
 	void renderObjects();
-    void setUpdate(int Dot, int Weight);
+	void setUpdate(int Dot, int Weight);
 
   public:
 	VisualizerRenderer(const neural_network &network, state *vstate);

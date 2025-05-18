@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
 				model.save("model1");
 				break;
 			case 't':
-				int batch_size = 10, batch_count = 1000;
+				int batch_size = 10, batch_count = 1000000;
 
 				double learning_rate = 0.000001;
 

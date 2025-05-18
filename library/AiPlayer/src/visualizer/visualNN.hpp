@@ -11,7 +11,6 @@
 using namespace std;
 
 namespace Visualizer {
-
 class visualNN {
   private:
 	vector<visualL *> layers;

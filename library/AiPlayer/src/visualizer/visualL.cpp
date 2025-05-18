@@ -1,4 +1,5 @@
 #include "visualL.hpp"
+#include "fonts.hpp"
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/Sprite.hpp>
@@ -97,18 +98,12 @@ void visualL::drawNeuron(const double input, const double output, sf::Vector2f p
 	shape.setFillColor(sf::Color::Blue);
 	shape.setPosition(pos);
 
-	sf::Font font;
-	string path = string(RESOURCE_DIR) + "/Inter.ttc";
-	if (!font.loadFromFile(path)) {
-		return;
-	}
-
 	ostringstream ss;
 	ss << fixed << setprecision(4) << input << "\n"
 	   << output;
 
 	sf::Text text;
-	text.setFont(font);
+	text.setFont(Fonts::getFont());
 	text.setCharacterSize(10);
 	text.setString(ss.str());
 	text.setFillColor(sf::Color::White);

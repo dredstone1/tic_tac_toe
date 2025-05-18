@@ -24,6 +24,9 @@ add_library(
   src/visualizer/visualNN.cpp
   src/visualizer/visualL.cpp
   src/visualizer/state.cpp
+  src/visualizer/VInterface.cpp
+  src/visualizer/button.cpp
+  src/visualizer/fonts.cpp
   )
 
 add_subdirectory(matplotplusplus)

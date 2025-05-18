@@ -62,13 +62,15 @@ void visualizerController::pause() {
 	if (!renderer || !Vstate)
 		return;
 
-	if (Vstate->pause) {
-		printf("pause\n");
-	}
-
 	while (Vstate->pause) {
 		this_thread::sleep_for(10ms);
 	}
+}
+
+void visualizerController::autoPause() {
+	if (Vstate->autoPause)
+		Vstate->pause = true;
+	pause();
 }
 
 void visualizerController::update(const neural_network &network) {
@@ -81,6 +83,7 @@ void visualizerController::updateDots(const int layer, vector<double> out, vecto
 		renderer->updateDots(layer, out, net);
 		wait_until_updated();
 		pause();
+		autoPause();
 	}
 }
 
@@ -89,6 +92,7 @@ void visualizerController::update(const int layer, const LayerParameters &gradie
 		renderer->update(layer, gradient_);
 		wait_until_updated();
 		pause();
+		autoPause();
 	}
 }
 } // namespace Visualizer
