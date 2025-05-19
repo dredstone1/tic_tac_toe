@@ -9,7 +9,7 @@ namespace Visualizer {
 class Fonts {
   public:
 	Fonts() = delete;
-	static sf::Font& getFont();
+	static sf::Font &getFont();
 };
 } // namespace Visualizer
 

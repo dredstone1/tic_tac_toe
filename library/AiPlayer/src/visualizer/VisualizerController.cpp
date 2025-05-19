@@ -4,7 +4,6 @@
 #include <thread>
 
 namespace Visualizer {
-
 visualizerController::visualizerController(const neural_network &network) {
 	printf("start Visualizer\n");
 	start(network);
@@ -38,6 +37,7 @@ void visualizerController::start_visuals(const neural_network &network) {
 	Vstate = new state;
 	if (!Vstate)
 		return;
+
 	renderer = new VisualizerRenderer(network, Vstate);
 	if (!renderer)
 		return;

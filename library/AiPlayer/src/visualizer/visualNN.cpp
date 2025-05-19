@@ -39,6 +39,7 @@ void visualNN::renderLayers(const long layersD, const long layersW) {
 		if ((getBit(layersD, layer) || getBit(layersW, layer))) {
 			renderLayer(layer, posx);
 		}
+
 		posx += layers[layer]->WIDTH;
 	}
 }
@@ -67,5 +68,4 @@ void visualNN::updateDots(const int layer, vector<double> out, vector<double> ne
 void visualNN::update(const int layer, const LayerParameters &gradients) {
 	layers[layer]->add(gradients);
 }
-
 } // namespace Visualizer

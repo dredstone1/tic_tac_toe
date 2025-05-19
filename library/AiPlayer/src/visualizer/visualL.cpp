@@ -14,6 +14,7 @@ namespace Visualizer {
 visualL::visualL(Layer const &other, const int size_a) : Layer(other.getSize(), other.getPrevSize(), false), is_params(other.getPrevSize() != 0), WIDTH(calculateWIDTH(size_a, is_params)) {
 	createLayerVisual(size_a);
 }
+
 visualL::visualL(int _size, int _prev_size, const int size_a) : Layer(_size, _prev_size), is_params(_prev_size != 0), WIDTH(calculateWIDTH(size_a, is_params)) {
 	createLayerVisual(size_a);
 }
@@ -63,6 +64,7 @@ void visualL::drawWeights(int neuron_i, sf::Vector2f pos, float prevGap) {
 		if (Parameters->weights[neuron_i][neuronP] < 0) {
 			continue;
 		}
+
 		float xP = 0.f;
 		float yP = prevGap + neuronP * (prevGap + NEURON_RADIUS * 2);
 
@@ -87,8 +89,10 @@ void visualL::drawNeurons() {
 	for (int neuron = 0; neuron < getSize(); neuron++) {
 		float x = WIDTH - NEURON_RADIUS * 2;
 		float y = gap + neuron * (gap + NEURON_RADIUS * 2);
+
 		if (is_params)
 			drawWeights(neuron, {x, y}, prevGap);
+
 		drawNeuron(dots.net[neuron], dots.out[neuron], {x, y});
 	}
 }

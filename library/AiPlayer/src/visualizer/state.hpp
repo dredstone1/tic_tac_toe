@@ -8,6 +8,7 @@ using namespace std;
 
 namespace Visualizer {
 #define STATES_COUNT 3
+
 enum states {
 	Pause,
 	PreciseMode,
@@ -26,8 +27,7 @@ typedef struct state {
 	atomic<bool> preciseMode{true};
 	atomic<bool> autoPause{false};
 	void toggle(states state_);
-    string getString(states state_);
-	state();
+	string getString(states state_);
 } state;
 } // namespace Visualizer
 

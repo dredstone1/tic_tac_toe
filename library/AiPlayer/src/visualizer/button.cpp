@@ -25,7 +25,7 @@ void button::drawText() {
 	text.setCharacterSize(30);
 	text.setString(lable);
 	text.setFillColor(sf::Color::Black);
-    text.setPosition(2,2);
+	text.setPosition(2, 2);
 	buttonRender.draw(text);
 }
 
@@ -49,6 +49,7 @@ bool button::checkForClick(sf::Vector2f mousePos, sf::Vector2f boxPos) {
 		sendCommand();
 		return true;
 	}
+
 	return false;
 }
 

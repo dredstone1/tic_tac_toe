@@ -11,7 +11,6 @@
 using namespace std;
 
 namespace Visualizer {
-
 class VisualizerRenderer {
   private:
 	sf::RenderWindow window;

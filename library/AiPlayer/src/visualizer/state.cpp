@@ -2,8 +2,6 @@
 #include <cstdio>
 
 namespace Visualizer {
-state::state() {}
-
 void state::toggle(states state_) {
 	switch (state_) {
 	case Pause:

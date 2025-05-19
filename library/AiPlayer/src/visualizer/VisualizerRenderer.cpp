@@ -7,14 +7,14 @@
 #include <cstdio>
 
 namespace Visualizer {
-VisualizerRenderer::VisualizerRenderer(const neural_network &network, state *vstate) : window(sf::VideoMode(1600, 800), "Visualizer", sf::Style::Titlebar | sf::Style::Titlebar), visualNetwork(network), Vstate(vstate), interface(vstate) {
-}
+VisualizerRenderer::VisualizerRenderer(const neural_network &network, state *vstate) : window(sf::VideoMode(1600, 800), "Visualizer", sf::Style::Titlebar | sf::Style::Titlebar), visualNetwork(network), Vstate(vstate), interface(vstate) {}
 
 void VisualizerRenderer::processEvents() {
 	sf::Event event;
 	while (window.pollEvent(event)) {
-		if (event.type == sf::Event::Closed)
+		if (event.type == sf::Event::Closed) {
 			close();
+		}
 		if (event.type == sf::Event::Resized) {
 			needUpdate = true;
 		}
@@ -57,6 +57,7 @@ void VisualizerRenderer::renderLoop() {
 
 		if (needUpdate) {
 			update();
+
 			needUpdate = false;
 			updatedLayersWeight = 0;
 			updatedLayersDot = 0;
@@ -78,6 +79,7 @@ void VisualizerRenderer::start() {
 void VisualizerRenderer::setUpdate(int Dot, int Weight) {
 	if (Weight != -1)
 		updatedLayersWeight |= (1 << Weight);
+
 	if (Dot != -1)
 		updatedLayersDot |= (1 << Dot);
 }
