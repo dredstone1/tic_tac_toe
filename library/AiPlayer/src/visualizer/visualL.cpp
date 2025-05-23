@@ -32,7 +32,7 @@ void visualL::display() {
 }
 
 void visualL::clear() {
-	layerRender.clear(sf::Color::Green);
+	layerRender.clear(sf::Color::Transparent);
 }
 
 void visualL::renderLayer() {

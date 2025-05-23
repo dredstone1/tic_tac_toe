@@ -5,7 +5,7 @@
 #include "database/dataBase.hpp"
 #include "gradient.hpp"
 
-#define CLIP_GRADIENTS 1.0
+#define CLIP_GRADIENTS 0.001
 
 class BackPropagation {
   private:

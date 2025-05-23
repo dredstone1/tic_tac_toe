@@ -5,8 +5,8 @@
 #include <TicTacToe/Player.hpp>
 
 #define CELL_VALUE_X 1.0
-#define CELL_VALUE_O 0.0
-#define CELL_VALUE_EMPTY 0.5
+#define CELL_VALUE_O -1.0
+#define CELL_VALUE_EMPTY 0.0
 
 class AiPlayer : public Player {
   private:

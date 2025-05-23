@@ -6,7 +6,7 @@
 
 model::model(const int input_size, const int output_size, const int hidden_layers_size, const int hidden_layers_count) : network(input_size, output_size, hidden_layers_size, hidden_layers_count), visual(network) {
 	for (int i = 0; i < getLayerCount(); i++) {
-	       visual.update(i+1, network.layers[i]->getParms());
+		visual.update(i + 1, network.layers[i]->getParms());
 	}
 }
 
@@ -44,8 +44,8 @@ const vector<double> &model::getOutput() const {
 }
 
 void model::updateWeights(const gradient &gradients) {
-	for (int i = 0; i < getLayerCount(); i++) {
+	for (int i = getLayerCount() - 1; i >=0 ; i--) {
 		getLayer(i).add(gradients.gradients[i]);
-        visual.update(i+1,getLayer(i).getParms());
+		visual.update(i + 1, getLayer(i).getParms());
 	}
 }

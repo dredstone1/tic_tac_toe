@@ -26,7 +26,7 @@ void visualNN::display() {
 }
 
 void visualNN::clear() {
-	NNRender.clear(sf::Color::Red);
+	NNRender.clear(sf::Color::Green);
 }
 
 bool visualNN::getBit(long num, int index) {

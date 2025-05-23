@@ -10,7 +10,7 @@
 #include <vector>
 
 AiModel::AiModel() {
-	_model = new model(9, 9, 20, 2);
+	_model = new model(9, 9, 5, 2);
 }
 
 AiModel::AiModel(string _file_name) { load(_file_name); }

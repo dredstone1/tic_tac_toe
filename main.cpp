@@ -4,7 +4,6 @@
 #include <TicTacToe/game.hpp>
 #include <Trainer/trainer.hpp>
 #include <iostream>
-#include <string>
 
 using namespace TicTacToe;
 using namespace std;
@@ -35,7 +34,7 @@ int main(int argc, char *argv[]) {
 				model.save("model1");
 				break;
 			case 't':
-				int batch_size = 10, batch_count = 1000000;
+				int batch_size = 64, batch_count = 10000;
 
 				double learning_rate = 0.000001;
 

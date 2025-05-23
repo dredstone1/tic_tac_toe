@@ -25,7 +25,7 @@ const string statesName[] = {
 typedef struct state {
 	atomic<bool> pause{false};
 	atomic<bool> preciseMode{true};
-	atomic<bool> autoPause{false};
+	atomic<bool> autoPause{true};
 	void toggle(states state_);
 	string getString(states state_);
 } state;
