@@ -1,5 +1,6 @@
 #ifndef STANDARDPLAYER_HPP
 #define STANDARDPLAYER_HPP
+
 #include <TicTacToe/Player.hpp>
 
 class StandardPlayer : public Player {

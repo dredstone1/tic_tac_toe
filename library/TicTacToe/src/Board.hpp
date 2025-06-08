@@ -3,17 +3,19 @@
 
 #include "BoardGrid.hpp"
 
-enum BoardState { WinX,
-	              WinO,
-	              Draw,
-	              Continue };
-
 namespace TicTacToe {
+enum class BoardState {
+	WinX,
+	WinO,
+	Draw,
+	Continue
+};
+
 class Board {
   private:
 	void UpdateBoardState();
 	static BoardState ScanBoardState(BoardGrid &Grid);
-	BoardState boardState = Continue;
+	BoardState boardState = BoardState::Continue;
 	BoardGrid Grid;
 
   public:

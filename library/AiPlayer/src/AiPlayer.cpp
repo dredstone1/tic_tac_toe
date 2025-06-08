@@ -1,36 +1,31 @@
-#include "../include/AiPlayer/AiPlayer.hpp"
+#include <AiModel.hpp>
+#include <AiPlayer.hpp>
+#include <string>
+#include <trainer.hpp>
+#include <vector>
 
-using namespace std;
-
-AiPlayer::AiPlayer() { ai_model = new AiModel(); }
-
-AiPlayer::AiPlayer(AiModel *_ai_model) { ai_model = _ai_model; }
-
-double AiPlayer::getBoardCellValue(int dot) {
-	switch (getBoard(dot / 3, dot % 3)) {
-	case TicTacToe::cell::X:
-		return CELL_VALUE_X;
-	case TicTacToe::cell::O:
-		return CELL_VALUE_O;
-	case TicTacToe::cell::EMPTY:
-		return CELL_VALUE_EMPTY;
-	};
-	return 0;
+AiPlayer::AiPlayer(const std::string &config_FileName)
+    : model(config_FileName, true) {
+	load(config_FileName);
 }
 
-vector<double> AiPlayer::getBoardVector() {
-	vector<double> boardState(9);
+void AiPlayer::load(const std::string &config_FileName) {
+	nn::Trainer trainer(model);
 
-	for (int i = 0; i < 9; i++) {
-		boardState[i] = getBoardCellValue(i);
-	}
-	return boardState;
+	trainer.train();
+}
+
+std::vector<nn::Global::ValueType> AiPlayer::get_input() {
+	std::vector<nn::Global::ValueType> input(9 * 3, 0);
+
+	return input;
 }
 
 int AiPlayer::getMove() {
-	vector<double> input = getBoardVector();
-	ai_model->run_model(input);
-	return ai_model->getPrediction(input);
+	model.run_model(get_input());
+
+	nn::prediction pre = model.getPrediction();
+	return pre.index;
 }
 
 void AiPlayer::UserLost() {}

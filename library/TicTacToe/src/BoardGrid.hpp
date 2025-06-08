@@ -2,9 +2,11 @@
 #define BOARDGRID_HPP
 
 namespace TicTacToe {
-enum cell { X = 'X',
-	        O = 'O',
-	        EMPTY = ' ' };
+enum class cell {
+	X = 'X',
+	O = 'O',
+	EMPTY = ' ',
+};
 
 class BoardGrid {
   private:
@@ -12,9 +14,7 @@ class BoardGrid {
 
   public:
 	BoardGrid();
-
 	BoardGrid(BoardGrid &other);
-
 	cell getCell(int x, int y);
 	void setCell(int x, int y, cell c);
 };

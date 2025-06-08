@@ -11,8 +11,7 @@ class PlayerAdapter : public IPlayer {
 
   public:
 	PlayerAdapter(TicTacToe::cell mode);
-	void SetPlayer(Player *player_, TicTacToe::cell mode,
-	               TicTacToe::Board *board);
+	void SetPlayer(Player *player_, TicTacToe::cell mode, TicTacToe::Board *board);
 	Player *GetPlayer();
 	int getScore() override;
 	void updateScore(int score);

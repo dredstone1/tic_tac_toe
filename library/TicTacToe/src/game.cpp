@@ -1,57 +1,57 @@
 #include "../include/TicTacToe/game.hpp"
+#include "Board.hpp"
 #include "BoardGrid.hpp"
 #include <iostream>
-
-using namespace std;
 
 namespace TicTacToe {
 
 Game::Game(Player *playerX_, Player *playerO_)
-    : playerO(EMPTY), playerX(EMPTY) {
-	this->board = new Board();
+    : playerO(cell::EMPTY), playerX(cell::EMPTY) {
+	board = new Board();
 
-	playerX.SetPlayer(playerX_, X, this->board);
-	playerO.SetPlayer(playerO_, O, this->board);
+	playerX.SetPlayer(playerX_, cell::X, board);
+	playerO.SetPlayer(playerO_, cell::O, board);
 }
 
-Game::~Game() { delete this->board; }
+Game::~Game() {
+	delete board;
+}
 
 void Game::run() {
-	cout << "Start Game loop" << endl;
-	this->board->draw();
+	std::cout << "Start Game loop" << std::endl;
+	board->draw();
 	PlayerAdapter *currentPlayer = &playerX;
 
-	while (this->board->GetBoardState() == Continue) {
+	while (board->GetBoardState() == BoardState::Continue) {
 		int move = currentPlayer->getMove();
 		if (move < 0 || move > 8 ||
-		    this->board->get(move / 3, move % 3) != EMPTY) {
-			cout << "Invalid move: << " << move << endl;
+		    board->get(move / 3, move % 3) != cell::EMPTY) {
+			std::cout << "Invalid move: << " << move << std::endl;
 			continue;
 		}
 
-		this->board->set(move / 3, move % 3, currentPlayer->getPlayerMode());
-		this->board->draw();
+		board->set(move / 3, move % 3, currentPlayer->getPlayerMode());
+		board->draw();
 		currentPlayer = (currentPlayer == &playerX) ? &playerO : &playerX;
 	}
 
-	switch (this->board->GetBoardState()) {
-	case WinX:
+	switch (board->GetBoardState()) {
+	case BoardState::WinX:
 		playerX.updateScore(playerX.getScore() + 1);
 		playerX.UserWin();
 		playerO.UserLost();
 		break;
-	case WinO:
+	case BoardState::WinO:
 		playerO.updateScore(playerO.getScore() + 1);
 		playerO.UserWin();
 		playerX.UserLost();
 		break;
-	case Draw:
+	case BoardState::Draw:
 		playerO.UserDraw();
 		playerX.UserDraw();
 		break;
 	default:
 		break;
 	}
-	return;
 }
 } // namespace TicTacToe

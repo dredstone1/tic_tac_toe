@@ -1,27 +1,24 @@
 #include "../include/StandardPlayer/StandardPlayer.hpp"
 #include <iostream>
 
-using namespace std;
-
 StandardPlayer::StandardPlayer() {}
 
 int StandardPlayer::getMove() {
-	cout << (char)getPlayerMode() << ": Enter your move: ";
+	std::cout << (char)getPlayerMode() << ": Enter your move: ";
 	int move;
-	cin >> move;
+	std::cin >> move;
 	return move;
 }
 
 void StandardPlayer::UserLost() {
-	cout << (char)getPlayerMode() << ": You lost!" << endl;
+	std::cout << (char)getPlayerMode() << ": You lost!" << std::endl;
 }
 
 void StandardPlayer::UserWin() {
-	cout << (char)getPlayerMode() << ": You win!" << endl;
-	cout << (char)getPlayerMode() << ": You have " << getScore() << " points"
-	     << endl;
+	std::cout << (char)getPlayerMode() << ": You win!" << std::endl;
+	std::cout << (char)getPlayerMode() << ": You have " << getScore() << " points" << std::endl;
 }
 
 void StandardPlayer::UserDraw() {
-	cout << (char)getPlayerMode() << ": Draw!" << endl;
+	std::cout << (char)getPlayerMode() << ": Draw!" << std::endl;
 }

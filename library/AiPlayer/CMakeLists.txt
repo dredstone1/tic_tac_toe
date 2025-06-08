@@ -1,37 +1,13 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.28)
 project(AiPlayer)
-
-find_package(SFML 2.6 COMPONENTS graphics window system REQUIRED)
 
 add_library(
   AiPlayer STATIC
   src/AiPlayer.cpp
-  src/model/AiModel.cpp
-  src/model/model.cpp
-  src/trainer/trainer.cpp
-  src/trainer/database/dataBase.cpp
-  src/model/activations.cpp
-  src/trainer/backPropagation.cpp
-  src/model/neuralNetwork.cpp
-  src/trainer/gradient.cpp
-  src/model/LayerParameters.cpp
-  src/model/neuron.cpp
-  src/model/Layers/Hidden_Layer.cpp
-  src/model/Layers/layer.cpp
-  src/model/Layers/Output_Layer.cpp
-  src/visualizer/VisualizerRenderer.cpp
-  src/visualizer/VisualizerController.cpp
-  src/visualizer/visualNN.cpp
-  src/visualizer/visualL.cpp
-  src/visualizer/state.cpp
-  src/visualizer/VInterface.cpp
-  src/visualizer/button.cpp
-  src/visualizer/fonts.cpp
   )
 
-add_subdirectory(matplotplusplus)
+  add_subdirectory(NeuralNetwork)
 
-target_compile_definitions(AiPlayer PUBLIC RESOURCE_DIR="${RESOURCE_DIR}")
-target_link_libraries(AiPlayer TicTacToe matplot sfml-graphics sfml-window sfml-system)
+target_link_libraries(AiPlayer TicTacToe NeuralNetwork)
 
 target_include_directories(AiPlayer PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)

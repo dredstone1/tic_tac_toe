@@ -4,7 +4,7 @@ PlayerAdapter::PlayerAdapter(TicTacToe::cell mode) { player = 0; }
 
 void PlayerAdapter::updateScore(int score) {
 	if (score > 0) {
-		(*this->player).score = score;
+		(*player).score = score;
 	}
 }
 
@@ -12,12 +12,11 @@ int PlayerAdapter::getMove() { return player->getMove(); }
 
 int PlayerAdapter::getScore() { return player->getScore(); }
 
-void PlayerAdapter::SetPlayer(Player *player_, TicTacToe::cell mode,
-                              TicTacToe::Board *board) {
-	this->player = player_;
-	this->player->playerMode = mode;
-	this->player->score = 0;
-	this->player->board = board;
+void PlayerAdapter::SetPlayer(Player *player_, TicTacToe::cell mode, TicTacToe::Board *board) {
+	player = player_;
+	player->playerMode = mode;
+	player->score = 0;
+	player->board = board;
 }
 
 Player *PlayerAdapter::GetPlayer() { return player; }
