@@ -10,6 +10,8 @@ class AiPlayer : public Player {
 	nn::AiModel model;
 	void load(const std::string &config_FileName);
 	std::vector<nn::Global::ValueType> get_input();
+    TicTacToe::cell getBoard_(int index);
+    int getCellValue(TicTacToe::cell cellValue, TicTacToe::cell check);
 
   public:
 	AiPlayer(const std::string &config_FileName);

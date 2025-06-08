@@ -18,13 +18,15 @@ int main(int argc, char *argv[]) {
 
 	std::cout << "AI Game" << std::endl;
 
-    std::string config_file_name("config.json");
+	std::string config_file_name("config.json");
 
 	AiPlayer aiPlayer(config_file_name);
 
-    TicTacToe::Game game(&StandardPlayer1, &aiPlayer);
-	// Game game(&aiPlayer, &StandardPlayer1);
+	while (true) {
+		// TicTacToe::Game game(&StandardPlayer1, &aiPlayer);
+		TicTacToe::Game game(&aiPlayer, &StandardPlayer1);
+		game.run();
+	}
 
-	game.run();
 	return 0;
 }

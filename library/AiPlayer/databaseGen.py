@@ -106,6 +106,15 @@ def generate_all_boards():
 
 filename = "tic_tac_toe_boards_with_moves.txt"
 
+def create_input(list_, char_):
+    new_string = ""
+    for ch in list_:
+        if ch == char_:
+            new_string += "1 " 
+        else:
+            new_string += "0 "
+    return new_string
+
 if __name__ == "__main__":
     print("Generating all possible Tic-Tac-Toe boards and best moves...")
     boards_and_moves = generate_all_boards()
@@ -114,9 +123,15 @@ if __name__ == "__main__":
         filename = sys.argv[1]
 
     with open(filename, "w") as f:
-        f.write(f"Total number of boards: {len(boards_and_moves)}\n\n")
+        f.write(f"{len(boards_and_moves)} {9*3}\n")
         for board_tuple, best_move in boards_and_moves.items():
-            board_str = "".join(board_tuple)
-            f.write(f"Board: {board_str}, Best_Next_Move: {best_move}\n")
+            if (best_move == "Game Over"):
+                continue
+        
+
+            board_str = create_input(board_tuple, "X")
+            board_str += create_input(board_tuple, "O")
+            board_str += create_input(board_tuple, " ")
+            f.write(f"{best_move} {board_str}\n")
 
     print("All boards and best moves have been saved to tic_tac_toe_boards_with_moves.txt")
