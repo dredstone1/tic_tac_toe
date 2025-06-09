@@ -1,9 +1,9 @@
+#include "Globals.hpp"
 #include <AiModel.hpp>
 #include <AiPlayer.hpp>
 #include <iostream>
 #include <string>
 #include <trainer.hpp>
-#include <vector>
 
 AiPlayer::AiPlayer(const std::string &config_FileName)
     : model(config_FileName, true) {
@@ -15,7 +15,7 @@ TicTacToe::cell AiPlayer::getBoard_(int index) {
 }
 
 void AiPlayer::load(const std::string &config_FileName) {
-	nn::Trainer trainer(model);
+	nn::training::Trainer trainer(model);
 
 	trainer.train();
 }
@@ -24,8 +24,8 @@ int AiPlayer::getCellValue(TicTacToe::cell cellValue, TicTacToe::cell check) {
 	return (cellValue == check) ? 1 : 0;
 }
 
-std::vector<nn::Global::ValueType> AiPlayer::get_input() {
-	std::vector<nn::Global::ValueType> input(9 * 3, 0);
+nn::global::ParamMetrix AiPlayer::get_input() {
+    nn::global::ParamMetrix input(9 * 3, 0);
 	for (size_t i = 0; i < input.size() / 3; i++) {
 		input[i] = getCellValue(getBoard_(i), TicTacToe::cell::X);
 	}
@@ -40,9 +40,9 @@ std::vector<nn::Global::ValueType> AiPlayer::get_input() {
 }
 
 int AiPlayer::getMove() {
-	model.run_model(get_input());
+	model.runModel(get_input());
 
-	nn::prediction pre = model.getPrediction();
+	nn::Prediction pre = model.getPrediction();
 	std::cout << "Ai move: " << pre.index << ", " << pre.value << std::endl;
 	return pre.index;
 }
