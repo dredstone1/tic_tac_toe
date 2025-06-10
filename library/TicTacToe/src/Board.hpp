@@ -3,12 +3,12 @@
 
 #include "BoardGrid.hpp"
 
-namespace TicTacToe {
+namespace tictactoe {
 enum class BoardState {
 	WinX,
 	WinO,
 	Draw,
-	Continue
+	Continue,
 };
 
 class Board {
@@ -21,10 +21,10 @@ class Board {
   public:
 	Board();
 	void draw();
-	cell get(int x, int y);
-	void set(int x, int y, cell c);
+	Cell get(int x, int y);
+	void set(int x, int y, Cell c);
 	BoardState GetBoardState() { return boardState; }
 };
-} // namespace TicTacToe
+} // namespace tictactoe
 
 #endif

@@ -4,7 +4,7 @@
 #include "../../src/Board.hpp"
 #include "../../src/PlayerAdapter.hpp"
 
-namespace TicTacToe {
+namespace tictactoe {
 class Game {
   public:
 	Game(Player *playerX_, Player *playerO_);

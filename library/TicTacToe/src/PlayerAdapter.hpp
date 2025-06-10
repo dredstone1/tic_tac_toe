@@ -5,21 +5,23 @@
 #include "Board.hpp"
 #include "IPlayer.hpp"
 
+namespace tictactoe {
 class PlayerAdapter : public IPlayer {
   private:
 	Player *player;
 
   public:
-	PlayerAdapter(TicTacToe::cell mode);
-	void SetPlayer(Player *player_, TicTacToe::cell mode, TicTacToe::Board *board);
+	PlayerAdapter(Cell mode);
+	void SetPlayer(Player *player_, Cell mode, Board *board);
 	Player *GetPlayer();
 	int getScore() override;
 	void updateScore(int score);
 	int getMove() override;
-	TicTacToe::cell getPlayerMode() override;
+	Cell getPlayerMode() override;
 	void UserLost() override;
 	void UserWin() override;
 	void UserDraw() override;
 };
+} // namespace tictactoe
 
 #endif // PLAYERADAPTER_HPP

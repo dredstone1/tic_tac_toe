@@ -5,13 +5,13 @@
 #include <Globals.hpp>
 #include <TicTacToe/Player.hpp>
 
-class AiPlayer : public Player {
+class AiPlayer : public tictactoe::Player {
   private:
 	nn::AiModel model;
 	void load(const std::string &config_FileName);
 	nn::global::ParamMetrix get_input();
-    TicTacToe::cell getBoard_(int index);
-    int getCellValue(TicTacToe::cell cellValue, TicTacToe::cell check);
+	tictactoe::Cell getBoard_(int index);
+	int getCellValue(tictactoe::Cell cellValue, tictactoe::Cell check);
 
   public:
 	AiPlayer(const std::string &config_FileName);

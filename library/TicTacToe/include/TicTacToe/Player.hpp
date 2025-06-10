@@ -4,23 +4,25 @@
 #include "../../src/Board.hpp"
 #include "../../src/IPlayer.hpp"
 
+namespace tictactoe {
 class Player : public IPlayer {
   private:
 	int score;
-	TicTacToe::cell playerMode;
-	TicTacToe::Board *board;
+	Cell playerMode;
+	Board *board;
 
   public:
 	Player() {
 		board = nullptr;
 		score = 0;
-		playerMode = TicTacToe::cell::EMPTY;
+		playerMode = Cell::EMPTY;
 	}
 	virtual ~Player() = default;
 	int getScore() override { return score; }
-	TicTacToe::cell getBoard(int row, int col) { return board->get(row, col); }
+	Cell getBoard(int row, int col) { return board->get(row, col); }
 	friend class PlayerAdapter;
-	TicTacToe::cell getPlayerMode() override { return playerMode; }
+	Cell getPlayerMode() override { return playerMode; }
 };
+} // namespace tictactoe
 
 #endif // PLAYER_HPP

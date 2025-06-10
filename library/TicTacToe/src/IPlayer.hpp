@@ -3,6 +3,7 @@
 
 #include "BoardGrid.hpp"
 
+namespace tictactoe {
 class IPlayer {
   public:
 	virtual int getScore() = 0;
@@ -10,8 +11,9 @@ class IPlayer {
 	virtual void UserLost() = 0;
 	virtual void UserWin() = 0;
 	virtual void UserDraw() = 0;
-	virtual TicTacToe::cell getPlayerMode() = 0;
+	virtual Cell getPlayerMode() = 0;
 	friend class PlayerAdapter;
 };
+} // namespace tictactoe
 
 #endif // IPLAYER_HPP

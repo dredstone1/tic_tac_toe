@@ -3,14 +3,14 @@
 #include "BoardGrid.hpp"
 #include <iostream>
 
-namespace TicTacToe {
+namespace tictactoe {
 
 Game::Game(Player *playerX_, Player *playerO_)
-    : playerO(cell::EMPTY), playerX(cell::EMPTY) {
+    : playerO(Cell::EMPTY), playerX(Cell::EMPTY) {
 	board = new Board();
 
-	playerX.SetPlayer(playerX_, cell::X, board);
-	playerO.SetPlayer(playerO_, cell::O, board);
+	playerX.SetPlayer(playerX_, Cell::X, board);
+	playerO.SetPlayer(playerO_, Cell::O, board);
 }
 
 Game::~Game() {
@@ -25,7 +25,7 @@ void Game::run() {
 	while (board->GetBoardState() == BoardState::Continue) {
 		int move = currentPlayer->getMove();
 		if (move < 0 || move > 8 ||
-		    board->get(move / 3, move % 3) != cell::EMPTY) {
+		    board->get(move / 3, move % 3) != Cell::EMPTY) {
 			std::cout << "Invalid move: << " << move << std::endl;
 			continue;
 		}
@@ -54,4 +54,4 @@ void Game::run() {
 		break;
 	}
 }
-} // namespace TicTacToe
+} // namespace tictactoe

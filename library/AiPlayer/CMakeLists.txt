@@ -1,12 +1,11 @@
 cmake_minimum_required(VERSION 3.28)
 project(AiPlayer)
 
-add_library(
-  AiPlayer STATIC
+add_library(AiPlayer STATIC
   src/AiPlayer.cpp
-  )
+)
 
-  add_subdirectory(NeuralNetwork)
+add_subdirectory(NeuralNetwork)
 
 target_link_libraries(AiPlayer TicTacToe NeuralNetwork)
 

@@ -3,7 +3,7 @@
 
 #include <TicTacToe/Player.hpp>
 
-class StandardPlayer : public Player {
+class StandardPlayer : public tictactoe::Player {
   public:
 	StandardPlayer();
 	int getMove() override;

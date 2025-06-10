@@ -1,10 +1,10 @@
 #include "BoardGrid.hpp"
 
-namespace TicTacToe {
+namespace tictactoe {
 BoardGrid::BoardGrid() {
 	for (int i = 0; i < 3; i++) {
 		for (int j = 0; j < 3; j++) {
-			board[i][j] = cell::EMPTY;
+			board[i][j] = Cell::EMPTY;
 		}
 	}
 }
@@ -17,11 +17,11 @@ BoardGrid::BoardGrid(BoardGrid &other) {
 	}
 }
 
-cell BoardGrid::getCell(int x, int y) {
+Cell BoardGrid::getCell(int x, int y) {
 	return board[x][y];
 }
 
-void BoardGrid::setCell(int x, int y, cell c) {
+void BoardGrid::setCell(int x, int y, Cell c) {
 	board[x][y] = c;
 }
 } // namespace TicTacToe

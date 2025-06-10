@@ -10,7 +10,7 @@ AiPlayer::AiPlayer(const std::string &config_FileName)
 	load(config_FileName);
 }
 
-TicTacToe::cell AiPlayer::getBoard_(int index) {
+tictactoe::Cell AiPlayer::getBoard_(int index) {
 	return getBoard(index / 3, index % 3);
 }
 
@@ -20,20 +20,20 @@ void AiPlayer::load(const std::string &config_FileName) {
 	trainer.train();
 }
 
-int AiPlayer::getCellValue(TicTacToe::cell cellValue, TicTacToe::cell check) {
+int AiPlayer::getCellValue(tictactoe::Cell cellValue, tictactoe::Cell check) {
 	return (cellValue == check) ? 1 : 0;
 }
 
 nn::global::ParamMetrix AiPlayer::get_input() {
     nn::global::ParamMetrix input(9 * 3, 0);
 	for (size_t i = 0; i < input.size() / 3; i++) {
-		input[i] = getCellValue(getBoard_(i), TicTacToe::cell::X);
+		input[i] = getCellValue(getBoard_(i), tictactoe::Cell::X);
 	}
 	for (size_t i = 0; i < input.size() / 3; i++) {
-		input[i + 9] = getCellValue(getBoard_(i), TicTacToe::cell::O);
+		input[i + 9] = getCellValue(getBoard_(i), tictactoe::Cell::O);
 	}
 	for (size_t i = 0; i < input.size() / 3; i++) {
-		input[i + 9 * 2] = getCellValue(getBoard_(i), TicTacToe::cell::EMPTY);
+		input[i + 9 * 2] = getCellValue(getBoard_(i), tictactoe::Cell::EMPTY);
 	}
 
 	return input;

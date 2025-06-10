@@ -1,8 +1,8 @@
 #ifndef BOARDGRID_HPP
 #define BOARDGRID_HPP
 
-namespace TicTacToe {
-enum class cell {
+namespace tictactoe {
+enum class Cell {
 	X = 'X',
 	O = 'O',
 	EMPTY = ' ',
@@ -10,13 +10,13 @@ enum class cell {
 
 class BoardGrid {
   private:
-	cell board[3][3];
+	Cell board[3][3];
 
   public:
 	BoardGrid();
 	BoardGrid(BoardGrid &other);
-	cell getCell(int x, int y);
-	void setCell(int x, int y, cell c);
+	Cell getCell(int x, int y);
+	void setCell(int x, int y, Cell c);
 };
-} // namespace TicTacToe
+} // namespace tictactoe
 #endif
