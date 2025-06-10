@@ -95,3 +95,5 @@ See the StandartPlayer implementation for a reference example.
 This project is licensed under the MIT License - see the LICENSE file for details.
 
 ---
+
+⭐ If you find this project interesting, consider giving it a star!
