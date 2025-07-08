@@ -1,23 +1,25 @@
 {
-  "network_config": {
-    "input_size": 27,
-    "output_size": 9,
-    "output_init_value": -1,
-    "layers_config": [
-      { "size": 24, "weights_init_value": -1, "AT": 1}
-    ]
-  },
-  "training_config": {
-    "lr_init_value": 0.001,
-    "batch_size": 16,
-    "batch_count": 100000,
-    "db_filename": "../ModelData/tic_tac_toe_boards_with_moves"
-  },
-  "visualizer_config": {
-    "modes": [
-      { "state": "pause",       "mode": true },
-      { "state": "precise mode","mode": true },
-      { "state": "auto pause",  "mode": true }
-    ]
-  }
+	"visual config": {
+		"modes": [
+			{ "state": "pause", "mode": true },
+			{ "state": "precise mode", "mode": true },
+			{ "state": "auto pause", "mode": true }
+		]
+	},
+	"training config": {
+		"batch_size": 64,
+		"batch_count": 10000,
+		"db_filename": "../ModelData/tic_tac_toe_boards_with_moves",
+		"lr_init_value": 1
+	},
+	"network config": [
+		{
+			"type": "FNN",
+			"input size": 27,
+			"output size": 9,
+			"layers": [
+				{ "size": 20, "activationType": 1 }
+			]
+		}
+	]
 }

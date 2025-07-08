@@ -8,7 +8,6 @@
 class AiPlayer : public tictactoe::Player {
   private:
 	nn::AiModel model;
-	void load(const std::string &config_FileName);
 	nn::global::ParamMetrix get_input();
 	tictactoe::Cell getBoard_(int index);
 	int getCellValue(tictactoe::Cell cellValue, tictactoe::Cell check);
