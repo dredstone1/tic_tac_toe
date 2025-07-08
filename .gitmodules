@@ -1,3 +1,0 @@
-[submodule "library/AiPlayer/NeuralNetwork"]
-	path = library/AiPlayer/NeuralNetwork
-	url = https://github.com/dredstone1/NeuralNetwork.git

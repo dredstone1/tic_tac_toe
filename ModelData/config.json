@@ -10,7 +10,7 @@
 		"batch_size": 64,
 		"batch_count": 10000,
 		"db_filename": "../ModelData/tic_tac_toe_boards_with_moves",
-		"lr_init_value": 1
+		"lr_init_value": 0.25
 	},
 	"network config": [
 		{
@@ -18,6 +18,7 @@
 			"input size": 27,
 			"output size": 9,
 			"layers": [
+				{ "size": 30, "activationType": 1 },
 				{ "size": 20, "activationType": 1 }
 			]
 		}
