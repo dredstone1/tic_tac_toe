@@ -35,7 +35,7 @@ nn::global::ParamMetrix AiPlayer::get_input() {
 int AiPlayer::getMove() {
 	model.runModel(get_input());
 
-	nn::global::Prediction pre = model.getPrediction();
+	nn::global::FinalPrediction pre = model.getPrediction();
 	std::cout << "Ai move: " << pre.index << ", " << pre.value << std::endl;
 	return pre.index;
 }
