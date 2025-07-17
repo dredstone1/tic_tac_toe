@@ -1,22 +1,22 @@
 {
 	"visual config": {
 		"modes": [
-			{ "state": "pause", "mode": true },
-			{ "state": "precise mode", "mode": true },
-			{ "state": "auto pause", "mode": true }
+			{ "state": "pause", "mode": false },
+			{ "state": "precise mode", "mode": false },
+			{ "state": "auto pause", "mode": false }
 		]
 	},
 	"training config": {
 		"batch size": 16,
-		"batch count": 100000,
-		"learning rate": 0.001,
+		"batch count": 500000,
+		"learning rate": 0.005,
 		"auto save": {
 			"saveEvery": 2000,
 			"dataFilenameAutoSave": "mode.txt"
 		},
 		"auto evaluating": {
 			"evaluateEvery": 500,
-			"dataBaseFilename": "../ModelData/tic_tac_toe_boards_with_moves"
+			"dataBaseFilename": "../ModelData/states"
 		}
 	},
 	"network config": [

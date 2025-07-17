@@ -4,8 +4,9 @@
 
 AiPlayer::AiPlayer(const std::string &config_FileName)
     : model(config_FileName) {
-	model.train("../ModelData/tic_tac_toe_boards_with_moves");
-	model.save("../ModelData/modelParams.txt");
+    model.load("../ModelData/modelParams.txt");
+	// model.train("../ModelData/states");
+	// model.save("../ModelData/modelParams.txt");
 }
 
 tictactoe::Cell AiPlayer::getBoard_(int index) {
