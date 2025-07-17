@@ -1,12 +1,11 @@
-#include "Globals.hpp"
-#include <AiModel.hpp>
 #include <AiPlayer.hpp>
 #include <iostream>
 #include <string>
 
 AiPlayer::AiPlayer(const std::string &config_FileName)
     : model(config_FileName) {
-	model.train();
+	model.train("../ModelData/tic_tac_toe_boards_with_moves");
+	model.save("../ModelData/modelParams.txt");
 }
 
 tictactoe::Cell AiPlayer::getBoard_(int index) {
@@ -35,7 +34,7 @@ nn::global::ParamMetrix AiPlayer::get_input() {
 int AiPlayer::getMove() {
 	model.runModel(get_input());
 
-	nn::global::FinalPrediction pre = model.getPrediction();
+	nn::global::Prediction pre = model.getPrediction();
 	std::cout << "Ai move: " << pre.index << ", " << pre.value << std::endl;
 	return pre.index;
 }

@@ -7,16 +7,20 @@
 		]
 	},
 	"training config": {
-		"batch_size": 64,
-		"batch_count": 10000,
-		"db_filename": "../ModelData/tic_tac_toe_boards_with_moves",
-		"lr_init_value": 0.25
+		"batch size": 64,
+		"batch count": 10000,
+		"learning rate": 0.01,
+		"auto save": {
+			"saveEvery": 2000,
+			"dataFilenameAutoSave": "mode.txt"
+		}
 	},
 	"network config": [
 		{
 			"type": "FNN",
 			"input size": 27,
 			"output size": 9,
+			"output activation": 4,
 			"layers": [
 				{ "size": 30, "activationType": 1 },
 				{ "size": 20, "activationType": 1 }

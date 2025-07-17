@@ -1,13 +1,13 @@
 #ifndef AIPLAYER_HPP
 #define AIPLAYER_HPP
 
-#include <AiModel.hpp>
 #include <Globals.hpp>
 #include <TicTacToe/Player.hpp>
+#include <model.hpp>
 
 class AiPlayer : public tictactoe::Player {
   private:
-	nn::AiModel model;
+	nn::model::Model model;
 	nn::global::ParamMetrix get_input();
 	tictactoe::Cell getBoard_(int index);
 	int getCellValue(tictactoe::Cell cellValue, tictactoe::Cell check);
