@@ -3,11 +3,11 @@
 
 AiPlayer::AiPlayer(const std::string &config_FileName)
     : model(config_FileName) {
-	// model.load("../ModelData/modelParams.txt");
-	model.train("../ModelData/states");
-	nn::model::modelResult result = model.evaluateModel("../ModelData/states");
-	printf("result: %f\n", result.percentage);
-	model.save("../ModelData/modelParams.txt");
+	model.load("../ModelData/modelParams.txt");
+	// model.train("../ModelData/states");
+	// nn::model::modelResult result = model.evaluateModel("../ModelData/states");
+	// printf("result: %f\n", result.percentage);
+	// model.save("../ModelData/modelParams.txt");
 }
 
 tictactoe::Cell AiPlayer::getBoard_(int index) {
