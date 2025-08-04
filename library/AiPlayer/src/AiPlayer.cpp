@@ -20,6 +20,7 @@ int AiPlayer::getCellValue(tictactoe::Cell cellValue, tictactoe::Cell check) {
 
 nn::global::Tensor AiPlayer::get_input() {
 	nn::global::Tensor input({9 * 3});
+
 	for (size_t i = 0; i < input.numElements() / 3; i++) {
 		input[i] = getCellValue(getBoard_(i), tictactoe::Cell::X);
 	}
