@@ -23,8 +23,8 @@ int main(int argc, char *argv[]) {
 	AiPlayer aiPlayer(config_file_name);
 
 	while (true) {
-		// TicTacToe::Game game(&StandardPlayer1, &aiPlayer);
-		tictactoe::Game game(&aiPlayer, &StandardPlayer1);
+		tictactoe::Game game(&StandardPlayer1, &aiPlayer);
+		// tictactoe::Game game(&aiPlayer, &StandardPlayer1);
 		game.run();
 	}
 

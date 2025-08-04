@@ -1,12 +1,13 @@
 #include <AiPlayer.hpp>
 #include <iostream>
-#include <string>
 
 AiPlayer::AiPlayer(const std::string &config_FileName)
     : model(config_FileName) {
-    model.load("../ModelData/modelParams.txt");
-	// model.train("../ModelData/states");
-	// model.save("../ModelData/modelParams.txt");
+	// model.load("../ModelData/modelParams.txt");
+	model.train("../ModelData/states");
+	nn::model::modelResult result = model.evaluateModel("../ModelData/states");
+	printf("result: %f\n", result.percentage);
+	model.save("../ModelData/modelParams.txt");
 }
 
 tictactoe::Cell AiPlayer::getBoard_(int index) {
@@ -17,15 +18,15 @@ int AiPlayer::getCellValue(tictactoe::Cell cellValue, tictactoe::Cell check) {
 	return (cellValue == check) ? 1 : 0;
 }
 
-nn::global::ParamMetrix AiPlayer::get_input() {
-	nn::global::ParamMetrix input(9 * 3, 0);
-	for (size_t i = 0; i < input.size() / 3; i++) {
+nn::global::Tensor AiPlayer::get_input() {
+	nn::global::Tensor input({9 * 3});
+	for (size_t i = 0; i < input.numElements() / 3; i++) {
 		input[i] = getCellValue(getBoard_(i), tictactoe::Cell::X);
 	}
-	for (size_t i = 0; i < input.size() / 3; i++) {
+	for (size_t i = 0; i < input.numElements() / 3; i++) {
 		input[i + 9] = getCellValue(getBoard_(i), tictactoe::Cell::O);
 	}
-	for (size_t i = 0; i < input.size() / 3; i++) {
+	for (size_t i = 0; i < input.numElements() / 3; i++) {
 		input[i + 9 * 2] = getCellValue(getBoard_(i), tictactoe::Cell::EMPTY);
 	}
 
