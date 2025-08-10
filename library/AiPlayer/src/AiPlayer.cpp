@@ -22,13 +22,13 @@ nn::global::Tensor AiPlayer::get_input() {
 	nn::global::Tensor input({9 * 3});
 
 	for (size_t i = 0; i < input.numElements() / 3; i++) {
-		input[i] = getCellValue(getBoard_(i), tictactoe::Cell::X);
+		input.setValue({i}, getCellValue(getBoard_(i), tictactoe::Cell::X));
 	}
 	for (size_t i = 0; i < input.numElements() / 3; i++) {
-		input[i + 9] = getCellValue(getBoard_(i), tictactoe::Cell::O);
+		input.setValue({i + 9}, getCellValue(getBoard_(i), tictactoe::Cell::O));
 	}
 	for (size_t i = 0; i < input.numElements() / 3; i++) {
-		input[i + 9 * 2] = getCellValue(getBoard_(i), tictactoe::Cell::EMPTY);
+		input.setValue({i + 9 * 2}, getCellValue(getBoard_(i), tictactoe::Cell::EMPTY));
 	}
 
 	return input;
