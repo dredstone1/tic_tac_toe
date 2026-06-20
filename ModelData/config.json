@@ -1,6 +1,7 @@
 {
 	"visual config": {
-		"enableVisuals": false,
+		"enable visual": true,
+		"enable network visual": false,
 		"modes": [
 			{ "state": "pause", "mode": false },
 			{ "state": "precise mode", "mode": false },
@@ -8,19 +9,21 @@
 		]
 	},
 	"training config": {
-		"batch size": 32,
-		"batch count": 100000,
+		"batch size": 10,
+		"batch count": 1000000,
 		"auto save": {
 			"saveEvery": 2000,
 			"dataFilenameAutoSave": "mode.txt"
 		},
 		"auto evaluating": {
-			"evaluateEvery": 500,
-			"dataBaseFilename": "../ModelData/states"
+			"dataBaseFilename": ["../ModelData/states"]
 		},
 		"optimizer": {
 			"type": "const",
-			"lr": 1
+			"lr": 0.5
+		},
+		"loss": {
+			"type": "CCE"
 		}
 	},
 	"network config": [
@@ -30,9 +33,7 @@
 			"output size": 9,
 			"output activation": 4,
 			"layers": [
-				{ "size": 62, "activationType": 1 },
-				{ "size": 30, "activationType": 1 },
-				{ "size": 62, "activationType": 1 }
+				{ "size": 30, "activationType": 1 }
 			]
 		}
 	]

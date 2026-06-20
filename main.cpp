@@ -4,7 +4,9 @@
 #include <iostream>
 #include <string>
 
+
 int main(int argc, char *argv[]) {
+	nn::global::Tensor::toCpu();
 	StandardPlayer StandardPlayer1;
 	std::cout << "Start Game" << std::endl;
 

@@ -82,7 +82,7 @@ def generate_and_save_states(board, current_player, states_with_moves, file_hand
 
     X_mask, O_mask, empty_mask = board_to_binary_masks(board)
     line = [best_move] + X_mask + O_mask + empty_mask
-    file_handle.write(" ".join(map(str, line)) + "\n")
+    file_handle.write("p" + " ".join(map(str, line)) + "\n")
 
     if terminal:
         return

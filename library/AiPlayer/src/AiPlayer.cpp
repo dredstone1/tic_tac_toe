@@ -3,11 +3,16 @@
 
 AiPlayer::AiPlayer(const std::string &config_FileName)
     : model(config_FileName) {
-	model.load("../ModelData/modelParams.txt");
-	// model.train("../ModelData/states");
-	// nn::model::modelResult result = model.evaluateModel("../ModelData/states");
-	// printf("result: %f\n", result.percentage);
+
+	// model.load("../ModelData/modelParams.txt");
+	std::vector<std::string> files{"../ModelData/states"};
+	nn::model::DataBase db;
+	db.load(files);
+	model.train(db, db);
+	nn::model::modelResult result = model.evaluateModel(db);
+	printf("result: %f\n", result.percentage);
 	// model.save("../ModelData/modelParams.txt");
+	model.save("../ModelData/modelP2.txt");
 }
 
 tictactoe::Cell AiPlayer::getBoard_(int index) {
@@ -22,13 +27,13 @@ nn::global::Tensor AiPlayer::get_input() {
 	nn::global::Tensor input({9 * 3});
 
 	for (size_t i = 0; i < input.numElements() / 3; i++) {
-		input.setValue({i}, getCellValue(getBoard_(i), tictactoe::Cell::X));
+		input.setValue(i, getCellValue(getBoard_(i), tictactoe::Cell::X));
 	}
 	for (size_t i = 0; i < input.numElements() / 3; i++) {
-		input.setValue({i + 9}, getCellValue(getBoard_(i), tictactoe::Cell::O));
+		input.setValue(i + 9, getCellValue(getBoard_(i), tictactoe::Cell::O));
 	}
 	for (size_t i = 0; i < input.numElements() / 3; i++) {
-		input.setValue({i + 9 * 2}, getCellValue(getBoard_(i), tictactoe::Cell::EMPTY));
+		input.setValue(i + 9 * 2, getCellValue(getBoard_(i), tictactoe::Cell::EMPTY));
 	}
 
 	return input;
@@ -37,7 +42,7 @@ nn::global::Tensor AiPlayer::get_input() {
 int AiPlayer::getMove() {
 	model.runModel(get_input());
 
-	nn::global::Prediction pre = model.getPrediction();
+	nn::model::Prediction pre = model.getPrediction();
 	std::cout << "Ai move: " << pre.index << ", " << pre.value << std::endl;
 	return pre.index;
 }

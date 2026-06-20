@@ -4,6 +4,7 @@
 #include <TicTacToe/Player.hpp>
 #include <model.hpp>
 
+
 class AiPlayer : public tictactoe::Player {
   private:
 	nn::model::Model model;
